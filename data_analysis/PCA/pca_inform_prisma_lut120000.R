@@ -41,10 +41,10 @@ tibble(component = unique(pca_tidy$component)[1:6],
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
         labs(title = "Variation explained by the first 6 PCs",
-             subtitle = expression("Cumulative variation of 6 PCs " %~~% "99%"),
+             subtitle = expression("Cumulative variation of 6 PCs " %~~% "100%"),
              x = "Principal Component",
              y = "Variation explained") +
-        theme_light() +
+        theme_bw() +
         theme(plot.title = element_text(hjust = .5),
               plot.subtitle = element_text(hjust = .5))
 
