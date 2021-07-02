@@ -53,12 +53,6 @@ pca_training = bake(pca_prep, new_data = NULL)
 pca_validation = bake(pca_prep, new_data = validation)
 pca_testing = bake(pca_prep, new_data = testing)
 
-# apply transformation to the prisma data
-prisma_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
-prisma = raster::stack(prisma_path)
-prisma_df = raster::as.data.frame(prisma) %>% as_tibble() %>% drop_na() %>% setNames(wl)
-pca_prisma = bake(pca_prep, new_data = prisma_df)
-
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_training.txt")
 write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_validation.txt")
