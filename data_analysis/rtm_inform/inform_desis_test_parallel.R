@@ -23,7 +23,7 @@ rm(soil_path)
 
 # variables for PROSPECT5
 Cab = runif(n = 20, min = 40, max = 80)
-Cw = runif(n = 20, min = 0.0035, max = 0.035)
+#Cw = runif(n = 20, min = 0.0035, max = 0.035)
 Cm = runif(n = 20, min = 0.008, max = 0.03)
 
 # variables for 4SAIL
@@ -31,10 +31,10 @@ LAI = runif(n = 20, min = 3, max = 9)
 
 
 # variables for flim
-#cd = seq(1.5, 8.5, length.out = 10)
+cd = runif(20, 1.5, 8.5)
 
 # combinations
-combinations = expand.grid(Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI) 
+combinations = expand.grid(Cab = Cab, Cm = Cm, LAI = LAI, cd = cd) 
 
 # calculation of Rg and Rc for FLIM based on Schlerf & Atzberger 2006
 Rg_prospect = prospect5(param = c(N = 3,
@@ -92,7 +92,7 @@ LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combin
                                 Cab = combinations[[i, "Cab"]],
                                 Car = 8,
                                 Cbrown = 0,
-                                Cw = combinations[[i, "Cw"]],
+                                Cw = .02,
                                 Cm = combinations[[i, "Cm"]]))
         
         # foursail
@@ -115,7 +115,7 @@ LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combin
                  To = m[, 2], # tauo
                  Ts = m[, 1], # taus
                  params = c(d = 3500,
-                            cd = 5,
+                            cd = combinations[[i, "cd"]],
                             h = 20,
                             tts = 45.43,
                             tto = 0,
@@ -126,9 +126,9 @@ LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combin
         
         # current variable values
         parameters = c(combinations[[i, "Cab"]],
-                       combinations[[i, "Cw"]],
                        combinations[[i, "Cm"]],
-                       combinations[[i, "LAI"]])
+                       combinations[[i, "LAI"]],
+                       combinations[[i, "cd"]])
         
         # resample the bands into prisma bands
         m = speclib(spectra = m, wavelength = 400:2500)
@@ -149,15 +149,4 @@ s_writing = Sys.time()
 readr::write_csv(as.data.frame(LUT), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases\\LUT_inform160000_desis_test.txt")
 e_writing = Sys.time()
 e_writing - s_writing
-
-
-
-
-
-
-
-
-
-
-
 
