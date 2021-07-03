@@ -60,15 +60,14 @@ preds_cm_prisma = (preds_prisma[, 3] * std_cm) + center_cm
 preds_lai_prisma = (preds_prisma[, 4] * std_lai) + center_lai
 
 # make biophysical maps for the NPHH
-prisma_img = raster::as.data.frame(prisma[[55]], xy = T, na.rm = T)
-prisma_biomap_df = prisma_img %>% dplyr::select(1:2) %>% mutate(cab = preds_lai_prisma,
+prisma_template = raster::as.data.frame(prisma[[55]], xy = T, na.rm = T)
+prisma_biomap_df = prisma_template %>% dplyr::select(1:2) %>% mutate(cab = preds_lai_prisma,
                                                                 cw = preds_cw_prisma,
                                                                 cm = preds_cm_prisma,
                                                                 lai = preds_lai_prisma)
 biomap_img = rasterFromXYZ(prisma_biomap_df, res = res(prisma[[55]]), crs = crs(prisma[[55]]))
-plot(lai_img)
-
-hist(lai_img)
+plot(biomap_img)
+hist(biomap_img)
 
 # visualize the results
 g_cab = ggplot(data.frame(x = testing_label[, 1],
@@ -98,23 +97,3 @@ g_lai = ggplot(data.frame(x = testing_label[, 4],
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "LAI modelled", y = "LAI predicted") +
         theme_light()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
