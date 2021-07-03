@@ -27,7 +27,7 @@ desis_4_df = desis_4_masked %>% raster::as.data.frame(na.rm = T) %>% as_tibble()
 # make a recipe
 pca_rec = recipe(~., desis_4_df) %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), threshold = .99)
+        step_pca(all_predictors(), num_comp = 6)
 pca_prep = pca_rec %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
@@ -39,12 +39,11 @@ tibble(component = unique(pca_tidy$component)[1:6],
         ggplot(aes(x = component, y = variation, fill = component)) +
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
-        labs(title = "DESIS image - Variation explained by the first 6 PCs",
+        labs(title = "DESIS - Variation explained by the first 6 PCs",
              subtitle = expression("Cumulative variation of 6 PCs " %~~% "97%"),
              x = "Principal Component",
              y = "Variation explained") +
         theme_bw() +
         theme(plot.title = element_text(hjust = .5),
               plot.subtitle = element_text(hjust = .5))
-
-
+pca_desis = bake(pca_prep, new_data = NULL)
