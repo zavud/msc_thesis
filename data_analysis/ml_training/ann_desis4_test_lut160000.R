@@ -35,14 +35,35 @@ model = keras_model_sequential() %>%
 model %>% compile(optimizer = optimizer_adam(),
                   loss = "mse",
                   metric = list("mean_absolute_error"))
-model %>% fit(x = training,
+history = model %>% fit(x = training,
               y = training_label_scaled,
               validation_data = list(validation, validation_label_scaled),
               verbose = 2, 
-              epochs = 100,
+              epochs = 500,
               batch_size = 512)
+
+history %>% 
+        as_tibble() %>% 
+        filter(metric == "loss") %>% 
+        mutate(rmse = sqrt(value)) %>% 
+        ggplot(aes(x = epoch, y = rmse, col = data)) +
+        geom_line(alpha = .4) +
+        geom_point(alpha = .4) +
+        labs(x = "Iteration", y = "RMSE", col = NULL,
+             title = "ANN with 6 PCs") +
+        theme_bw() +
+        theme(legend.position = c(.3, .8),
+              legend.direction = "horizontal")
+
 model %>% evaluate(testing, testing_label_scaled)
 
 # save this model
 model %>% save_model_tf("C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\ml_training\\models\\ann_lut160000_desis_test")
+
+
+
+
+
+
+
 
