@@ -57,8 +57,9 @@ history_df %>%
         geom_point(alpha = .5) +
         geom_line(alpha = .5) +
         labs(x = "Iteration", y = "RMSE", col = NULL,
-             subtitle = "ANN wihtout DR") +
+             title = "ANN wihtout PCA") +
+        ylim(0.5, 1) +
         theme_bw() +
-        theme(legend.position = c(.3, .8),
+        theme(legend.position = c(.3, .9),
               legend.direction = "horizontal")
 

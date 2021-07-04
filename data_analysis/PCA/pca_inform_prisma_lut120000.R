@@ -40,13 +40,15 @@ tibble(component = unique(pca_tidy$component)[1:6],
         ggplot(aes(x = component, y = variation, fill = component)) +
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
-        labs(title = "Variation explained by the first 6 PCs",
+        labs(title = "PRISMA LUT - Variation explained by the first 6 PCs",
              subtitle = expression("Cumulative variation of 6 PCs " %~~% "100%"),
              x = "Principal Component",
              y = "Variation explained") +
         theme_bw() +
         theme(plot.title = element_text(hjust = .5),
               plot.subtitle = element_text(hjust = .5))
+
+pca_prisma = bake(pca_prep, prisma_df %>% as.matrix())
 
 # apply the transformation to validation and test sets
 pca_training = bake(pca_prep, new_data = NULL)
@@ -57,13 +59,4 @@ pca_testing = bake(pca_prep, new_data = testing)
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_training.txt")
 write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_validation.txt")
 write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_testing.txt")
-
-
-
-
-
-
-
-
-
 

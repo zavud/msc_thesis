@@ -66,34 +66,35 @@ prisma_biomap_df = prisma_template %>% dplyr::select(1:2) %>% mutate(cab = preds
                                                                 cm = preds_cm_prisma,
                                                                 lai = preds_lai_prisma)
 biomap_img = rasterFromXYZ(prisma_biomap_df, res = res(prisma[[55]]), crs = crs(prisma[[55]]))
-plot(biomap_img)
-hist(biomap_img)
+writeRaster(biomap_img, 
+            filename = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\retrieved_maps\\prisma_biomaps_test.envi",
+            format = "ENVI")
 
 # visualize the results
 g_cab = ggplot(data.frame(x = testing_label[, 1],
                   y = preds_cab),
        aes(x, y)) + geom_point(alpha = .2, col = "brown") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
-        labs(x = "Cab modelled", y = "Cab predicted") +
-        theme_light()
+        labs(x = "Cab modelled (RTM)", y = "Cab predicted (ANN)", title = "Cab") +
+        theme_bw()
 
 g_cw = ggplot(data.frame(x = testing_label[, 2],
                   y = preds_cw),
        aes(x, y)) + geom_point(alpha = .2, col = "brown") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
-        labs(x = "Cw modelled", y = "Cw predicted") +
-        theme_light()
+        labs(x = "Cw modelled (RTM)", y = "Cw predicted (ANN)", title = "Cw") +
+        theme_bw()
 
 g_cm = ggplot(data.frame(x = testing_label[, 3],
                   y = preds_cm),
        aes(x, y)) + geom_point(alpha = .2, col = "brown") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
-        labs(x = "Cm modelled", y = "Cm predicted") +
-        theme_light()
+        labs(x = "Cm modelled (RTM)", y = "Cm predicted (ANN)", title = "Cm") +
+        theme_bw()
 
 g_lai = ggplot(data.frame(x = testing_label[, 4],
                   y = preds_lai),
        aes(x, y)) + geom_point(alpha = .2, col = "brown") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
-        labs(x = "LAI modelled", y = "LAI predicted") +
-        theme_light()
+        labs(x = "LAI modelled (RTM)", y = "LAI predicted (ANN)", title = "LAI") +
+        theme_bw()

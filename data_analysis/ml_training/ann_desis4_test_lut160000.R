@@ -51,6 +51,7 @@ history %>%
         geom_point(alpha = .4) +
         labs(x = "Iteration", y = "RMSE", col = NULL,
              title = "ANN with 6 PCs") +
+        ylim(0, 1) +
         theme_bw() +
         theme(legend.position = c(.3, .8),
               legend.direction = "horizontal")

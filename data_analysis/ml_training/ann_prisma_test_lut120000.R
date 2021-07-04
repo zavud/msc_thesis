@@ -1,6 +1,6 @@
 # load libraries
 library(keras)
-library(tfdatasets)
+#library(tfdatasets)
 library(tidyverse)
 
 # load training/val/test sets
@@ -37,13 +37,25 @@ model %>%
         compile(optimizer = optimizer_adam(lr = .001),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
-model %>% 
+history = model %>% 
         fit(x = training,
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
             epochs = 500,
             batch_size = 512)
+
+history %>% 
+        as_tibble() %>% 
+        filter(metric == "loss") %>% 
+        mutate(rmse = sqrt(value)) %>% 
+        ggplot(aes(x = epoch, y = rmse, col =  data)) +
+        geom_line(size = 1) +
+        labs(x = "Iteration", y = "RMSE", title = "PRISMA LUT - ANN with 6 PCs", col = NULL) +
+        theme_bw() +
+        theme(legend.position = c(.8, .8))
+        
+
 model %>% evaluate(testing, testing_label_scaled)
 
 # save this model
