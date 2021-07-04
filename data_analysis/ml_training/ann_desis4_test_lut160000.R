@@ -50,7 +50,7 @@ history %>%
         geom_line(alpha = .4) +
         geom_point(alpha = .4) +
         labs(x = "Iteration", y = "RMSE", col = NULL,
-             title = "ANN with 6 PCs") +
+             title = "ANN (DESIS) with 6 PCs") +
         ylim(0, 1) +
         theme_bw() +
         theme(legend.position = c(.3, .8),
@@ -60,11 +60,4 @@ model %>% evaluate(testing, testing_label_scaled)
 
 # save this model
 model %>% save_model_tf("C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\ml_training\\models\\ann_lut160000_desis_test")
-
-
-
-
-
-
-
 

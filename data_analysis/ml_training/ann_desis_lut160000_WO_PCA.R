@@ -48,17 +48,16 @@ history = model %>% fit(x = training,
               epochs = 500,
               batch_size = 512)
 
-history_df = history %>% as_tibble()
-
-history_df %>% 
-        mutate(rmse = sqrt(value)) %>% 
+history %>% 
+        as_tibble() %>% 
         filter(metric == "loss") %>% 
+        mutate(rmse = sqrt(value)) %>% 
         ggplot(aes(x = epoch, y = rmse, col = data)) +
         geom_point(alpha = .5) +
         geom_line(alpha = .5) +
         labs(x = "Iteration", y = "RMSE", col = NULL,
              title = "ANN wihtout PCA") +
-        ylim(0.5, 1) +
+        ylim(0, 1) +
         theme_bw() +
         theme(legend.position = c(.3, .9),
               legend.direction = "horizontal")

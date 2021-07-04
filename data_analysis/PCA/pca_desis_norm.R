@@ -12,17 +12,18 @@ desis_path = list.files(path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_anal
                         pattern = ".envi$",
                         full.names = T)
 desis_4 = raster::brick(desis_path[1])
+desis_4 = desis_4 / 10000 # scale the data to 0-1
 
 # load the study area polygon
 shp = rgdal::readOGR("C:\\Users\\zavud\\Desktop\\LIST\\vector_study_area_rectangle")
 shp = shp[shp$fid==1,]
-crs(shp) = crs(desis_4[[55]])
+crs(shp) = crs(desis_4)
 
 # mask out the out-of study area pixels
-desis_4_masked = raster::mask(desis_4, mask = shp)
+desis_4 = raster::mask(desis_4, mask = shp)
 
 # convert the desis image to df
-desis_4_df = desis_4_masked %>% raster::as.data.frame(na.rm = T) %>% as_tibble() %>% setNames(wl)
+desis_4_df = desis_4 %>% raster::as.data.frame(na.rm = T) %>% as_tibble() %>% setNames(wl)
 
 # make a recipe
 pca_rec = recipe(~., desis_4_df) %>% 
@@ -39,7 +40,7 @@ tibble(component = unique(pca_tidy$component)[1:6],
         ggplot(aes(x = component, y = variation, fill = component)) +
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
-        labs(title = "DESIS - Variation explained by the first 6 PCs",
+        labs(title = "DESIS image - Variation explained by the first 6 PCs",
              subtitle = expression("Cumulative variation of 6 PCs " %~~% "97%"),
              x = "Principal Component",
              y = "Variation explained") +
