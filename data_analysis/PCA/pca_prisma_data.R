@@ -9,7 +9,7 @@ wl = readr::read_csv(wl_path, col_names = F)[[1]]
 # PCA on PRISMA data
 prisma_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
 prisma = raster::brick(prisma_path)
-prisma_df = raster::as.data.frame(prisma) %>% as_tibble() %>% drop_na() %>% setNames(wl)
+prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setNames(wl)
 
 pca_recipe = recipe(prisma_df, ~.) %>%
         step_normalize(all_predictors()) %>% 
