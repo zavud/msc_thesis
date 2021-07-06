@@ -2,7 +2,6 @@
 library(tidymodels)
 library(tidyverse)
 library(raster)
-library(rgdal)
 
 # load prisma wl bands
 wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\sensor_metadata\\wl_prisma.txt"
@@ -20,7 +19,7 @@ lut = lut %>% slice(sample(1:n()))
 sds = apply(lut[, 1:231], 1, sd)
 lut[, 1:231] = lut[, 1:231] + rnorm(n = nrow(lut[, 1:231]) * ncol(lut[, 1:231]),
                                     mean = 0,
-                                    sd = sds * 0.03)
+                                    sd = sds * 0.02)
 
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .80)
@@ -34,20 +33,20 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:237, new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), num_comp = 15)
+        step_pca(all_predictors(), num_comp = 5)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
 # variations explained
 sdev = pca_prep$steps[[2]]$res$sdev
 percent_variation = sdev^2 / sum(sdev^2)
-tibble(component = unique(pca_tidy$component)[1:15],
-       variation = percent_variation[1:15]) %>% 
+tibble(component = unique(pca_tidy$component)[1:6],
+       variation = percent_variation[1:6]) %>% 
         ggplot(aes(x = component, y = variation, fill = component)) +
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
         labs(title = "PRISMA LUT - Variation explained by the first 6 PCs",
-             subtitle = expression("Cumulative variation of 15 PCs " %~~% "75%"),
+             subtitle = expression("Cumulative variation of 5 PCs " %~~% "??%"),
              x = "Principal Component",
              y = "Variation explained") +
         theme_bw() +
@@ -60,6 +59,9 @@ pca_validation = bake(pca_prep, new_data = validation)
 pca_testing = bake(pca_prep, new_data = testing)
 
 # apply the same transformation to the prisma image
+prisma_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
+prisma = raster::brick(prisma_path)
+prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setNames(wl)
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
 # save the PCA data sets
