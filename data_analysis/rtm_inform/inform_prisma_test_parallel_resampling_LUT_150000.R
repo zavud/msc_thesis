@@ -22,17 +22,17 @@ soil = soil[,1]
 rm(soil_path)
 
 # variables for PROSPECT5
-N = runif(n = 5, min = 1.1, max = 3)
-Cab = runif(n = 10, min = 10, max = 100)
-Cw = runif(n = 5, min = 0.0035, max = 0.035)
-Cm = runif(n = 5, min = 0.008, max = 0.03)
+N = seq(1.1, 3, length.out = 5)
+Cab = seq(10, 100, length.out = 10)
+Cw = seq(0.0035, 0.035, length.out = 5)
+Cm = seq(0.008, 0.03, length.out = 5)
 
 # variables for 4SAIL
-LAI = runif(n = 10, min = 0.01, max = 10)
+LAI = seq(0.01, 10, length.out = 10)
 
 # variables for flim
-d = runif(n = 3, min = 2000, max = 5000)
-cd = runif(n = 4, min = 1.5, max = 8.5)
+d = seq(2000, 5000, length.out = 3)
+cd = seq(1.5, 8.5, length.out = 4)
 
 # combinations
 combinations = expand.grid(N = N, Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI, cd = cd, d = d) 
@@ -88,7 +88,7 @@ s_foreach_loop = Sys.time(); s_foreach_loop
 LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combine = rbind, .inorder = FALSE) %dopar% {
         
         # prospect5
-        m = prospect5(param = c(N = 3,
+        m = prospect5(param = c(N = combinations[[i, "N"]],
                                 Cab = combinations[[i, "Cab"]],
                                 Car = 8,
                                 Cbrown = 0,
@@ -145,6 +145,6 @@ e_foreach_loop - s_foreach_loop
 
 dimnames(LUT) = NULL
 s_writing = Sys.time()
-readr::write_csv(as.data.frame(LUT), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases\\LUT_inform_prisma_162000_test.txt")
+readr::write_csv(as.data.frame(LUT), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases\\LUT_inform_prisma_150000_test.txt")
 e_writing = Sys.time()
 e_writing - s_writing
