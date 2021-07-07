@@ -22,20 +22,20 @@ soil = soil[,1]
 rm(soil_path)
 
 # variables for PROSPECT5
-Cab = seq(30, 90, length.out = 10)
-Cw = seq(0.0035, 0.035, length.out = 9)
-Cm = seq(0.008, 0.03, length.out = 9)
+N = runif(n = 5, min = 1.1, max = 3)
+Cab = runif(n = 10, min = 10, max = 100)
+Cw = runif(n = 5, min = 0.0035, max = 0.035)
+Cm = runif(n = 5, min = 0.008, max = 0.03)
 
 # variables for 4SAIL
-LAI = seq(0.01, 10, length.out = 8)
+LAI = runif(n = 10, min = 0.01, max = 10)
 
 # variables for flim
-d = seq(2000, 5000, length.out = 5)
-cd = seq(1.5, 8.5, length.out = 5)
-
+d = runif(n = 3, min = 2000, max = 5000)
+cd = runif(n = 4, min = 1.5, max = 8.5)
 
 # combinations
-combinations = expand.grid(Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI, cd = cd, d = d) 
+combinations = expand.grid(N = N, Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI, cd = cd, d = d) 
 
 # calculation of Rg and Rc for FLIM based on Schlerf & Atzberger 2006
 Rg_prospect = prospect5(param = c(N = 3,
@@ -77,7 +77,6 @@ Rc_sail = foursail(rho = Rc_prospect[,1],
                              tto = 0,
                              psi = 181.41,
                              psoil = 0.5))
-
 Rc = Rc_sail[,4]
 rm(Rc_prospect, Rc_sail)
 
@@ -129,9 +128,7 @@ LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combin
         parameters = c(combinations[[i, "Cab"]],
                        combinations[[i, "Cw"]],
                        combinations[[i, "Cm"]],
-                       combinations[[i, "LAI"]],
-                       combinations[[i, "d"]],
-                       combinations[[i, "cd"]])
+                       combinations[[i, "LAI"]])
         
         # resample the bands into prisma bands
         m = speclib(spectra = m, wavelength = 400:2500)
