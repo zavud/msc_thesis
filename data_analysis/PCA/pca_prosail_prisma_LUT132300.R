@@ -15,8 +15,8 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases"
-lut_files = list.files(path = lut_path, pattern = "14641", full.names = T)
-lut = read_csv(lut_files) %>% setNames(nms)
+lut_file = list.files(path = lut_path, pattern = "132300", full.names = T)
+lut = read_csv(lut_file) %>% setNames(nms)
 
 # shuffle the data
 lut = lut %>% slice(sample(1:n()))
@@ -38,8 +38,8 @@ ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% a
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .8)
 training_val = training(data_split)
-training = training_val[1:10000,]
-validation = training_val[-c(1:10000), ]
+training = training_val[1:85840,]
+validation = training_val[-c(1:85840), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -47,7 +47,7 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:235, new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), num_comp = 4)
+        step_pca(all_predictors(), threshold = .99)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
@@ -67,7 +67,7 @@ tibble(component = unique(pca_tidy$component)[1:6],
         theme(plot.title = element_text(hjust = .5),
               plot.subtitle = element_text(hjust = .5))
 
-sum(percent_variation[1:6])
+sum(percent_variation[1:4])
 
 # apply the transformation to validation and test sets
 pca_training = bake(pca_prep, new_data = NULL)
@@ -77,10 +77,10 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC3)
-range(pca_training$PC3)
+range(pca_prisma$PC1)
+range(pca_training$PC1)
 
 # save the PCA data sets
-write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training14641.txt")
-write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation14641.txt")
-write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testinh14641.txt")
+write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training132300.txt")
+write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation132300.txt")
+write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testinh132300.txt")
