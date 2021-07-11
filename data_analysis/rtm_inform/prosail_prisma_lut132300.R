@@ -22,19 +22,20 @@ soil = soil[,1]
 rm(soil_path)
 
 # variables for PROSPECT5
-Cab = seq(30, 90, length.out = 11)
-Cw = seq(0.0035, 0.035, length.out = 11)
-Cm = seq(0.008, 0.03, length.out = 11)
+N = seq(1, 3, length.out = 3)
+Cab = seq(30, 90, length.out = 15)
+Cw = seq(0.0035, 0.035, length.out = 14)
+Cm = seq(0.008, 0.03, length.out = 14)
 
 # variables for 4SAIL
-LAI = seq(0.001, 10, length.out = 11)
+LAI = seq(0.001, 10, length.out = 15)
 
 
 # variables for flim
 #cd = seq(1.5, 8.5, length.out = 10)
 
 # combinations
-combinations = expand.grid(Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI) 
+combinations = expand.grid(N = N, Cab = Cab, Cw = Cw, Cm = Cm, LAI = LAI) 
 
 # parallel computation
 ncores <- detectCores() # number of cores in my computer = 8
@@ -44,7 +45,7 @@ s_foreach_loop = Sys.time(); s_foreach_loop
 LUT = foreach(i = 1:nrow(combinations), .packages = c("ccrtm", "hsdar"), .combine = rbind, .inorder = FALSE) %dopar% {
         
         # prospect5
-        m = prospect5(param = c(N = 3,
+        m = prospect5(param = c(N = combinations[[i, "N"]],
                                 Cab = combinations[[i, "Cab"]],
                                 Car = 8,
                                 Cbrown = 0,
@@ -89,6 +90,6 @@ e_foreach_loop - s_foreach_loop
 # save the LUT
 dimnames(LUT) = NULL
 s_writing = Sys.time()
-readr::write_csv(as.data.frame(LUT), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases\\LUT_prosail_14641_test.txt")
+readr::write_csv(as.data.frame(LUT), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases\\LUT_prosail_132300_test.txt")
 e_writing = Sys.time()
 e_writing - s_writing

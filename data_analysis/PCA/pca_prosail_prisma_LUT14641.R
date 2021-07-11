@@ -47,7 +47,7 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:235, new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), num_comp = 6)
+        step_pca(all_predictors(), num_comp = 4)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
@@ -77,8 +77,8 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC1)
-range(pca_training$PC1)
+range(pca_prisma$PC3)
+range(pca_training$PC3)
 
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training14641.txt")
