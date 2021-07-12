@@ -15,7 +15,7 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases"
-lut_file = list.files(path = lut_path, pattern = "132300", full.names = T)
+lut_file = list.files(path = lut_path, pattern = "67500", full.names = T)
 lut = read_csv(lut_file) %>% setNames(nms)
 
 # shuffle the data
@@ -23,7 +23,7 @@ lut = lut %>% slice(sample(1:n()))
 
 # add 3% noise to the simulated spectra
 sds = apply(lut[, 1:231], 1, sd) # sd of each spectra
-lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .05)
+lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .03)
 
 # compare simulated and image spectra
 ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% as.numeric(),
@@ -38,8 +38,8 @@ ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% a
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .8)
 training_val = training(data_split)
-training = training_val[1:85840,]
-validation = training_val[-c(1:85840), ]
+training = training_val[1:44000,]
+validation = training_val[-c(1:44000), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -47,7 +47,7 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:235, new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), threshold = .99)
+        step_pca(all_predictors(), num_comp = 4)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
@@ -77,10 +77,10 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC1)
-range(pca_training$PC1)
+range(pca_prisma$PC4)
+range(pca_training$PC4)
 
 # save the PCA data sets
-write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training132300.txt")
-write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation132300.txt")
-write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testinh132300.txt")
+write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training67500.txt")
+write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation67500.txt")
+write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testing67500.txt")
