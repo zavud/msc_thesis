@@ -23,7 +23,7 @@ lut = lut %>% slice(sample(1:n()))
 
 # add 3% noise to the simulated spectra
 sds = apply(lut[, 1:231], 1, sd) # sd of each spectra
-lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .03)
+lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .05)
 
 # compare simulated and image spectra
 ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% as.numeric(),
@@ -76,10 +76,11 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC4)
-range(pca_training$PC4)
+range(pca_prisma$PC1)
+range(pca_training$PC1)
 
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training90000.txt")
 write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation90000.txt")
 write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testing90000.txt")
+
