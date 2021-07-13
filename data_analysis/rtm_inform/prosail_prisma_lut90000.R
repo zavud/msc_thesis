@@ -23,12 +23,12 @@ rm(soil_path)
 
 # variables for PROSPECT5
 #N = seq(1, 3, length.out = 3)
-Cab = seq(30, 90, length.out = 20)
+Cab = seq(40, 80, length.out = 20)
 Cw = seq(0.0035, 0.035, length.out = 15)
 Cm = seq(0.008, 0.03, length.out = 15)
 
 # variables for 4SAIL
-LAI = seq(0.001, 10, length.out = 15)
+LAI = seq(0.001, 10, length.out = 20)
 
 
 # variables for flim
