@@ -15,7 +15,7 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\LUT_databases"
-lut_file = list.files(path = lut_path, pattern = "67500", full.names = T)
+lut_file = list.files(path = lut_path, pattern = "90000", full.names = T)
 lut = read_csv(lut_file) %>% setNames(nms)
 
 # shuffle the data
@@ -38,8 +38,8 @@ ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% a
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .8)
 training_val = training(data_split)
-training = training_val[1:44000,]
-validation = training_val[-c(1:44000), ]
+training = training_val[1:60000,]
+validation = training_val[-c(1:60000), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -66,7 +66,6 @@ tibble(component = unique(pca_tidy$component)[1:6],
         theme_bw() +
         theme(plot.title = element_text(hjust = .5),
               plot.subtitle = element_text(hjust = .5))
-
 sum(percent_variation[1:4])
 
 # apply the transformation to validation and test sets
@@ -81,6 +80,6 @@ range(pca_prisma$PC4)
 range(pca_training$PC4)
 
 # save the PCA data sets
-write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training67500.txt")
-write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation67500.txt")
-write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testing67500.txt")
+write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_training90000.txt")
+write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_validation90000.txt")
+write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_prosail_testing90000.txt")
