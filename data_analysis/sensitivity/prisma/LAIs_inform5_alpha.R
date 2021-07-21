@@ -4,8 +4,8 @@ library(tidyverse)
 library(hsdar)
 
 # load PRISMA sensor metadata
-fwhm_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\sensor_metadata\\fwhm_prisma.txt"
-wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\sensor_metadata\\wl_prisma.txt"
+fwhm_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\fwhm_prisma.txt"
+wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\wl_prisma.txt"
 wl = readr::read_csv(wl_path, col_names = F)[[1]]
 fwhm = readr::read_csv(fwhm_path, col_names = F)[[1]]
 df_prisma_sensor = data.frame(center = wl, fwhm = fwhm)
@@ -64,7 +64,7 @@ lut %>%
                      names_to = "wl", 
                      values_to = "reflectance", 
                      names_transform = list(wl = as.numeric)) %>% 
-        ggplot(aes(x = wl, y = reflectance, col = LAI, group = sim_number %>% factor())) +
-        scale_color_viridis_c() +
+        ggplot(aes(x = wl, y = reflectance, col = LAI |> as.factor(), group = sim_number %>% factor())) +
+        #scale_color_viridis_c() +
         geom_line(size = 1) +
         theme_bw()
