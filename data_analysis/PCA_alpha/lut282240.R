@@ -15,7 +15,7 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\inform_prisma\\lut_database"
-lut_file = list.files(path = lut_path, pattern = "302500", full.names = T)
+lut_file = list.files(path = lut_path, pattern = "282240", full.names = T)
 lut_1 = read_csv(lut_file[1]) %>% setNames(nms)
 lut_2 = read_csv(lut_file[2]) %>% setNames(nms)
 
@@ -28,7 +28,7 @@ rm(lut_1, lut_2)
 # shuffle the data
 lut = lut %>% slice(sample(1:n()))
 
-# add 3% noise to the simulated spectra
+# add 5% noise to the simulated spectra
 sds = apply(lut[, 1:231], 1, sd) # sd of each spectra
 lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .05)
 
@@ -74,10 +74,10 @@ prisma_df %>%
         geom_line()
 
 # divide the data into train/val/test sets
-data_split = initial_split(lut, prop = .85)
+data_split = initial_split(lut, prop = .90)
 training_val = training(data_split)
-training = training_val[1:210000,]
-validation = training_val[-c(1:210000), ]
+training = training_val[1:230000,]
+validation = training_val[-c(1:230000), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -122,3 +122,4 @@ write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_anal
 write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_validation302500.txt")
 write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_testing302500")
 write_csv(pca_prisma, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_prisma302500.txt")
+
