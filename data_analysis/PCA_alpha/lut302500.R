@@ -42,6 +42,37 @@ ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% a
         scale_color_manual(values = c("Lut"="red", "PRISMA"="blue")) +
         labs(x = "Wavelength (nm)", y = "Reflectance")
 
+
+lut %>% 
+        dplyr::select(-(232:last_col())) %>% 
+        pivot_longer(cols = everything(),
+                     names_to = "wl",
+                     values_to = "reflectance") %>% 
+        group_by(wl) %>% 
+        summarise(mn = mean(reflectance),
+                  mn_ps = mn + sd(reflectance),
+                  mn_ms = mn - sd(reflectance)) %>% 
+        pivot_longer(cols = 2:last_col(),
+                     names_to = "stat",
+                     values_to = "stat_value") %>% 
+        ggplot(aes(x = as.numeric(wl), y = stat_value, col = stat)) +
+        geom_line(size = 1)
+
+prisma_df %>% 
+        pivot_longer(cols = everything(),
+                     names_to = "wl",
+                     values_to = "reflectance") %>% 
+        group_by(wl) %>% 
+        summarise(mn = mean(reflectance),
+                  mn_ps = mn + sd(reflectance),
+                  mn_ms = mn - sd(reflectance)) %>% 
+        pivot_longer(cols = 2:last_col(),
+                     names_to = "stat",
+                     values_to = "stat_value") %>% 
+        filter(stat_value > 0) %>% 
+        ggplot(aes(x = as.numeric(wl), y = stat_value, col = stat)) +
+        geom_line()
+
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .85)
 training_val = training(data_split)
@@ -54,7 +85,7 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:last_col(), new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), threshold = .99)
+        step_pca(all_predictors(), num_comp = 4)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
@@ -83,8 +114,8 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC1)
-range(pca_training$PC1)
+range(pca_prisma$PC4)
+range(pca_training$PC4)
 
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_training302500.txt")
