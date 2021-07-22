@@ -4,8 +4,8 @@ library(tidyverse)
 library(hsdar)
 
 # load PRISMA sensor metadata
-fwhm_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\sensor_metadata\\fwhm_prisma.txt"
-wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\rtm_inform\\sensor_metadata\\wl_prisma.txt"
+fwhm_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\fwhm_prisma.txt"
+wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\wl_prisma.txt"
 wl = readr::read_csv(wl_path, col_names = F)[[1]]
 fwhm = readr::read_csv(fwhm_path, col_names = F)[[1]]
 df_prisma_sensor = data.frame(center = wl, fwhm = fwhm)
@@ -36,7 +36,7 @@ informpars$foursail$understorey[2] = 0.5
 # variables of flim
 informpars$flim[1] = 6 # cd
 informpars$flim[2] = 20 # h
-informpars$flim[3] = 3000 # d
+informpars$flim[3] = 700 # d
 informpars$flim[5] = 0 # tto
 informpars$flim[6] = 15 # tts
 informpars$flim[7] = 45 # psi

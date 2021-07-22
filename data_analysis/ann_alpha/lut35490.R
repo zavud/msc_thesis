@@ -67,11 +67,13 @@ dim(testing_label_scaled)
 
 # build the model
 model = keras_model_sequential() %>% 
-        layer_dense(units = 100, activation = "relu", input_shape = ncol(training),
+        layer_dense(units = 32, activation = "relu", input_shape = ncol(training),
                     kernel_initializer = initializer_lecun_normal()) %>%
+        layer_dense(units = 32, activation = "relu",
+                    kernel_initializer = initializer_lecun_normal()) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 500),
+        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 50),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -79,17 +81,17 @@ history = model %>%
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
-            epochs = 500,
+            epochs = 1000,
             batch_size = 512,
             callbacks = callback_early_stopping(monitor = "val_loss", patience = 50))
 
 history %>% 
         as_tibble() %>% 
         filter(metric == "loss") %>% 
-        #mutate(rmse = sqrt(value)) %>% 
-        ggplot(aes(x = epoch, y = value, col =  data)) +
+        mutate(rmse = sqrt(value)) %>% 
+        ggplot(aes(x = epoch, y = rmse, col =  data)) +
         geom_line(size = 1) +
-        ylim(0, 2) +
+        #ylim(0, 2) +
         labs(x = "Iteration", y = "MSE", title = "PRISMA LUT - ANN with 4 PCs", col = NULL) +
         theme_bw() +
         theme(legend.position = c(.8, .8))

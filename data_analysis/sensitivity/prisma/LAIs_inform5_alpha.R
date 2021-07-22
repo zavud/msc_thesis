@@ -23,7 +23,7 @@ informpars$prospect5$canopy[5] = 0.03 # Cm
 
 # variables of foursail --- canopy
 informpars$foursail$canopy[1] = 0.5 # psoil
-LAI = seq(0.001, 15, length.out = 15)
+LAI = seq(0.001, 6.5, length.out = 15)
 #informpars$foursail$canopy[2] = 6 # LAI
 informpars$foursail$canopy[3] = 2 # TypeLidf
 informpars$foursail$canopy[4] = 65 # ALA / Lidfa
@@ -64,7 +64,7 @@ lut %>%
                      names_to = "wl", 
                      values_to = "reflectance", 
                      names_transform = list(wl = as.numeric)) %>% 
-        ggplot(aes(x = wl, y = reflectance, col = LAI |> as.factor(), group = sim_number %>% factor())) +
-        #scale_color_viridis_c() +
+        ggplot(aes(x = wl, y = reflectance, col = LAI, group = sim_number %>% factor())) +
+        scale_color_viridis_c() +
         geom_line(size = 1) +
         theme_bw()

@@ -16,7 +16,7 @@ informpars <-  ccrtm:::defaults.inform5()
 
 # variables of prospect5 -- canopy
 informpars$prospect5$canopy[1] = 3 # N
-Cab = seq(30, 90, length.out = 15)
+Cab = seq(20, 60, length.out = 15)
 informpars$prospect5$canopy[3] = 8 # cartenoid
 informpars$prospect5$canopy[4] = 0.011700 # Cw 
 informpars$prospect5$canopy[5] = 0.03 # Cm
@@ -35,7 +35,7 @@ informpars$foursail$understorey[2] = 0.5
 # variables of flim
 informpars$flim[1] = 5 # cd
 informpars$flim[2] = 20 # h
-informpars$flim[3] = 3000 # d
+informpars$flim[3] = 700 # d
 informpars$flim[5] = 0 # tto
 informpars$flim[6] = 15 # tts
 informpars$flim[7] = 45 # psi
@@ -62,6 +62,7 @@ lut %>%
                      values_to = "reflectance", 
                      names_transform = list(wl = as.numeric)) %>% 
         ggplot(aes(x = wl, y = reflectance, col = Cab, group = sim_number)) +
+        #xlim(400, 800) +
         scale_color_viridis_c() +
         geom_line() +
         theme_bw()
