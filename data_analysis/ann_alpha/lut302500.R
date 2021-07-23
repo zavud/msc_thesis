@@ -5,7 +5,7 @@ library(raster)
 
 # load training/val/test sets
 database_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database"
-data_sets = list.files(path = database_path, full.names = T, pattern = "282240")
+data_sets = list.files(path = database_path, full.names = T, pattern = "302400")
 
 # training set
 training = data_sets[3] %>% read_csv() %>% as.matrix()
@@ -74,13 +74,15 @@ dim(testing_label_scaled)
 
 # build the model
 model = keras_model_sequential() %>% 
-        layer_dense(units = 100, activation = "relu", input_shape = ncol(training),
-                    kernel_initializer = initializer_he_normal()) %>%
-        layer_dense(units = 100, activation = "relu",
-                    kernel_initializer = initializer_he_normal()) %>% 
+        layer_dense(units = 256, activation = "relu", input_shape = ncol(training),
+                    kernel_initializer = initializer_he_normal(),
+                    kernel_regularizer = regularizer_l2(l = 0.0001)) %>%
+        layer_dense(units = 256, activation = "relu",
+                    kernel_initializer = initializer_he_normal(),
+                    kernel_regularizer = regularizer_l2(l = 0.00001)) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 2000),
+        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 3500),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -89,16 +91,14 @@ history = model %>%
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
             epochs = 5000,
-            batch_size = 512,
-            callbacks = callback_early_stopping(monitor = "loss", patience = 50))
+            batch_size = 1024,
+            callbacks = callback_early_stopping(monitor = "val_loss", patience = 50))
 
 history %>% 
         as_tibble() %>% 
         filter(metric == "loss") %>% 
-        #mutate(rmse = sqrt(value)) %>% 
         ggplot(aes(x = epoch, y = value, col =  data)) +
         geom_line(size = 1) +
-        #ylim(0, 2) +
         labs(x = "Iteration", y = "MSE", title = "Deep Neural Network training", col = NULL) +
         theme_bw() +
         theme(legend.position = c(.8, .8))
@@ -128,15 +128,15 @@ rsq_d = rsq(preds = preds_d, testing_label[, 6])
 rsq_total = (rsq_cab + rsq_cw + rsq_cm + rsq_lai + rsq_cd + rsq_d) / 6 # ???
 
 # compare predictions and testing labels
-g_cab = ggplot(data.frame(x = testing_label[, 1],
-                          y = preds_cab),
-               aes(x, y)) + geom_point(alpha = .2, col = "brown", position = "jitter") +
+g_cab = ggplot(data.frame(x = testing_label[1:1000, 1],
+                          y = preds_cab[1:1000]),
+               aes(x, y)) + geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "Cab modelled (RTM)", y = "Cab predicted (ANN)", title = "Cab") +
         theme_bw()
 
-g_cw = ggplot(data.frame(x = testing_label[, 2],
-                         y = preds_cw),
+g_cw = ggplot(data.frame(x = testing_label[1:500, 2],
+                         y = preds_cw[1:500]),
               aes(x, y)) + 
         geom_point(alpha = .2, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
