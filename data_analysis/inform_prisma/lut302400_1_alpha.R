@@ -92,6 +92,6 @@ e_foreach_loop - s_foreach_loop
 # save the LUT
 dimnames(lut) = NULL
 s_writing = Sys.time()
-readr::write_csv(dplyr::as_tibble(lut), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\inform_prisma\\lut_database\\lut302500_1_inform5_alpha.txt")
+readr::write_csv(dplyr::as_tibble(lut), file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\inform_prisma\\lut_database\\lut302400_1_inform5_alpha.txt")
 e_writing = Sys.time()
 e_writing - s_writing
