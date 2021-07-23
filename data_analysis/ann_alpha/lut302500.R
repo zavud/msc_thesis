@@ -74,15 +74,15 @@ dim(testing_label_scaled)
 
 # build the model
 model = keras_model_sequential() %>% 
-        layer_dense(units = 256, activation = "relu", input_shape = ncol(training),
+        layer_dense(units = 112, activation = "relu", input_shape = ncol(training),
                     kernel_initializer = initializer_he_normal(),
                     kernel_regularizer = regularizer_l2(l = 0.0001)) %>%
-        layer_dense(units = 256, activation = "relu",
+        layer_dense(units = 112, activation = "relu",
                     kernel_initializer = initializer_he_normal(),
-                    kernel_regularizer = regularizer_l2(l = 0.00001)) %>% 
+                    kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 3500),
+        compile(optimizer = optimizer_adam(lr = .001),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -90,13 +90,13 @@ history = model %>%
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
-            epochs = 5000,
-            batch_size = 1024,
+            epochs = 500,
+            batch_size = 512,
             callbacks = callback_early_stopping(monitor = "val_loss", patience = 50))
 
 history %>% 
         as_tibble() %>% 
-        filter(metric == "loss") %>% 
+        dplyr::filter(metric == "loss") %>% 
         ggplot(aes(x = epoch, y = value, col =  data)) +
         geom_line(size = 1) +
         labs(x = "Iteration", y = "MSE", title = "Deep Neural Network training", col = NULL) +
@@ -135,42 +135,42 @@ g_cab = ggplot(data.frame(x = testing_label[1:1000, 1],
         labs(x = "Cab modelled (RTM)", y = "Cab predicted (ANN)", title = "Cab") +
         theme_bw()
 
-g_cw = ggplot(data.frame(x = testing_label[1:500, 2],
-                         y = preds_cw[1:500]),
+g_cw = ggplot(data.frame(x = testing_label[1:1000, 2],
+                         y = preds_cw[1:1000]),
               aes(x, y)) + 
-        geom_point(alpha = .2, col = "brown", position = "jitter") +
+        geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "Cw modelled (RTM)", y = "Cw predicted (ANN)", title = "Cw") +
         theme_bw()
 
-g_cm = ggplot(data.frame(x = testing_label[, 3],
-                         y = preds_cm),
+g_cm = ggplot(data.frame(x = testing_label[1:1000, 3],
+                         y = preds_cm[1:1000]),
               aes(x, y)) +
-        geom_point(alpha = .2, col = "brown", position = "jitter") +
+        geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "Cm modelled (RTM)", y = "Cm predicted (ANN)", title = "Cm") +
         theme_bw()
 
-g_lai = ggplot(data.frame(x = testing_label[, 4],
-                          y = preds_lai),
+g_lai = ggplot(data.frame(x = testing_label[1:1000, 4],
+                          y = preds_lai[1:1000]),
                aes(x, y)) + 
-        geom_point(alpha = .2, col = "brown", position = "jitter") +
+        geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "LAI modelled (RTM)", y = "LAI predicted (ANN)", title = "LAI") +
         theme_bw()
 
-g_cd = ggplot(data.frame(x = testing_label[, 5],
-                         y = preds_cd),
+g_cd = ggplot(data.frame(x = testing_label[1:1000, 5],
+                         y = preds_cd[1:1000]),
               aes(x, y)) + 
-        geom_point(alpha = .2, col = "brown", position = "jitter") +
+        geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "CD modelled (RTM)", y = "CD predicted (ANN)", title = "CD") +
         theme_bw()
 
-g_d = ggplot(data.frame(x = testing_label[, 6],
-                        y = preds_d),
+g_d = ggplot(data.frame(x = testing_label[1:1000, 6],
+                        y = preds_d[1:1000]),
              aes(x, y)) + 
-        geom_point(alpha = .2, col = "brown", position = "jitter") +
+        geom_point(alpha = .5, col = "brown", position = "jitter") +
         geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
         labs(x = "D modelled (RTM)", y = "D predicted (ANN)", title = "D") +
         theme_bw()
@@ -225,7 +225,7 @@ g_cab_map + g_cab_hist
 prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(cab) %>% 
-        filter(cab > 0, cab < 100) %>%
+        dplyr::filter(cab > 0, cab < 100) %>%
         count()
 
 # cw

@@ -15,7 +15,7 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\inform_prisma\\lut_database"
-lut_file = list.files(path = lut_path, pattern = "302400", full.names = T)
+lut_file = list.files(path = lut_path, pattern = "316800", full.names = T)
 lut_1 = read_csv(lut_file[1]) %>% setNames(nms)
 lut_2 = read_csv(lut_file[2]) %>% setNames(nms)
 
@@ -30,7 +30,7 @@ lut = lut %>% slice(sample(1:n()))
 
 # add 5% noise to the simulated spectra
 sds = apply(lut[, 1:231], 1, sd) # sd of each spectra
-lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .05)
+lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .02)
 
 # compare simulated and image spectra
 ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% as.numeric(),
@@ -41,7 +41,6 @@ ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% a
         geom_line(aes(y = prisma,  color = "PRISMA"), size = 1.2, alpha = 1/2) +
         scale_color_manual(values = c("Lut"="red", "PRISMA"="blue")) +
         labs(x = "Wavelength (nm)", y = "Reflectance")
-
 
 lut %>% 
         dplyr::select(-(232:last_col())) %>% 
@@ -69,15 +68,14 @@ prisma_df %>%
         pivot_longer(cols = 2:last_col(),
                      names_to = "stat",
                      values_to = "stat_value") %>% 
-        filter(stat_value > 0) %>% 
         ggplot(aes(x = as.numeric(wl), y = stat_value, col = stat)) +
         geom_line()
 
 # divide the data into train/val/test sets
 data_split = initial_split(lut, prop = .95)
 training_val = training(data_split)
-training = training_val[1:273000,]
-validation = training_val[-c(1:273000), ]
+training = training_val[1:285960,]
+validation = training_val[-c(1:285960), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -114,9 +112,9 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC2)
-range(pca_testing$PC2)
-range(pca_training$PC2)
+range(pca_prisma$PC4)
+range(pca_testing$PC4)
+range(pca_training$PC4)
 
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_training302400.txt")
