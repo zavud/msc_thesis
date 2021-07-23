@@ -15,7 +15,7 @@ prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setName
 
 # load the lut data
 lut_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\inform_prisma\\lut_database"
-lut_file = list.files(path = lut_path, pattern = "282240", full.names = T)
+lut_file = list.files(path = lut_path, pattern = "302400", full.names = T)
 lut_1 = read_csv(lut_file[1]) %>% setNames(nms)
 lut_2 = read_csv(lut_file[2]) %>% setNames(nms)
 
@@ -74,10 +74,10 @@ prisma_df %>%
         geom_line()
 
 # divide the data into train/val/test sets
-data_split = initial_split(lut, prop = .90)
+data_split = initial_split(lut, prop = .95)
 training_val = training(data_split)
-training = training_val[1:230000,]
-validation = training_val[-c(1:230000), ]
+training = training_val[1:273000,]
+validation = training_val[-c(1:273000), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -114,12 +114,13 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC4)
-range(pca_training$PC4)
+range(pca_prisma$PC2)
+range(pca_testing$PC2)
+range(pca_training$PC2)
 
 # save the PCA data sets
-write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_training302500.txt")
-write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_validation302500.txt")
-write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_testing302500")
-write_csv(pca_prisma, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_prisma302500.txt")
+write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_training302400.txt")
+write_csv(pca_validation, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_validation302400.txt")
+write_csv(pca_testing, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_testing302400")
+write_csv(pca_prisma, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_prisma302400.txt")
 
