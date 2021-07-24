@@ -32,6 +32,42 @@ knitr::kable(fixed_df, caption = "INFORM Parameters that were kept constant whil
 
 RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the *ccrtm* package [@ccrtm] in *R* [@r]. The default soil spectra provided by the the *ccrtm* package [@ccrtm] was used for the simulations. Spectral resampling was performed in order to resample the INFORM output spectra (1nm resolution) into PRISMA image bands. For spectral resampling the *R* package *hsdar* [@hsdar] was utilized.
 
+## RTM simulation (INFORM)
+
+PROSPECT5, 4SAIL and FLIM RTM models were coupled (INFORM) to simulate forest canopy reflectance based on different values of plant biophysical and biochemical parameters. The 6 parameters that were mentioned in the previous chapter were varied and spectra was simulated based on each combination of these variables. The number of combinations increase exponentially, which in turn requires increased computational power. Therefore, the trade-off must be taken into account between computational power or time and accurate simulation.
+
+Different authors suggest different number of LUT size for RTM simulation. For example, @danner2021efficient mention that LUT size of minimum 50,000 is recommended. @ali2020machine and @darvishzadeh2019mapping created a LUT size of 100,000 and 500,000 respectively.
+
+In this research, LUT size of 316,800 was created based on each combination of different plant biophysical and biochemical parameters. The range of the varied parameters and parameters that were kept constant were determined based on the suggestions of the studies that were mentioned in the previous chapter. These studies used similar methods to simulate canopy reflectance for mainly Spruce forests/trees.
+
+Table \@ref(tab:tinformfull) shows the variables that were used to simulate forest canopy parameters. Table \@ref(tab:tinformfull) also contains information about the range of the values and how many times each parameter was varied.
+
+\newpage
+
+```{r tinformfull, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\full_params_inform.R")
+knitr::kable(inform_full, caption = "Range of full input parameters that were used to create a LUT size of 316800",
+             escape = FALSE, booktabs = TRUE) |>
+        kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
+        kableExtra::column_spec(1, width = "8cm")
+```
+
+All simulations were performed using the library *ccrtm* [@ccrtm] in *R* programming language [@r] using the most recent version 4.1.0. Generating a LUT size of 316,800 is an expensive process from a computational standpoint (depending on how much computer resources and time are available this might change). Also, all simulations are independent of each other, meaning simulation of one spectra has no effect on the other, as every simulated spectra is simulated based on a different combination of parameters. These two factors make the generation of such a large LUT good candidate for parallel computation. Therefore, the software packages *doParallel* [@doparallel] and *foreach* [@foreach] were utilized for parallel computation (using all the available cores) in *R* programming language [@r]. This significantly reduced the computational time. All of the simulations were computed on a Lenovo Thinkpad E480 running under Windows 10 operating system with a processor Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz, 2001 Mhz, 4 Core(s), 8 logical processor(s). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -355,9 +355,58 @@ Soil reflectance spectrum & $B_{g}$ & $-$ & default\\
 \end{tabu}
 \end{table}
 
-\emph{Solar zenith angle} and \emph{Sun-sensor azimuth angle} were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the website \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html}.
+\emph{Solar zenith angle} and \emph{Sun-sensor azimuth angle} were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the \emph{solar position calculator} at \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html}.
 
 RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations. Spectral resampling was performed in order to resample the INFORM output spectra (1nm resolution) into PRISMA image bands. For spectral resampling the \emph{R} package \emph{hsdar} \citep{hsdar} was utilized.
+
+\hypertarget{rtm-simulation-inform}{%
+\section{RTM simulation (INFORM)}\label{rtm-simulation-inform}}
+
+PROSPECT5, 4SAIL and FLIM RTM models were coupled (INFORM) to simulate forest canopy reflectance based on different values of plant biophysical and biochemical parameters. The 6 parameters that were mentioned in the previous chapter were varied and spectra was simulated based on each combination of these variables. The number of combinations increase exponentially, which in turn requires increased computational power. Therefore, the trade-off must be taken into account between computational power or time and accurate simulation.
+
+Different authors suggest different number of LUT size for RTM simulation. For example, \citet{danner2021efficient} mention that LUT size of minimum 50,000 is recommended. \citet{ali2020machine} and \citet{darvishzadeh2019mapping} created a LUT size of 100,000 and 500,000 respectively.
+
+In this research, LUT size of 316,800 was created based on each combination of different plant biophysical and biochemical parameters. The range of the varied parameters and parameters that were kept constant were determined based on the suggestions of the studies that were mentioned in the previous chapter. These studies used similar methods to simulate canopy reflectance for mainly Spruce forests/trees.
+
+Table \ref{tab:tinformfull} shows the variables that were used to simulate forest canopy parameters. Table \ref{tab:tinformfull} also contains information about the range of the values and how many times each parameter was varied.
+
+\newpage
+
+\begin{table}[H]
+
+\caption{\label{tab:tinformfull}Range of full input parameters that were used to create a LUT size of 316800}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X}
+\toprule
+Parameter & Abbr & Unit & Min & Max & Steps\\
+\midrule
+Leaf structure parameter & $N$ & $-$ & 3 & 3 & $-$\\
+Chlorophyll content & $C_{ab}$ & $\frac{\mu g}{cm^2}$ & 20 & 60 & 15\\
+Leaf cartenoid content & $C_{ar}$ & $\frac{\mu g}{cm^2}$ & 8 & 8 & $-$\\
+Brown Pigment Content & $C_{brown}$ & $-$ & 0.001 & 0.001 & $-$\\
+Equivalent water thickness & $C_{w}$ & $\frac{g}{cm^2}$ & 0.0035 & 0.035 & 10\\
+\addlinespace
+Leaf dry matter content & $C_{m}$ & $\frac{g}{cm^2}$ & 0.008 & 0.03 & 11\\
+Average leaf inclination angle & $ALIA$ & $^{\circ}$ & 65 & 65 & $-$\\
+Leaf area index (single) & $LAI_{s}$ & $\frac{m^2}{m^2}$ & 0 & 6.5 & 16\\
+Leaf area index (understorey) & $LAI_{u}$ & $\frac{m^2}{m^2}$ & 0.5 & 0.5 & $-$\\
+Hot spot parameter & $Hot$ & $\frac{m}{m}$ & 0.02 & 0.02 & $-$\\
+\addlinespace
+Solar zenith angle & $tts$ & $^{\circ}$ & 45.43 & 45.43 & $-$\\
+Observer zenith angle & $tto$ & $^{\circ}$ & 0 & 0 & $-$\\
+Sun-sensor azimuth angle & $psi$ & $^{\circ}$ & 181.41 & 181.41 & $-$\\
+Soil brightness & $\alpha_{soil}$ & $-$ & 0.5 & 0.5 & $-$\\
+Stem density & $SD$ & $ha^{-1}$ & 200 & 5000 & 4\\
+\addlinespace
+Crown diameter & $CD$ & $m$ & 1.5 & 8.5 & 3\\
+Mean Height & $H$ & $m$ & 20 & 20 & $-$\\
+Fraction of diffuse radiation & $skyl$ & $-$ & 0.1 & 0.1 & $-$\\
+Soil reflectance spectrum & $B_{g}$ & $-$ & default & default & $-$\\
+\bottomrule
+\end{tabu}
+\end{table}
+
+All simulations were performed using the library \emph{ccrtm} \citep{ccrtm} in \emph{R} programming language \citep{r} using the most recent version 4.1.0. Generating a LUT size of 316,800 is an expensive process from a computational standpoint (depending on how much computer resources and time are available this might change). Also, all simulations are independent of each other, meaning simulation of one spectra has no effect on the other, as every simulated spectra is simulated based on a different combination of parameters. These two factors make the generation of such a large LUT good candidate for parallel computation. Therefore, the software packages \emph{doParallel} \citep{doparallel} and \emph{foreach} \citep{foreach} were utilized for parallel computation (using all the available cores) in \emph{R} programming language \citep{r}. This significantly reduced the computational time. All of the simulations were computed on a Lenovo Thinkpad E480 running under Windows 10 operating system with a processor Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz, 2001 Mhz, 4 Core(s), 8 logical processor(s).
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
@@ -377,6 +426,11 @@ Figure \ref{fig:fsens} shows the result of sensitivity analysis. Chlorophyll con
 
 \caption{Effects of varying the chosen parameters on the simulated spectra}\label{fig:fsens}
 \end{figure}
+
+\newpage
+
+\hypertarget{rtm-simulation-inform-1}{%
+\section{RTM simulation (INFORM)}\label{rtm-simulation-inform-1}}
 
 
 %%%%% REFERENCES

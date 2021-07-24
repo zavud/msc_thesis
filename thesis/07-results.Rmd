@@ -9,3 +9,7 @@ Figure \@ref(fig:fsens) shows the result of sensitivity analysis. Chlorophyll co
 ```{r fsens, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, out.height="80%", fig.align='center', fig.cap="Effects of varying the chosen parameters on the simulated spectra"}
 knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/sensitivity_results.pdf")
 ```
+
+\newpage
+
+## RTM simulation (INFORM)
