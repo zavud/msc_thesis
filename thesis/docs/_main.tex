@@ -296,7 +296,7 @@ This section explains the methods used in this research.
 
 Local sensitivity analysis was performed to assess the effect of each of the main 6 plant biochemical and biophysical variables on the PRISMA image bands. In the local sensitivity analysis simulation is performed by keeping all the variables constant at their determined fixed or default values except the parameter of interest. This way the effect of a specific parameter on the simulated spectra can be assessed. In this research the plant parameters \(C_{ab}\), \(C_{w}\), \(C_{m}\), \(LAI_{s}\), \(CD\) and \(SD\) were varied each 15 times (Table (\ref{tab:tsvaried})), while keeping the rest of the variables at their default values (Table (\ref{tab:tsfixed})). The default and varied values were chosen based on the literature (e.g. \citet{darvishzadeh2019mapping}; \citet{laurent2011inversion}; \citet{schlerf2012vegetation}) where similar RTM method used to simulate reflectance for Spruce trees.
 
-Table (\ref{tab:tsvaried}) show the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
+Table \ref{tab:tsvaried} shows the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
 
 \begin{table}[H]
 
@@ -319,7 +319,7 @@ Crown diameter & $CD$ & $m$ & 1.5 & 8.5\\
 
 \newpage
 
-Table (\ref{tab:tsfixed}) show the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table (\ref{tab:tsvaried})).
+Table \ref{tab:tsfixed} shows the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table \ref{tab:tsvaried}).
 
 \begin{table}[H]
 
@@ -357,7 +357,26 @@ Soil reflectance spectrum & $B_{g}$ & $-$ & default\\
 
 \emph{Solar zenith angle} and \emph{Sun-sensor azimuth angle} were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the website \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html}.
 
-RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations.
+RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations. Spectral resampling was performed in order to resample the INFORM output spectra (1nm resolution) into PRISMA image bands. For spectral resampling the \emph{R} package \emph{hsdar} \citep{hsdar} was utilized.
+
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
+
+\hypertarget{local-sensitivity-analysis-1}{%
+\section{Local sensitivity analysis}\label{local-sensitivity-analysis-1}}
+
+Figure \ref{fig:fsens} shows the result of sensitivity analysis. Chlorophyll content (\(C_{ab}\)) appears to almost exclusively impact the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying \(C_{ab}\) on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \ref{fig:fsens}.a). Conversely, equivalent water thickness (\(C_{w}\)) (Figure \ref{fig:fsens}.b) and leaf dry matter content (\(C_{m}\)) (Figure \ref{fig:fsens}.c) both have large effects on simulated spectra within the NIR and SWIR but no significant effect within the visible spectra. Leaf Area Index (single) (\(LAI_{s}\)) (Figure \ref{fig:fsens}.d), Crown diameter (\(CD\)) (Figure \ref{fig:fsens}.e)) and Stem density (Figure \ref{fig:fsens}.f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra.
+
+\newpage
+
+\begin{figure}
+
+{\centering \includegraphics[height=0.8\textheight]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/sensitivity_results} 
+
+}
+
+\caption{Effects of varying the chosen parameters on the simulated spectra}\label{fig:fsens}
+\end{figure}
 
 
 %%%%% REFERENCES

@@ -1,0 +1,11 @@
+# Results
+
+## Local sensitivity analysis
+
+Figure \@ref(fig:fsens) shows the result of sensitivity analysis. Chlorophyll content ($C_{ab}$) appears to almost exclusively impact the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying $C_{ab}$ on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \@ref(fig:fsens).a). Conversely, equivalent water thickness ($C_{w}$) (Figure \@ref(fig:fsens).b) and leaf dry matter content ($C_{m}$) (Figure \@ref(fig:fsens).c) both have large effects on simulated spectra within the NIR and SWIR but no significant effect within the visible spectra. Leaf Area Index (single) ($LAI_{s}$) (Figure \@ref(fig:fsens).d), Crown diameter ($CD$) (Figure \@ref(fig:fsens).e)) and Stem density (Figure \@ref(fig:fsens).f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra.
+
+\newpage
+
+```{r fsens, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, out.height="80%", fig.align='center', fig.cap="Effects of varying the chosen parameters on the simulated spectra"}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/sensitivity_results.pdf")
+```
