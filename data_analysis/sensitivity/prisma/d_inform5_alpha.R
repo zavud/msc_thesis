@@ -24,6 +24,8 @@ informpars$prospect5$canopy[5] = 0.03 # Cm
 # variables of foursail --- canopy
 informpars$foursail$canopy[1] = 0.5 # psoil
 informpars$foursail$canopy[2] = 5 # LAI
+informpars$foursail$canopy[3] = 2 # TypeLidf
+informpars$foursail$canopy[4] = 65 # ALA / Lidfa
 informpars$foursail$canopy[6] = 0.02 # hspot
 informpars$foursail$canopy[7] = 45.43 # tts
 informpars$foursail$canopy[8] = 0 # tto

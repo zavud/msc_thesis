@@ -1,3 +1,42 @@
 # Methods
 
 This section explains the methods used in this research.
+
+## Local sensitivity analysis
+
+Local sensitivity analysis was performed to assess the effect of each of the main 6 plant biochemical and biophysical variables on the PRISMA image bands. In the local sensitivity analysis simulation is performed by keeping all the variables constant at their determined fixed or default values except the parameter of interest. This way the effect of a specific parameter on the simulated spectra can be assessed. In this research the plant parameters $C_{ab}$, $C_{w}$, $C_{m}$, $LAI_{s}$, $CD$ and $SD$ were varied each 15 times (Table (\@ref(tab:tsvaried))), while keeping the rest of the variables at their default values (Table (\@ref(tab:tsfixed))). The default and varied values were chosen based on the literature (e.g. @darvishzadeh2019mapping; @laurent2011inversion; @schlerf2012vegetation) where similar RTM method used to simulate reflectance for Spruce trees.
+
+Table (\@ref(tab:tsvaried)) show the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
+
+```{r tsvaried, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\varied_params_INFORM.R")
+knitr::kable(var_df, caption = "INFORM Parameters varied in local sensitivity analysis (each parameter were varied 15 times)",
+             escape = FALSE, booktabs = TRUE) |>
+        kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
+        kableExtra::column_spec(1, width = "8cm")
+```
+
+\newpage
+
+Table (\@ref(tab:tsfixed)) show the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table (\@ref(tab:tsvaried))).
+
+```{r tsfixed, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\fixed_params_INFORM.R")
+knitr::kable(fixed_df, caption = "INFORM Parameters that were kept constant while one parameter was varied at a time",
+             escape = FALSE, booktabs = TRUE) |>
+        kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
+        kableExtra::column_spec(1, width = "8cm")
+```
+
+*Solar zenith angle* and *Sun-sensor azimuth angle* were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the website https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html.
+
+RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the *ccrtm* package [@ccrtm] in *R* [@r]. The default soil spectra provided by the the *ccrtm* package [@ccrtm] was used for the simulations.
+
+
+
+
+
+
+
+
+

@@ -291,6 +291,74 @@ Retrieval of plant biophysical and biochemical variables from remote sensing dat
 
 This section explains the methods used in this research.
 
+\hypertarget{local-sensitivity-analysis}{%
+\section{Local sensitivity analysis}\label{local-sensitivity-analysis}}
+
+Local sensitivity analysis was performed to assess the effect of each of the main 6 plant biochemical and biophysical variables on the PRISMA image bands. In the local sensitivity analysis simulation is performed by keeping all the variables constant at their determined fixed or default values except the parameter of interest. This way the effect of a specific parameter on the simulated spectra can be assessed. In this research the plant parameters \(C_{ab}\), \(C_{w}\), \(C_{m}\), \(LAI_{s}\), \(CD\) and \(SD\) were varied each 15 times (Table (\ref{tab:tsvaried})), while keeping the rest of the variables at their default values (Table (\ref{tab:tsfixed})). The default and varied values were chosen based on the literature (e.g. \citet{darvishzadeh2019mapping}; \citet{laurent2011inversion}; \citet{schlerf2012vegetation}) where similar RTM method used to simulate reflectance for Spruce trees.
+
+Table (\ref{tab:tsvaried}) show the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
+
+\begin{table}[H]
+
+\caption{\label{tab:tsvaried}INFORM Parameters varied in local sensitivity analysis (each parameter were varied 15 times)}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X}
+\toprule
+Parameter & Abbrev. & Unit & Min & Max\\
+\midrule
+Chlorophyll content & $C_{ab}$ & $\frac{\mu g}{cm^2}$ & 20 & 60\\
+Equivalent water thickness & $C_{w}$ & $\frac{g}{cm^2}$ & 0.0035 & 0.035\\
+Leaf dry matter content & $C_{m}$ & $\frac{g}{cm^2}$ & 0.008 & 0.03\\
+Leaf area index (single) & $LAI_{s}$ & $\frac{m^2}{m^2}$ & 0 & 7\\
+Stem density & $SD$ & $ha^{-1}$ & 200 & 5000\\
+\addlinespace
+Crown diameter & $CD$ & $m$ & 1.5 & 8.5\\
+\bottomrule
+\end{tabu}
+\end{table}
+
+\newpage
+
+Table (\ref{tab:tsfixed}) show the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table (\ref{tab:tsvaried})).
+
+\begin{table}[H]
+
+\caption{\label{tab:tsfixed}INFORM Parameters that were kept constant while one parameter was varied at a time}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X}
+\toprule
+Parameter & Abbr & Unit & Value\\
+\midrule
+Leaf structure parameter & $N$ & $-$ & 3\\
+Chlorophyll content & $C_{ab}$ & $\frac{\mu g}{cm^2}$ & 40\\
+Leaf cartenoid content & $C_{ar}$ & $\frac{\mu g}{cm^2}$ & 8\\
+Brown Pigment Content & $C_{brown}$ & $-$ & 0.001\\
+Equivalent water thickness & $C_{w}$ & $\frac{g}{cm^2}$ & 0.0117\\
+\addlinespace
+Leaf dry matter content & $C_{m}$ & $\frac{g}{cm^2}$ & 0.03\\
+Average leaf inclination angle & $ALIA$ & $^{\circ}$ & 65\\
+Leaf area index (single) & $LAI_{s}$ & $\frac{m^2}{m^2}$ & 6\\
+Leaf area index (understorey) & $LAI_{u}$ & $\frac{m^2}{m^2}$ & 0.5\\
+Hot spot parameter & $Hot$ & $\frac{m}{m}$ & 0.02\\
+\addlinespace
+Solar zenith angle & $tts$ & $^{\circ}$ & 45.43\\
+Observer zenith angle & $tto$ & $^{\circ}$ & 0\\
+Sun-sensor azimuth angle & $psi$ & $^{\circ}$ & 181.41\\
+Soil brightness & $\alpha_{soil}$ & $-$ & 0.5\\
+Stem density & $SD$ & $ha^{-1}$ & 700\\
+\addlinespace
+Crown diameter & $CD$ & $m$ & 5\\
+Mean Height & $H$ & $m$ & 20\\
+Fraction of diffuse incoming & $skyl$ & $-$ & 0.1\\
+Soil reflectance spectrum & $B_{g}$ & $-$ & default\\
+\bottomrule
+\end{tabu}
+\end{table}
+
+\emph{Solar zenith angle} and \emph{Sun-sensor azimuth angle} were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the website \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html}.
+
+RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations.
+
 
 %%%%% REFERENCES
 
