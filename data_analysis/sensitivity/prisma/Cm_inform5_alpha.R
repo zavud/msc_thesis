@@ -55,7 +55,7 @@ for (i in seq_len(length(Cm))) {
         lut[i, ] = c(m, Cm[i], i)
 }
 
-lut %>% 
+g_cm = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "Cm", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -65,6 +65,10 @@ lut %>%
         ggplot(aes(x = wl, y = reflectance, col = Cm, group = sim_number)) +
         scale_color_viridis_c() +
         geom_line() +
-        theme_bw()
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance", col = TeX("C_{m} ($\\frac{g}{cm^2})"),
+             title = TeX("c) Leaf dry matter content (C_{m} $\\frac{g}{cm^2})")) +
+        theme_bw() +
+        theme(legend.position = c(.8, .8),
+              legend.direction = "vertical")
 
 

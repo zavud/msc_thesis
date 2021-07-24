@@ -55,7 +55,7 @@ for (i in seq_len(length(cd))) {
         lut[i, ] = c(m, cd[i], i)
 }
 
-lut %>% 
+g_cd = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "cd", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -65,4 +65,13 @@ lut %>%
         ggplot(aes(x = wl, y = reflectance, col = cd, group = sim_number)) +
         scale_color_viridis_c() +
         geom_line() +
-        theme_bw()
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance", col = TeX("CD ($m$)"),
+             title = TeX("e) Crown Diameter (CD $m$)")) +
+        theme_bw() +
+        theme(legend.position = c(.8, .9),
+              legend.direction = "horizontal")
+
+
+
+
+

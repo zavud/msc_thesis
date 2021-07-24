@@ -2,6 +2,7 @@
 library(ccrtm)
 library(tidyverse)
 library(hsdar)
+library(latex2exp)
 
 # load PRISMA sensor metadata
 fwhm_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\fwhm_prisma.txt"
@@ -54,7 +55,7 @@ for (i in seq_len(length(Cab))) {
         lut[i, ] = c(m, Cab[i], i)
 }
 
-lut %>% 
+g_cab = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "Cab", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -62,8 +63,11 @@ lut %>%
                      values_to = "reflectance", 
                      names_transform = list(wl = as.numeric)) %>% 
         ggplot(aes(x = wl, y = reflectance, col = Cab, group = sim_number)) +
-        #xlim(400, 800) +
-        scale_color_viridis_c() +
         geom_line() +
-        theme_bw()
-
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance",
+             col = TeX("C_{ab} ($\\frac{\\mu g}{cm^2}$)"),
+             title = TeX("a) Chlorophyll content (C_{ab} $\\frac{\\mu g}{cm^2}$)")) +
+        scale_color_viridis_c() +
+        theme_bw() +
+        theme(legend.position = c(.8, .9),
+              legend.direction = "horizontal")

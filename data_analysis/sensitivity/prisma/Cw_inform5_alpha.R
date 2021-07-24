@@ -55,7 +55,7 @@ for (i in seq_len(length(Cw))) {
         lut[i, ] = c(m, Cw[i], i)
 }
 
-lut %>% 
+g_cw = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "Cw", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -65,4 +65,19 @@ lut %>%
         ggplot(aes(x = wl, y = reflectance, col = Cw, group = sim_number)) +
         scale_color_viridis_c() +
         geom_line() +
-        theme_bw()
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance", col = TeX("C_{w} ($\\frac{g}{cm^2})"),
+             title = TeX("b) Equivalent water thickness (C_{w} $\\frac{g}{cm^2})") ) +
+        theme_bw() +
+        theme(legend.position = c(.8, .9),
+              legend.direction = "horizontal")
+
+
+
+
+
+
+
+
+
+
+

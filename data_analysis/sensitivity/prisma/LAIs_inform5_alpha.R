@@ -57,7 +57,7 @@ for (i in seq_len(length(LAI))) {
         lut[i, ] = c(m, LAI[i], i)
 }
 
-lut %>% 
+g_lais = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "LAI", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -66,5 +66,9 @@ lut %>%
                      names_transform = list(wl = as.numeric)) %>% 
         ggplot(aes(x = wl, y = reflectance, col = LAI, group = sim_number %>% factor())) +
         scale_color_viridis_c() +
-        geom_line(size = 1) +
-        theme_bw()
+        geom_line() +
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance", col = TeX("LAI_{s} ($\\frac{m^2}{m^2}$)"),
+             title = TeX("d) Leaf area index (LAI_{s} $\\frac{m^2}{m^2})")) +
+        theme_bw() +
+        theme(legend.position = c(.8, .9),
+              legend.direction = "horizontal")

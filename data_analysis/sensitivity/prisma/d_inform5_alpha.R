@@ -55,7 +55,7 @@ for (i in seq_len(length(d))) {
         lut[i, ] = c(m, d[i], i)
 }
 
-lut %>% 
+g_d = lut %>% 
         as_tibble() %>% 
         setNames(c(wl, "d", "sim_number")) %>% 
         pivot_longer(cols = 1:231, 
@@ -65,4 +65,8 @@ lut %>%
         ggplot(aes(x = wl, y = reflectance, col = d, group = sim_number)) +
         scale_color_viridis_c() +
         geom_line() +
-        theme_bw()
+        labs(x = "Wavelength (nm)", y = "Simulated Canopy Reflectance", col = TeX("SD ($ha^{-1}$)"),
+             title = TeX("f) Stem Density (SD $ha^{-1}$)")) +
+        theme_bw() +
+        theme(legend.position = c(.8, .8),
+              legend.direction = "vertical")
