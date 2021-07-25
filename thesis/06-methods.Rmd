@@ -54,7 +54,9 @@ knitr::kable(inform_full, caption = "Range of full input parameters that were us
 
 All simulations were performed using the library *ccrtm* [@ccrtm] in *R* programming language [@r] using the most recent version 4.1.0. Generating a LUT size of 316,800 is an expensive process from a computational standpoint (depending on how much computer resources and time are available this might change). Also, all simulations are independent of each other, meaning simulation of one spectra has no effect on the other, as every simulated spectra is simulated based on a different combination of parameters. These two factors make the generation of such a large LUT good candidate for parallel computation. Therefore, the software packages *doParallel* [@doparallel] and *foreach* [@foreach] were utilized for parallel computation (using all the available cores) in *R* programming language [@r]. This significantly reduced the computational time. All of the simulations were computed on a Lenovo Thinkpad E480 running under Windows 10 operating system with a processor Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz, 2001 Mhz, 4 Core(s), 8 logical processor(s). 
 
+## Spectral resampling
 
+The output of INFORM simulations have 1nm spectral resolution within the range of 400nm-2500nm and needs to be spectrally resampled to PRISMA image bands. In this research, the spectral response function of the PRISMA image was used. Band center wavelengths and full width half maximum values were extracted from the PRISMA image metadata and used for spectral resampling. For spectral resampling, the *R* package *hsdar* [@hsdar] was utilized.
 
 
 
