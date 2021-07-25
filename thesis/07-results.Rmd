@@ -14,7 +14,7 @@ knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/sensit
 
 ## RTM simulation (INFORM)
 
-Synthetic canopy reflectance data set were produced and stored in a LUT containing all 316,800 simulations. In this research, LUT was defined as a matrix. Each row of this matrix is a different simulated spectra and columns are simulated reflectance of wavelengths with the range of 400nm-2500nm with 1nm spectral resolution and 6 additional columns containing values of the corresponding variables $C_{ab}$, $C_{w}$, $C_{m}$, $LAI_{s}$, $CD$ and $SD$ that were used for each simulation. Hence the dimensions of the LUT matrix is 316,800 (number of simulations) rows by 2107 (2101 simulated "bands" + 6 INFORM variables) columns:
+Synthetic canopy reflectance data set were produced and stored in a LUT containing all 316,800 simulations. In this research, LUT was defined as a matrix. Each row of this matrix is a different simulated spectra and columns are simulated reflectance of wavelengths with the range of 400nm-2500nm with 1nm spectral resolution and 6 additional columns containing values of the corresponding variables $C_{ab}$, $C_{w}$, $C_{m}$, $LAI_{s}$, $CD$ and $SD$ that were used for each simulation. Hence the dimensions of the LUT matrix is 316,800 rows (number of simulations) by 2107 columns (2101 simulated "bands" + 6 INFORM variables):
 
 \begingroup
 \tiny
@@ -30,9 +30,23 @@ $$
 
 In this matrix, $400nm_{n}$, $\dots$, $2500nm_{n}$ refer to the simulated reflectance for the corresponding wavelength in the simulation number $n$. $Cab_{n}$, $Cw_{n}$, $Cm_{n}$, $LAIs_{n}$, $CD_{n}$ and $SD_{n}$ are values of the INFORM parameters that were used in the $n$th simulation.
 
+## Spectral resampling
 
+The output of INFORM simulations were resampled to 231 PRISMA bands. The LUT matrix was used for spectral resampling and the resulting matrix has a dimension of 316,800 rows (number of simulations) by 237 columns (231 PRISMA image bands + 6 INFORM variables):
 
+\begingroup
+\tiny
+$$
+\begin{bmatrix}
+Band1_{1} & \dots & Band231_{1} & Cab_{1} & Cw_{1} & Cm_{1} & LAIs_{1} & CD_{1} & SD_{1}\\
+Band1_{2} & \dots & Band231_{2} & Cab_{2} & Cw_{2} & Cm_{2} & LAIs_{2} & CD_{2} & SD_{2}\\
+\ \vdots  &\ \vdots &\ \vdots &\ \vdots &\ \vdots &\ \vdots &\ \vdots &\ \vdots &\ \vdots\\
+Band1_{316,800} & \dots & Band231_{316,800} & Cab_{316,800} & Cw_{316,800} & Cm_{316,800} & LAIs_{316,800} & CD_{316,800} & SD_{316,800}
+\end{bmatrix}
+$$
+\endgroup
 
+In this matrix, $Band1_{n}$, $\dots$, $Band231_{n}$ correspond to the simulated reflectance for the corresponding image band in the simulation number $n$. $Cab_{n}$, $Cw_{n}$, $Cm_{n}$, $LAIs_{n}$, $CD_{n}$ and $SD_{n}$ refer to the values of the INFORM parameters that were used in the $n$th simulation.
 
 
 
