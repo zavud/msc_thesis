@@ -416,7 +416,7 @@ The output of INFORM simulations have 1nm spectral resolution within the range o
 \hypertarget{statistics-of-simulated-data-and-prisma-image}{%
 \section{Statistics of simulated data and PRISMA image}\label{statistics-of-simulated-data-and-prisma-image}}
 
-Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. Statistical information were extracted using the libraries in the \emph{tidyverse} package \citep{tidyverse} and the plots for visualization were produced using \emph{ggplot2} \citep{ggplot2}.
+Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. LUT contains 316,800 simulated spectra, the number of pixels within the study area in the PRISMA image is only 95517. Statistical information were extracted using the libraries in the \emph{tidyverse} package \citep{tidyverse} and the plots for visualization were produced using \emph{ggplot2} \citep{ggplot2}.
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
@@ -478,6 +478,30 @@ Band1_{316,800} & \dots & Band231_{316,800} & Cab_{316,800} & Cw_{316,800} & Cm_
 \endgroup
 
 In this matrix, \(Band1_{n}\), \(\dots\), \(Band231_{n}\) correspond to the simulated reflectance for the corresponding image band in the simulation number \(n\). \(Cab_{n}\), \(Cw_{n}\), \(Cm_{n}\), \(LAIs_{n}\), \(CD_{n}\) and \(SD_{n}\) refer to the values of the INFORM parameters that were used in the \(n\)th simulation.
+
+\hypertarget{statistics-of-simulated-data-and-prisma-image-1}{%
+\section{Statistics of simulated data and PRISMA image}\label{statistics-of-simulated-data-and-prisma-image-1}}
+
+The Figure \ref{fig:statplots} shows statistical information (mean and mean \(\pm\) standard deviation) calculated from the LUT and PRISMA image:
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/stats} \caption{Mean and mean $\pm$ standard deviation in the a) LUT and b) PRISMA image}\label{fig:statplots}
+\end{figure}
+
+Mean and standard deviation within the LUT is much smoother compared to mean and standard deviation within the PRISMA image spectra. This is due to the fact that INFORM model does not add noise during the simulation which can commonly exist in remote sensing images. There is a noticeable amount of noise in the PRISMA image spectra. Some of the noise in the image spectra could potentially be due to the fact that the PRISMA image contained cloud and shadow within the study area and although most of the cloud and shadow pixels were masked, the nearby pixels could still be affected.
+
+The Figure \ref{fig:meancomparison} shows the difference between averaged reflectance within the simulated database (LUT) and PRISMA image.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/meancomparison_lut_vs_prisma} 
+
+}
+
+\caption{Difference between averaged LUT and PRISMA image reflectance}\label{fig:meancomparison}
+\end{figure}
+
+The LUT appears to have higher average reflectance within the visible spectra compared to the PRISMA image spectra. Differences within the water absorbtion bands can also be clearly seen. There is relatively good agreement within the NIR spectrum.
 
 
 %%%%% REFERENCES

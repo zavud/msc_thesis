@@ -60,7 +60,7 @@ The output of INFORM simulations have 1nm spectral resolution within the range o
 
 ## Statistics of simulated data and PRISMA image
 
-Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. Statistical information were extracted using the libraries in the *tidyverse* package [@tidyverse] and the plots for visualization were produced using *ggplot2* [@ggplot2].
+Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. LUT contains 316,800 simulated spectra, the number of pixels within the study area in the PRISMA image is only 95517. Statistical information were extracted using the libraries in the *tidyverse* package [@tidyverse] and the plots for visualization were produced using *ggplot2* [@ggplot2].
 
 
 

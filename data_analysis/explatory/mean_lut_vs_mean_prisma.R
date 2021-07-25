@@ -47,7 +47,7 @@ mean_prisma = prisma_df %>%
 mean_merged = left_join(mean_lut, mean_prisma, by = "wl")
 
 # comparison
-brewer.pal(n = 3, name = "Paired")
+brewer.pal(n = 8, name = "Dark2")
 
 mean_merged %>% 
         pivot_longer(cols = -wl,
@@ -55,12 +55,12 @@ mean_merged %>%
                      values_to = "mean") %>% 
         ggplot(aes(x = as.numeric(wl), y = mean, col = spectra)) +
         geom_line(size = 1, alpha = .9) +
-        scale_color_manual(values = c("#1F78B4", "#E7298A"),
+        scale_color_manual(values = c("#1F78B4", "#D95F02"),
                            labels = c("LUT (simulated) spectra", "PRISMA image spectra (study area only)")) +
         labs(x = "Wavelength (nm)",
              y = "Average (mean) reflectance",
              col = "Average reflectance:",
-             title = "Average LUT spectra vs average image spectra (study area only)") +
+             title = "Average LUT and image spectra (study area only)") +
         theme_bw() +
         theme(legend.position = c(.8, .8),
               plot.title = element_text(hjust = .5))
