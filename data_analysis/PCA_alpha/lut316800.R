@@ -2,6 +2,7 @@
 library(tidymodels)
 library(tidyverse)
 library(raster)
+library(patchwork)
 
 # load prisma wl bands
 wl_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\sensor_metadata\\wl_prisma.txt"
@@ -28,54 +29,15 @@ rm(lut_1, lut_2)
 # shuffle the data
 lut = lut %>% slice(sample(1:n()))
 
-# add 5% noise to the simulated spectra
+# add 3% noise to the simulated spectra
 sds = apply(lut[, 1:231], 1, sd) # sd of each spectra
-lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .02)
-
-# compare simulated and image spectra
-ggplot(data = data.frame(lut = lut[sample(x = nrow(lut), size = 1), 1:231] %>% as.numeric(),
-                         prisma = prisma_df[sample(x = nrow(prisma_df), size = 1), ] %>% as.numeric(),
-                         wl = wl),
-       mapping = aes(x = wl)) +
-        geom_line(aes(y = lut, color = "Lut"),  size = 1.2, alpha = 1/2) +
-        geom_line(aes(y = prisma,  color = "PRISMA"), size = 1.2, alpha = 1/2) +
-        scale_color_manual(values = c("Lut"="red", "PRISMA"="blue")) +
-        labs(x = "Wavelength (nm)", y = "Reflectance")
-
-lut %>% 
-        dplyr::select(-(232:last_col())) %>% 
-        pivot_longer(cols = everything(),
-                     names_to = "wl",
-                     values_to = "reflectance") %>% 
-        group_by(wl) %>% 
-        summarise(mn = mean(reflectance),
-                  mn_ps = mn + sd(reflectance),
-                  mn_ms = mn - sd(reflectance)) %>% 
-        pivot_longer(cols = 2:last_col(),
-                     names_to = "stat",
-                     values_to = "stat_value") %>% 
-        ggplot(aes(x = as.numeric(wl), y = stat_value, col = stat)) +
-        geom_line(size = 1)
-
-prisma_df %>% 
-        pivot_longer(cols = everything(),
-                     names_to = "wl",
-                     values_to = "reflectance") %>% 
-        group_by(wl) %>% 
-        summarise(mn = mean(reflectance),
-                  mn_ps = mn + sd(reflectance),
-                  mn_ms = mn - sd(reflectance)) %>% 
-        pivot_longer(cols = 2:last_col(),
-                     names_to = "stat",
-                     values_to = "stat_value") %>% 
-        ggplot(aes(x = as.numeric(wl), y = stat_value, col = stat)) +
-        geom_line()
+lut[, 1:231] = lut[, 1:231] + rnorm(n = ncol(lut[, 1:231]) * nrow(lut[, 1:231]), mean = 0, sd = sds * .03)
 
 # divide the data into train/val/test sets
-data_split = initial_split(lut, prop = .95)
+data_split = initial_split(lut, prop = .90)
 training_val = training(data_split)
-training = training_val[1:285960,]
-validation = training_val[-c(1:285960), ]
+training = training_val[1:250120,]
+validation = training_val[-c(1:250120), ]
 testing = testing(data_split)
 rm(training_val)
 
@@ -83,26 +45,41 @@ rm(training_val)
 pca_recipe = recipe(training, ~.) %>% 
         update_role(232:last_col(), new_role = "id") %>% 
         step_normalize(all_predictors()) %>% 
-        step_pca(all_predictors(), num_comp = 4)
+        step_pca(all_predictors(), num_comp = 5)
 pca_prep = pca_recipe %>% prep()
 pca_tidy = tidy(pca_prep, 2)
 
 # variations explained
 sdev = pca_prep$steps[[2]]$res$sdev
 percent_variation = sdev^2 / sum(sdev^2)
-tibble(component = unique(pca_tidy$component)[1:6],
-       variation = percent_variation[1:6]) %>% 
+g_scree = tibble(component = unique(pca_tidy$component)[1:5],
+       variation = percent_variation[1:5]) %>% 
         ggplot(aes(x = component, y = variation, fill = component)) +
         geom_col(show.legend = F) +
         scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
-        labs(title = "PRISMA LUT - Variation explained by the first 6 PCs",
-             subtitle = expression("Cumulative variation of 6 PCs " %~~% "100%"),
+        labs(title = "Variation explained by the first 5 PCs",
              x = "Principal Component",
-             y = "Variation explained") +
+             y = "% Variation explained") +
         theme_bw() +
-        theme(plot.title = element_text(hjust = .5),
-              plot.subtitle = element_text(hjust = .5))
-sum(percent_variation[1:4])
+        theme(plot.title = element_text(hjust = .5))
+
+sum(percent_variation[1:5])
+
+# cumulative variation
+g_cum = tibble(pc = unique(pca_tidy$component)[1:5],
+       cumvar = cumsum(percent_variation[1:5])) %>% 
+        ggplot(aes(x = pc, y = cumvar, group = 1)) +
+        geom_line(col = "#CC79A7", size = 1) +
+        geom_point(col = "darkgreen", size = 2) +
+        labs(x = "Principal Component",
+             y = "% Variation explained",
+             title = "Cumulative variance explained by the first 5 PCs") +
+        scale_y_continuous(labels = scales::percent_format()) +
+        theme_bw() +
+        theme(plot.title = element_text(hjust = .5))
+
+g_scree + g_cum + plot_annotation(tag_levels = "a")
+
 
 # apply the transformation to validation and test sets
 pca_training = bake(pca_prep, new_data = NULL)
@@ -112,9 +89,9 @@ pca_testing = bake(pca_prep, new_data = testing)
 # apply the transofrmation on the prisma image
 pca_prisma = bake(pca_prep, new_data = prisma_df)
 
-range(pca_prisma$PC4)
-range(pca_testing$PC4)
-range(pca_training$PC4)
+range(pca_prisma$PC1)
+range(pca_testing$PC1)
+range(pca_training$PC1)
 
 # save the PCA data sets
 write_csv(pca_training, file = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database\\pca_inform_alpha_training302400.txt")
