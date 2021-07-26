@@ -68,7 +68,9 @@ Simulated reflectance data usually do not contain any noise. This is, however, n
 
 ## Defining training, validation and testing sets
 
-[to be updated]
+The data in the LUT was divided into training, validation and testing sets. Model building and training will be done using only the training set. Validation set will be used to validate the model (e.g. assessing the impact of different hyper-parameters) and the performance of the final model will be tested using the testing set. This step is important because it will allow us to monitor whether the model can generalize to the data (e.g. testing set) it was not trained on.
+
+First, the full data set was shuffled and about 20% of the data was randomly sampled and assigned to validation and testing sets (10% validation, 10% testing sets). Random sampling makes sure there is no any pattern in any of the divided data sets.
 
 ## Principal Component Analysis (PCA)
 
