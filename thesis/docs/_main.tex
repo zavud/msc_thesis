@@ -423,6 +423,22 @@ Statistical information such as standard deviation and mean were calculated for 
 
 Simulated reflectance data usually do not contain any noise. This is, however, not the case with remote sensing data as they are commonly found to contain various types of noise \citep{rivera2017hyperspectral}. In this study, 3\% Gaussian noise was added to each simulated spectra in the LUT in order to make the simulated data more similar to the real remote sensing data. In order to assess the effect of adding 3\% Gaussian noise to the simulated data, one spectra from the LUT and one pixel from the PRISMA image were randomly picked and plotted.
 
+\hypertarget{principal-component-analysis-pca}{%
+\section{Principal Component Analysis (PCA)}\label{principal-component-analysis-pca}}
+
+Hyperspectral remote sensing data can contain many highly correlated bands. Dimensionality reduction techniques can be efficiently used to reduce the dimensions of hyperspectral remote sensing data. Benefits of reducing the dimensions of simulated data in plant biophysical variable retrieval studies \citep{danner2021efficient, rivera2017hyperspectral}. In this study, one of the most commonly used DR technique Principal Component Analysis (PCA) was performed. In general, PCA tries to capture as much variation as possible with smaller number variables compared to the original data.
+
+First, the simulated canopy reflectance data was normalized and standardized using the Equation \eqref{eq:norm}:
+
+\begin{equation}
+Band_{n_{scaled}}\ =\ \frac{Band_n\ -\ \mu_{Band_n}}{\sigma_{Band_n}}
+\label{eq:norm}
+\end{equation}
+
+Here \(Band_{n}\) refers to the reflectance values in the \(n\)th simulated band and \(\mu_{Band_n}\) and \(\sigma_{Band_n}\) are mean and standard deviation of the reflectance values in the \(n\)th simulated band. \(Band_{n_{scaled}}\) is a transformed version of \(Band_{n}\) that has a mean of 0 and standard deviation of 1. This step ensures that all variables have the same mean and standard deviation.
+
+PCA produces new variables called Principal Components and each Principal Component (PC) contains certain amount of variation available in the original data. Typically first PC contains the most variation, the second PC contains the second most variation and so on \citep{bro2014principal}. In this research, PCA was performed on the normalized and scaled simulated data using the packages \emph{recipes} \citep{recipes} in \emph{tidymodels} \citep{tidymodels}. Cumulative sum of the variations the PCs contain was calculated in order to assess the percent of variation that can be explained with fewer variables than the original data (LUT).
+
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
 
@@ -513,7 +529,7 @@ The LUT appears to have higher average reflectance within the visible spectra co
 \hypertarget{gaussian-noise-1}{%
 \section{Gaussian noise}\label{gaussian-noise-1}}
 
-The Figure \ref{fig:noise} shows the effect of adding 5\% Gaussian noise to the simulated data.
+The Figure \ref{fig:noise} shows the effect of adding 3\% Gaussian noise to the simulated data.
 
 \begin{figure}
 \includegraphics[width=0.9\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/noise} \caption{Effect of adding $3\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise found typically in the image}\label{fig:noise}

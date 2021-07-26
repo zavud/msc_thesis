@@ -68,9 +68,18 @@ Simulated reflectance data usually do not contain any noise. This is, however, n
 
 ## Principal Component Analysis (PCA)
 
+Hyperspectral remote sensing data can contain many highly correlated bands. Dimensionality reduction techniques can be efficiently used to reduce the dimensions of hyperspectral remote sensing data. Benefits of reducing the dimensions of simulated data in plant biophysical variable retrieval studies have been demonstrated [@danner2021efficient; @rivera2017hyperspectral]. In this study, one of the most commonly used DR technique Principal Component Analysis (PCA) was performed. In general, PCA tries to capture as much variation as possible with smaller number variables compared to the original data.
 
+First, the simulated canopy reflectance data was normalized and standardized using the Equation \@ref(eq:norm):
 
+\begin{equation}
+Band_{n_{scaled}}\ =\ \frac{Band_n\ -\ \mu_{Band_n}}{\sigma_{Band_n}}
+(\#eq:norm)
+\end{equation}
 
+Here $Band_{n}$ refers to the reflectance values in the $n$th simulated band and $\mu_{Band_n}$ and $\sigma_{Band_n}$ are mean and standard deviation of the reflectance values in the $n$th simulated band. $Band_{n_{scaled}}$ is a transformed version of $Band_{n}$ that has a mean of 0 and standard deviation of 1. This step ensures that all simulated bands have the same mean and standard deviation.
+
+PCA produces new variables called Principal Components and each Principal Component (PC) contains certain amount of variation available in the original data. Typically first PC contains the most variation, the second PC contains the second most variation and so on [@bro2014principal]. In this research, PCA was performed on the normalized and scaled simulated data using the packages *recipes* [@recipes] in *tidymodels* [@tidymodels]. Cumulative sum of the variations the PCs contain was calculated in order to assess the proportion of the variation that can be explained with fewer variables than the original data (LUT).
 
 
 
