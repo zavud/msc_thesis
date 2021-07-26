@@ -70,7 +70,7 @@ The LUT appears to have higher average reflectance within the visible spectra co
 
 ## Gaussian noise
 
-The Figure \@ref(fig:noise) shows the effect of adding 5% Gaussian noise to the simulated data.
+The Figure \@ref(fig:noise) shows the effect of adding 3% Gaussian noise to the simulated data.
 
 ```{r noise, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Effect of adding $3\\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise found typically in the image", cache=TRUE}
 knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/noise.pdf")
