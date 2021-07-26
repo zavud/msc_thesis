@@ -66,6 +66,8 @@ Statistical information such as standard deviation and mean were calculated for 
 
 Simulated reflectance data usually do not contain any noise. This is, however, not the case with remote sensing data as they are commonly found to contain various types of noise [@rivera2017hyperspectral]. In this study, 3% Gaussian noise was added to each simulated spectra in the LUT in order to make the simulated data more similar to the real remote sensing data. In order to assess the effect of adding 3% Gaussian noise to the simulated data, one spectra from the LUT and one pixel from the PRISMA image were randomly picked and plotted. 
 
+## Principal Component Analysis (PCA)
+
 
 
 
