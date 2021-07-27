@@ -4,12 +4,12 @@ library(tidyverse)
 library(raster)
 
 # load training/val/test sets
-database_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\prisma_training_database"
-data_sets = list.files(path = database_path, full.names = T, pattern = "302400")
+database_path = ".\\data_analysis\\prisma_training_database"
+data_sets = list.files(path = database_path, full.names = T, pattern = "316800")
 
 # training set
 training = data_sets[3] %>% read_csv() %>% as.matrix()
-training_label = training[, 1:6]
+training_label = training[, 1:4]
 training_label_scaled = training_label %>% scale()
 training = training[, -c(1:6)]
 
@@ -46,13 +46,13 @@ std_d = stds_training_label[[6]]
 
 # validation set
 validation = data_sets[4] %>% read_csv() %>% as.matrix()
-validation_label = validation[, 1:6]
+validation_label = validation[, 1:4]
 validation_label_scaled = validation_label %>% scale()
 validation = validation[, -c(1:6)]
 
 # testing set
 testing = data_sets[2] %>% read_csv() %>% as.matrix()
-testing_label = testing[, 1:6]
+testing_label = testing[, 1:4]
 testing_label_scaled = testing_label %>% scale()
 testing = testing[, -c(1:6)]
 
@@ -74,15 +74,15 @@ dim(testing_label_scaled)
 
 # build the model
 model = keras_model_sequential() %>% 
-        layer_dense(units = 112, activation = "relu", input_shape = ncol(training),
+        layer_dense(units = 256, activation = "relu", input_shape = ncol(training),
                     kernel_initializer = initializer_he_normal(),
                     kernel_regularizer = regularizer_l2(l = 0.0001)) %>%
-        layer_dense(units = 112, activation = "relu",
+        layer_dense(units = 256, activation = "relu",
                     kernel_initializer = initializer_he_normal(),
                     kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001),
+        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 500),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -90,7 +90,7 @@ history = model %>%
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
-            epochs = 500,
+            epochs = 1000,
             batch_size = 512,
             callbacks = callback_early_stopping(monitor = "val_loss", patience = 50))
 
@@ -117,7 +117,7 @@ preds_cd = (preds_test[, 5] * std_cd) + center_cd
 preds_d = (preds_test[, 6] * std_d) + center_d
 
 # calculate rsquared values for each variables
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\my_functions\\rsq.R") # load the function rsq i created
+source(".\\data_analysis\\my_functions\\rsq.R") # load the function rsq i created
 rsq_cab = rsq(preds = preds_cab, actual = testing_label[, 1])
 rsq_cw = rsq(preds = preds_cw, actual = testing_label[, 2])
 rsq_cm = rsq(preds = preds_cm, actual = testing_label[, 3])
@@ -186,15 +186,13 @@ preds_d_prisma = (preds_prisma[, 6] * std_d) + center_d
 
 
 # make biophysical maps for the NPHH
-prisma_path = "C:\\Users\\zavud\\Desktop\\msc_thesis\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
+prisma_path = ".\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
 prisma = raster::brick(prisma_path)
 prisma_template = raster::as.data.frame(prisma[[55]], xy = T, na.rm = T)
 prisma_biomap_df = prisma_template %>% dplyr::select(1:2) %>% mutate(cab = preds_cab_prisma,
                                                                      cw = preds_cw_prisma,
                                                                      cm = preds_cm_prisma,
-                                                                     lai = preds_lai_prisma,
-                                                                     cd = preds_cd_prisma,
-                                                                     d = preds_d_prisma)
+                                                                     lai = preds_lai_prisma)
 biomap_img = rasterFromXYZ(prisma_biomap_df, res = res(prisma[[55]]), crs = crs(prisma[[55]]))
 plot(biomap_img)
 
