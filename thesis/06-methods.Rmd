@@ -91,6 +91,24 @@ Hyperspectral remote sensing data can contain many highly correlated bands. Dime
 
 Like in the processing step, PCA was only applied to the training data and the PCA result in the training data was used to transform the validation and testing sets. Cumulative sum of the variations the PCs contain was calculated in order to assess the proportion of the variation that can be explained with fewer variables than the original data (LUT). PCA and data processing performed using the package *recipes* [@recipes] in *tidymodels* [@tidymodels]. 
 
+## Artificial Neural Networks (ANN)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
