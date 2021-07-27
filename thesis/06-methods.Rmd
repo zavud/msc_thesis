@@ -70,11 +70,9 @@ Simulated reflectance data usually do not contain any noise. This is, however, n
 
 The data in the LUT was divided into training, validation and testing sets. Model building and training will be done using only the training set. Validation set will be used to validate the model (e.g. assessing the impact of different hyper-parameters) and the performance of the final model will be tested using the testing set. This step is important because it will allow us to monitor whether the model can generalize to the data (e.g. testing set) it was not trained on.
 
-First, the full data set was shuffled and about 20% of the data was randomly sampled and assigned to validation and testing sets (10% validation, 10% testing sets). Random sampling makes sure there is no any pattern in any of the divided data sets.
+First, the full data set was shuffled and about 20% of the data was randomly sampled and assigned to validation and testing sets (10% validation, 10% testing sets). Random sampling ensures that there is no any pattern contained in any of the divided data sets.
 
-## Principal Component Analysis (PCA)
-
-Hyperspectral remote sensing data can contain many highly correlated bands. Dimensionality reduction techniques can be efficiently used to reduce the dimensions of hyperspectral remote sensing data. Benefits of reducing the dimensions of simulated data in plant biophysical variable retrieval studies have been demonstrated [@danner2021efficient; @rivera2017hyperspectral]. In this study, one of the most commonly used DR technique Principal Component Analysis (PCA) was performed. In general, PCA tries to capture as much variation as possible with smaller number variables compared to the original data. PCA produces new variables called Principal Components and each Principal Component (PC) contains certain amount of variation available in the original data. Typically first PC contains the most variation, the second PC contains the second most variation and so on [@bro2014principal]. 
+## Data processing
 
 First, the simulated canopy reflectance in the training data set was normalized and standardized using the Equation \@ref(eq:norm):
 
@@ -85,7 +83,13 @@ Band_{n_{scaled}}\ =\ \frac{Band_n\ -\ \mu_{Band_n}}{\sigma_{Band_n}}
 
 Here $Band_{n}$ refers to the reflectance values in the $n$th simulated band and $\mu_{Band_n}$ and $\sigma_{Band_n}$ are mean and standard deviation of the reflectance values in the $n$th simulated band. $Band_{n_{scaled}}$ is a transformed version of $Band_{n}$ that has a mean of 0 and standard deviation of 1. This step ensures that all simulated bands have the same mean and standard deviation.
 
-Data normalization, standardization and PCA were only performed using training data set. Mean and standard deviation of the training set and the PCA result were then used to transform the validation and testing data sets. Cumulative sum of the variations the PCs contain was calculated in order to assess the proportion of the variation that can be explained with fewer variables than the original data (LUT). PCA and data processing performed using the package *recipes* [@recipes] in *tidymodels* [@tidymodels]. 
+Data normalization and standardization were only performed using training data set. Mean and standard deviation of the training set were then used to transform the validation and testing data sets.
+
+## Principal Component Analysis (PCA)
+
+Hyperspectral remote sensing data can contain many highly correlated bands. Dimensionality reduction techniques can be efficiently used to reduce the dimensions of hyperspectral remote sensing data. Benefits of reducing the dimensions of simulated data in plant biophysical variable retrieval studies have been demonstrated [@danner2021efficient; @rivera2017hyperspectral]. In this study, one of the most commonly used DR technique Principal Component Analysis (PCA) was performed. In general, PCA tries to capture as much variation as possible with smaller number variables compared to the original data. PCA produces new variables called Principal Components and each Principal Component (PC) contains certain amount of variation available in the original data. Typically first PC contains the most variation, the second PC contains the second most variation and so on [@bro2014principal].
+
+Like in the processing step, PCA was only applied to the training data and the PCA result in the training data was used to transform the validation and testing sets. Cumulative sum of the variations the PCs contain was calculated in order to assess the proportion of the variation that can be explained with fewer variables than the original data (LUT). PCA and data processing performed using the package *recipes* [@recipes] in *tidymodels* [@tidymodels]. 
 
 
 

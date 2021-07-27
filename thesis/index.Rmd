@@ -58,7 +58,7 @@ word-count: "10,052"
 corrections: true
 
 ## binding / margins ##
-page-layout: nobind #'nobind' for equal margins (PDF output), 'twoside' for two-sided binding (mirror margins and blank pages), leave blank for one-sided binding (left margin > right margin)
+page-layout: twoside #'nobind' for equal margins (PDF output), 'twoside' for two-sided binding (mirror margins and blank pages), leave blank for one-sided binding (left margin > right margin)
 
 ## position of page numbers ##
 ordinary-page-number-foot-or-head: foot #'foot' puts page number in footer, 'head' in header
