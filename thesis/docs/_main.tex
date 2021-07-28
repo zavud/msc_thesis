@@ -228,9 +228,9 @@ Retrieval of plant biophysical and biochemical variables from remote sensing dat
 % do.  Throughout, 0 = chapter; 1 = section; 2 = subsection; 3 = subsubsection, 4 = paragraph...
 
 % The level that gets a number:
-\setcounter{secnumdepth}{1}
+\setcounter{secnumdepth}{2}
 % The level that shows up in the ToC:
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 
 %%%%% ABSTRACT SEPARATE
@@ -473,6 +473,52 @@ f\left(x\right)\ =\ f^{\left(3\right)}\left(f^{\left(2\right)}\left(f^{\left(1\r
 In the Equation \eqref{eq:dnn}, \(f^{(1)}\), \(f^{(2)}\) and \(f^{(3)}\) are the first, second and third layers, respectively. During the learning process, the neural network model is shown the output variables \(y\) of corresponding input variables \(x\) and the job of the hidden layers is to figure out how to match the target variable \(y\) as closely as possible \citep{goodfellow2016deep}.
 
 In this research, two neural network models were built. The first model was trained using only 5 PCs as input variables, and the second neural network was trained using simulated 231 PRISMA bands. The aim of building two neural network models is to compare the performance of a neural network using only 5 PCs to a neural network that uses the original 231 simulated PRISMA bands to predict the output variables.
+
+\hypertarget{cost-function}{%
+\subsection{Cost function}\label{cost-function}}
+
+Choosing an appropriate cost function is an important part of building neural networks model. Essentially, cost function is what the neural network tries to minimize after each iteration. The cost function mean squared error (MSE) is the most widely used cost function for neural network models when the target variable is continuous \citep{allaire2018deep}.
+
+In this study, MSE was chosen to be the cost function of the neural network models. The Equation \eqref{eq:mse} shows how the cost function MSE is defined:
+
+\begin{equation}
+MSE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left(y_i\ -\ \left(f\left(x_i;\ \theta\right)\right)\right)^2
+\label{eq:mse}
+\end{equation}
+
+In the Equation \eqref{eq:mse}, \(N\) is the number of examples, \(y_{i}\) is the \(i\)th true value and \(f(x_{i}; \theta)\) is the predicted \(i\)th value. \(x_{i}\) refers to the input parameter of \(i\)th example, and \(\theta\) typically refers to weight term \(w\) and a bias term \(b\).
+
+\hypertarget{adam-optimizer-algorithm}{%
+\subsection{Adam optimizer algorithm}\label{adam-optimizer-algorithm}}
+
+In this research, Adam optimizer \citep{kingma2014adam} was applied to the neural network model. Before explaining what Adam does, it is important to visit the Stochastic gradient descent (SGD) algorithm.
+
+Stochastic gradient descent is a very important algorithm used to build neural network models. SGD is used to update the learned weight and bias parameters \(\theta\). Let's assume that we have a model that tries to minimize the cost function \(J(\theta)\)
+
+\begin{equation}
+J\left(\theta\right)\ =\ \frac{1}{m}\sum_{i\ =\ 1}^mL\left(x^i,\ y^i,\ \theta\right)
+\label{eq:cs}
+\end{equation}
+
+where L is the amount of loss for the \(i\)th example. Then, we compute the gradient as shown in the Equation \eqref{eq:derivative}:
+
+\begin{equation}
+\nabla_{\theta}J\left(\theta\right)\ =\ \frac{1}{m}\sum_{i\ =\ 1}^m\nabla_{\theta}L\left(x^i,\ y^i,\ \theta\right)
+\label{eq:derivative}
+\end{equation}
+
+Finally, we can update the weight and bias parameters within the term \(\theta\):
+
+\begin{equation}
+\theta\ \leftarrow\ \theta\ -\ \epsilon\\J\left(\theta\right)\
+\label{eq:gd}
+\end{equation}
+
+In the Equation \eqref{eq:gd} \(\epsilon\) is called learning rate and needs to be tuned. The learning rate parameter \(\epsilon\) is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune \citep{goodfellow2016deep}.
+
+Usually, some of the directions in the parameter space can have a significant effect on the cost and some of them may not have any effect at all. Adaptive learning algorithms can efficiently solve this problem. One of the most commonly used adaptive learning algorithm is Adam \citep{kingma2014adam}. Essentially, Adam can be thought as a combination of RMSProp \citep{hinton2012neural} and Momentum \citep{polyak1964some} algorithms with minor differences. In the RMSProp algorithm, exponentially decaying averages are used to mitigate the problem of extreme updates. This helps the model converge more rapidly and less sensitive to extreme cases. The Momentum algorithm uses additional parameter called velocity \(v\) apart from learning rate \(\epsilon\). And during the gradient descent update, the velocity term \(v\) is additionally taken into consideration. The Adam algorithm implements first and second order moment terms. Unlike RMSProp, Adam also implements correction for the bias of first and second order moments \citep{goodfellow2016deep}. \citet{goodfellow2016deep} can be referred for more detailed explanation of the algorithms RMSProp, Momentum and Adam.
+
+The main drawback of Adam is that now there are more hyperparameters to tune compared to simpler algorithms such as SGD. The Adam optimizer requires the hyperparameters step size \(\epsilon\), exponential decay rates \(p1\) and \(p2\) and a constant \(\delta\). In this study, the suggested default value of 0.001 was used for the step size term \(\epsilon\). \(p1\) and \(p2\) were set to 0.9 and 0.999 respectively (suggested values). The constant term \(\delta\) is \(10^{-8}\). Different most commonly used learning rate values (\(lr\)) were tested. The optimum learning rate value was found to be 0.0001.
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
