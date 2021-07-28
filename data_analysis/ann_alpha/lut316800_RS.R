@@ -136,9 +136,12 @@ model = keras_model_sequential() %>%
         layer_dense(units = 512, activation = "relu",
                     kernel_initializer = initializer_he_normal(),
                     kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
+        layer_dense(units = 512, activation = "relu",
+                    kernel_initializer = initializer_he_normal(),
+                    kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 500),
+        compile(optimizer = optimizer_adam(lr = .0001, decay = .0001 / 2000),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -146,7 +149,7 @@ history = model %>%
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
-            epochs = 1500,
+            epochs = 4000,
             batch_size = 512,
             callbacks = callback_early_stopping(monitor = "loss", patience = 50))
 
@@ -160,6 +163,10 @@ history %>%
         theme(legend.position = c(.8, .8))
 
 model %>% evaluate(testing, testing_label_scaled)
+
+# save the model and histroy
+model %>% save_model_tf(filepath = "./data_analysis/models/ann_RS_lut316800_3h")
+history %>% as_tibble() %>% drop_na() %>% write_csv(file = "./data_analysis/models/history_ann_RS_lut316800_3h.txt")
 
 # predicstions on test set
 preds_test = model %>% predict(testing)
@@ -341,9 +348,9 @@ g_lai_map = prisma_biomap_df %>%
         as_tibble() %>% 
         dplyr::select(x, y, lai) %>% 
         #filter(lai > 0) %>% 
-        mutate(pixel_class = case_when(lai > 0 & lai < 10 ~ "normal",
+        mutate(pixel_class = case_when(lai > 0 & lai < 15 ~ "normal",
                                        lai < 0 ~ "small",
-                                       lai > 10 ~ "big")) %>% 
+                                       lai > 15 ~ "big")) %>% 
         ggplot(aes(x, y, fill = pixel_class)) +
         geom_raster() +
         labs(y = "Lat", x = "Long", title = "Retrieved LAI map", fill = "LAI") +
