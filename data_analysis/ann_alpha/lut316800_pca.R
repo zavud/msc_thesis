@@ -33,12 +33,12 @@ center_lai = mns_training_label[[4]]
 std_lai = stds_training_label[[4]]
 
 # scaling factors for cd
-center_cd = mns_training_label[[5]]
-std_cd = stds_training_label[[5]]
+#center_cd = mns_training_label[[5]]
+#std_cd = stds_training_label[[5]]
 
 # scaling factors for d
-center_d = mns_training_label[[6]]
-std_d = stds_training_label[[6]]
+#center_d = mns_training_label[[6]]
+#std_d = stds_training_label[[6]]
 
 # store the scaling factors of training set
 #mns_training = attributes(training)[[3]]
@@ -80,9 +80,12 @@ model = keras_model_sequential() %>%
         layer_dense(units = 256, activation = "relu",
                     kernel_initializer = initializer_he_normal(),
                     kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
+        layer_dense(units = 256, activation = "relu",
+                    kernel_initializer = initializer_he_normal(),
+                    kernel_regularizer = regularizer_l2(l = 0.0001)) %>% 
         layer_dense(units = ncol(training_label_scaled))
 model %>% 
-        compile(optimizer = optimizer_adam(lr = .001, decay = .001 / 500),
+        compile(optimizer = optimizer_adam(lr = .0001),
                 loss = "mse",
                 metrics = list("mean_absolute_error"))
 history = model %>% 
@@ -90,20 +93,24 @@ history = model %>%
             y = training_label_scaled,
             validation_data = list(validation, validation_label_scaled),
             verbose = 2,
-            epochs = 1000,
+            epochs = 3000,
             batch_size = 512,
-            callbacks = callback_early_stopping(monitor = "val_loss", patience = 50))
+            callbacks = callback_early_stopping(monitor = "loss", patience = 50))
 
 history %>% 
         as_tibble() %>% 
         dplyr::filter(metric == "loss") %>% 
         ggplot(aes(x = epoch, y = value, col =  data)) +
         geom_line(size = 1) +
+        ylim(0, 1.5) +
         labs(x = "Iteration", y = "MSE", title = "Deep Neural Network training", col = NULL) +
         theme_bw() +
         theme(legend.position = c(.8, .8))
 
 model %>% evaluate(testing, testing_label_scaled)
+
+model %>% save_model_tf(filepath = "./data_analysis/models/ann_pca_lut316800_3h")
+history %>% as_tibble() %>% drop_na() %>% write_csv(file = "./data_analysis/models/history_ann_pca_lut316800_3h.txt")
 
 # predicstions on test set
 preds_test = model %>% predict(testing)
