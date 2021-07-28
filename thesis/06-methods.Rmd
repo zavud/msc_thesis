@@ -93,17 +93,25 @@ Like in the processing step, PCA was only applied to the training data and the P
 
 ## Artificial Neural Networks (ANN)
 
+Considering the fact that we have relatively large number of training examples, non-linear relationship between the input variables (image bands or PCs) and target variables (biophysical and biochemical variables), many different modern and optimization algorithms developed that can learn various types of non-linear relationships, and finally availability of the optimized open source software packages and support, Artificial Neural Network was chosen as a training model in this study.
 
+Deep Neural Networks (DNN) is a specialized name for Artificial Neural Networks. DNN are also called Deep Feedforward Networks. Feedfoward network algorithm refers to an algorithm that tries to use the input example data $x$ to learn a function $f()$ that approximates the output variable $y$ by adjusting the weights variable $\theta$ [@goodfellow2016deep]:
 
+\begin{equation}
+y\ =\ f\left(x;\ \theta\right)
+(\#eq:feed)
+\end{equation}
 
+These algorithms are called networks due to the fact that they usually consists of multiple functions connected to each other with networks. Neural Networks are typically composed of multiple layers, such as input, hidden and output layers. Input layer is typically the training examples and output layer is the target variable (e.g. variable to predict). Hidden layers are in between input and output layers and different functions can be applied to different hidden layers [@goodfellow2016deep]. For example, the Equation \@ref(eq:dnn) shows a function $f(x)$ that is formed by three hidden layers:
 
+\begin{equation}
+f\left(x\right)\ =\ f^{\left(3\right)}\left(f^{\left(2\right)}\left(f^{\left(1\right)}\left(x\right)\right)\right)
+(\#eq:dnn)
+\end{equation}
 
+In the Equation \@ref(eq:dnn), $f^{(1)}$, $f^{(2)}$ and $f^{(3)}$ are the first, second and third layers, respectively. During the learning process, the neural network model is shown the output variables $y$ of corresponding input variables $x$ and the job of the hidden layers is to figure out how to match the target variable $y$ as closely as possible [@goodfellow2016deep].
 
-
-
-
-
-
+In this research, two neural network models were built. The first model was trained using only 5 PCs as input variables, and the second neural network was trained using simulated 231 PRISMA bands. The aim of building two neural network models is to compare the performance of a neural network using only 5 PCs to a neural network that uses the original 231 simulated PRISMA bands to predict the output variables.
 
 
 
