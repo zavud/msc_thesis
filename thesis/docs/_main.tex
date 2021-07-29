@@ -574,6 +574,11 @@ g\left(z\right)\ =\ \max\left\{0,\ z\right\}
 
 As we can see, ReLU gives a value of 0 when \(z\) is smaller than 0, and it returns \(z\) otherwise. ReLU is undefined at \(z = 0\).
 
+\hypertarget{weight-initialization}{%
+\subsection{Weight initialization}\label{weight-initialization}}
+
+Neural network training is an iterative process and initial weights need to be given. \citet{goodfellow2016deep} indicate that, the initial weight values can sometimes have a large impact on the neural network performance and depending on how the initial weights are defined the neural network moedl may not converge at all. In this research the He initialzation \citep{he2015delving} method was applied. This initialization technique was designed to work with NN that make use of the ReLU activation functions. He initialization technique draws initial weights randomly from normal distribution, where the mean \(\mu = 0\), and standard deviation \(\sigma = \sqrt{\frac{2}{n_{l}}}\). Here, \(n_{l}\) refers to the number of nodes in the previous layer \(l - 1\), that is connected to the nodes in the current layer \(l\).
+
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
 
