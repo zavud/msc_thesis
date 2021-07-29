@@ -109,8 +109,8 @@ history %>%
 
 model %>% evaluate(testing, testing_label_scaled)
 
-model %>% save_model_tf(filepath = "./data_analysis/models/ann_pca_lut316800_3h")
-history %>% as_tibble() %>% drop_na() %>% write_csv(file = "./data_analysis/models/history_ann_pca_lut316800_3h.txt")
+#model %>% save_model_tf(filepath = "./data_analysis/models/ann_pca_lut316800_3h")
+#history %>% as_tibble() %>% drop_na() %>% write_csv(file = "./data_analysis/models/history_ann_pca_lut316800_3h.txt")
 
 # predicstions on test set
 preds_test = model %>% predict(testing)

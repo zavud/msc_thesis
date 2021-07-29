@@ -133,7 +133,7 @@ MAE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left|y_i\ -\ f\left(x_i;\ \theta\right)\righ
 (\#eq:mae)
 \end{equation}
 
-### Gradient descent optimizer algorithm
+### Optimizer algorithm
 
 In this research, Adam optimizer [@kingma2014adam] was applied to the neural network model. Before explaining what Adam does, it is important to visit the Stochastic gradient descent (SGD) algorithm.
 
@@ -158,7 +158,7 @@ Finally, we can update the weight and bias parameters within the term $\theta$:
 (\#eq:gd)
 \end{equation}
 
-In the Equation \@ref(eq:gd) $\epsilon$ is called learning rate and needs to be tuned. The learning rate parameter $\epsilon$ is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune [@goodfellow2016deep]. Batch gradient descent uses the same idea, but unlike SGD, batch gradient descent make an update for the whole training set [@ruder2016overview].
+In the Equation \@ref(eq:gd) $\epsilon$ is called learning rate and needs to be tuned. The learning rate parameter $\epsilon$ is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune [@goodfellow2016deep]. Batch gradient descent uses the same idea, but unlike SGD, batch gradient descent makes an update for the whole training set after each iteration [@ruder2016overview].
 
 Usually, some of the directions in the parameter space can have a significant effect on the cost and some of them may not have any effect at all. Adaptive learning algorithms can efficiently solve this problem. One of the most commonly used adaptive learning algorithm is Adam [@kingma2014adam]. Essentially, Adam can be thought as a combination of RMSProp [@hinton2012neural] and Momentum [@polyak1964some] algorithms with minor differences. In the RMSProp algorithm, exponentially decaying averages are used to mitigate the problem of extreme updates. This helps the model converge more rapidly and less sensitive to extreme cases. The Momentum algorithm uses additional parameter called velocity $v$ apart from learning rate $\epsilon$. And during the gradient descent update, the velocity term $v$ is additionally taken into consideration. The Adam algorithm implements first and second order moment terms. Unlike RMSProp, Adam also implements correction for the bias of first and second order moments [@goodfellow2016deep]. @goodfellow2016deep can be referred to for more detailed explanation of how the algorithms RMSProp, Momentum and Adam are implemented.
 
@@ -218,17 +218,40 @@ As we can see, ReLU gives a value of 0 when $z$ is smaller than 0, and it return
 
 Neural network training is an iterative process and initial weights need to be given. @goodfellow2016deep indicate that, the initial weight values can sometimes have a large impact on the neural network performance and depending on how the initial weights are defined the neural network moedl may not converge at all. In this research the He initialzation [@he2015delving] method was applied. This initialization technique was designed to work with NN that make use of the ReLU activation functions. He initialization technique draws initial weights randomly from normal distribution, where the mean $\mu = 0$, and standard deviation $\sigma = \sqrt{\frac{2}{n_{l}}}$. Here, $n_{l}$ refers to the number of nodes in the previous layer $l - 1$, that is connected to the nodes in the current layer $l$.
 
+### Processing of input and target variables
 
+In this study, input variables are the 5 PCs for the first neural network model and 231 simulated PRISMA image bands for the second neural network model. Simulated PRISMA image bands were normalized and standardized so that all the bands have the same mean ($\mu = 0$) and standard deviation ($\sigma = 1$) (see Equation \@ref(eq:norm)).
 
+Our target variables are INFORM parameters we want to predict. These are $C_{ab}$, $C_{cw}$, $C_{cm}$ and $LAI_{s}$. The ranges of these variables are different. For example, minimum and maximum for $C_{ab}$ is 20 and 60 and for $C_{cw}$ these are 0.0035 and 0.035. The cost function with these output variables would be largely driven by variables that have higher magnitudes and interpreting the loss after each iteration would be difficult. Therefore, the output variables were normalized using the Equation \@ref(eq:normy).
 
+\begin{equation}
+Y_{scaled}\ =\ \frac{Y\ -\ \mu_{Y}}{\sigma_{Y}}
+(\#eq:normy)
+\end{equation}
 
+Here, $Y$ is the output variable, $\mu_{Y}$ is the mean and $\sigma_{Y}$ is the standard deviation of the output variable $Y$.
 
+### Neural Network Architecture design
 
+Designing NN architecture is an important step of building neural network models. Here, number of hidden layers and number of units in each layers are hyperparameters and they need to be tuned. In this research, several neural network architectures were tested. We started with the simplest architecture (1 input layer, 1 hidden layer with 1 hidden unit and output layer) and gradually increased the depth (1, 2, 3) and width ($2^{1}$, $2^{2}$, $2^{3}$, $2^{4}$ etc.) of the NN to assess the impact of the design on the performance. In general, it was observed that the more complicated the neural network architecture is, the better it performs. Increasing the number of hidden layers significantly increased the generalizability of the model to the testing data when the number of hidden units were kept constant at each layer. Optimal NN architecture was chosen based on the time it took for the model to converge, training, validation and testing accuracy.
 
+The Figure \@ref(fig:annpca) shows the chosen neural network arthitecture for the first model (where PCs were used as inputs):
 
+```{r annpca, echo=FALSE, fig.cap="Architecture of the Neural Network with Principal Components as inputs", crop=TRUE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annpca.R"); annpca
+```
 
+In the Figure \@ref(fig:annpca), $a_{n}^{l}$ refers to the $n$th unit in the $l$th hidden layer. Among all the tested neural network architectures when PCs as an input layer were used, this architecture yielded the best results in terms of the time it took the model to converge, the minimized loss, performance on training, validation and testing sets. However, it is important to note that a different neural network architecture that was not tested in this study could yield better results. Also, slightly simpler architecture could have yielded a similar result if it was trained much longer. But, in this study, simpler architectures (e.g. NN with 1 or 2 hidden layers) did not perform as well as the chosen architecture (Figure \@ref(fig:annpca)) when trained for the same number of epochs. It should also be noted that, NN with deeper than 3 hidden layers were not tested in this study.
 
+The Figure \@ref(fig:annprisma) shows the chosen NN architecture for the NN model where simulated 231 PRISMA image bands were used as input. 
 
+\newpage
+
+```{r annprisma, echo=FALSE, fig.cap="Architecture of the Neural Network with simulated PRISMA image bands as inputs", crop=TRUE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annprisma.R"); annprisma
+```
+
+In the Figure \@ref(fig:annprisma), $B_{n}$ refers to the simulated $n$th PRISMA image band and $a_{n}^{l}$ refers to the $n$th unit in the $l$th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded more significant results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
 
 
 
