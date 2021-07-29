@@ -133,7 +133,7 @@ MAE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left|y_i\ -\ f\left(x_i;\ \theta\right)\righ
 (\#eq:mae)
 \end{equation}
 
-### Optimizer algorithm
+### Gradient descent optimizer algorithm
 
 In this research, Adam optimizer [@kingma2014adam] was applied to the neural network model. Before explaining what Adam does, it is important to visit the Stochastic gradient descent (SGD) algorithm.
 
@@ -158,11 +158,17 @@ Finally, we can update the weight and bias parameters within the term $\theta$:
 (\#eq:gd)
 \end{equation}
 
-In the Equation \@ref(eq:gd) $\epsilon$ is called learning rate and needs to be tuned. The learning rate parameter $\epsilon$ is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune [@goodfellow2016deep].
+In the Equation \@ref(eq:gd) $\epsilon$ is called learning rate and needs to be tuned. The learning rate parameter $\epsilon$ is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune [@goodfellow2016deep]. Batch gradient descent uses the same idea, but unlike SGD, batch gradient descent make an update for the whole training set [@ruder2016overview].
 
 Usually, some of the directions in the parameter space can have a significant effect on the cost and some of them may not have any effect at all. Adaptive learning algorithms can efficiently solve this problem. One of the most commonly used adaptive learning algorithm is Adam [@kingma2014adam]. Essentially, Adam can be thought as a combination of RMSProp [@hinton2012neural] and Momentum [@polyak1964some] algorithms with minor differences. In the RMSProp algorithm, exponentially decaying averages are used to mitigate the problem of extreme updates. This helps the model converge more rapidly and less sensitive to extreme cases. The Momentum algorithm uses additional parameter called velocity $v$ apart from learning rate $\epsilon$. And during the gradient descent update, the velocity term $v$ is additionally taken into consideration. The Adam algorithm implements first and second order moment terms. Unlike RMSProp, Adam also implements correction for the bias of first and second order moments [@goodfellow2016deep]. @goodfellow2016deep can be referred to for more detailed explanation of how the algorithms RMSProp, Momentum and Adam are implemented.
 
 The main drawback of Adam is that now there are more hyperparameters to tune compared to simpler algorithms such as SGD. The Adam optimizer requires the hyperparameters step size $\epsilon$, exponential decay rates $p1$ and $p2$ and a constant $\delta$. In this study, the suggested default value of 0.001 was used for the step size term $\epsilon$. $p1$ and $p2$ were set to 0.9 and 0.999 respectively (suggested values). The constant term $\delta$ is $10^{-8}$. Different most commonly used learning rate values ($lr$) were tested. The optimum learning rate value (specific to this study) was found to be 0.0001.
+
+### Mini batch size
+
+Performing gradient update for the whole training set after each iteration can cause the computational cost to increase rapidly when the training data size $m$ is large. Mini batch gradient descent can efficiently overcome this problem [@goodfellow2016deep]. Mini batch gradient descent makes updates for the mini batch size of $n$, as opposed to updating gradients after training on the whole training data, with a size of $m$ [@ruder2016overview].
+
+Considering the fact that our training data is relatively large ($m = 250,120$), we implemented Adam with mini batch size of $n = 512$. This means that, during the neural network training, after each iteration 512 examples from the full training data set ($m = 250,120$) is randomly sampled. Based on this 512 samples, we then calculate the loss and make gradient updates. When all the examples are sampled from the full training data, this means one epoch of the training phase is complete and the next epoch can start.
 
 ### Regularization
 
