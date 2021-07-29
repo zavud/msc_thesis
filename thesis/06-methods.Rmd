@@ -120,13 +120,20 @@ Choosing an appropriate cost function is an important part of building neural ne
 In this study, MSE was chosen to be the cost function of the neural network models. The Equation \@ref(eq:mse) shows how the cost function MSE is defined:
 
 \begin{equation}
-MSE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left(y_i\ -\ \left(f\left(x_i;\ \theta\right)\right)\right)^2
+MSE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left(y_i\ -\ f\left(x_i;\ \theta\right)\right)^2
 (\#eq:mse)
 \end{equation}
 
 In the Equation \@ref(eq:mse), $N$ is the number of examples, $y_{i}$ is the $i$th true value and $f(x_{i}; \theta)$ is the predicted $i$th value. $x_{i}$ refers to the input parameter of $i$th example, and $\theta$ typically refers to weight term $w$ and a bias term $b$.
 
-### Adam optimizer algorithm
+Apart from MSE, mean absolute error (MAE) was calculated as a metric and monitored during the training. MAE is defined as shown in the Equation \@ref(eq:mae):
+
+\begin{equation}
+MAE\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left|y_i\ -\ f\left(x_i;\ \theta\right)\right|
+(\#eq:mae)
+\end{equation}
+
+### Optimizer algorithm
 
 In this research, Adam optimizer [@kingma2014adam] was applied to the neural network model. Before explaining what Adam does, it is important to visit the Stochastic gradient descent (SGD) algorithm.
 
@@ -153,7 +160,7 @@ Finally, we can update the weight and bias parameters within the term $\theta$:
 
 In the Equation \@ref(eq:gd) $\epsilon$ is called learning rate and needs to be tuned. The learning rate parameter $\epsilon$ is a very important hyperparameter for neural network and it is considered to be the most difficult hyperparameter to tune [@goodfellow2016deep].
 
-Usually, some of the directions in the parameter space can have a significant effect on the cost and some of them may not have any effect at all. Adaptive learning algorithms can efficiently solve this problem. One of the most commonly used adaptive learning algorithm is Adam [@kingma2014adam]. Essentially, Adam can be thought as a combination of RMSProp [@hinton2012neural] and Momentum [@polyak1964some] algorithms with minor differences. In the RMSProp algorithm, exponentially decaying averages are used to mitigate the problem of extreme updates. This helps the model converge more rapidly and less sensitive to extreme cases. The Momentum algorithm uses additional parameter called velocity $v$ apart from learning rate $\epsilon$. And during the gradient descent update, the velocity term $v$ is additionally taken into consideration. The Adam algorithm implements first and second order moment terms. Unlike RMSProp, Adam also implements correction for the bias of first and second order moments [@goodfellow2016deep]. @goodfellow2016deep can be referred to for more detailed explanation of the algorithms RMSProp, Momentum and Adam.
+Usually, some of the directions in the parameter space can have a significant effect on the cost and some of them may not have any effect at all. Adaptive learning algorithms can efficiently solve this problem. One of the most commonly used adaptive learning algorithm is Adam [@kingma2014adam]. Essentially, Adam can be thought as a combination of RMSProp [@hinton2012neural] and Momentum [@polyak1964some] algorithms with minor differences. In the RMSProp algorithm, exponentially decaying averages are used to mitigate the problem of extreme updates. This helps the model converge more rapidly and less sensitive to extreme cases. The Momentum algorithm uses additional parameter called velocity $v$ apart from learning rate $\epsilon$. And during the gradient descent update, the velocity term $v$ is additionally taken into consideration. The Adam algorithm implements first and second order moment terms. Unlike RMSProp, Adam also implements correction for the bias of first and second order moments [@goodfellow2016deep]. @goodfellow2016deep can be referred to for more detailed explanation of how the algorithms RMSProp, Momentum and Adam are implemented.
 
 The main drawback of Adam is that now there are more hyperparameters to tune compared to simpler algorithms such as SGD. The Adam optimizer requires the hyperparameters step size $\epsilon$, exponential decay rates $p1$ and $p2$ and a constant $\delta$. In this study, the suggested default value of 0.001 was used for the step size term $\epsilon$. $p1$ and $p2$ were set to 0.9 and 0.999 respectively (suggested values). The constant term $\delta$ is $10^{-8}$. Different most commonly used learning rate values ($lr$) were tested. The optimum learning rate value (specific to this study) was found to be 0.0001.
 
@@ -168,16 +175,64 @@ $L^{2}$ regularization is a penalty term that is directly added to the defined c
 (\#eq:l2gen)
 \end{equation}
 
-In the Equation \@ref(eq:l2gen) $\tilde{J}$ is called regularized cost function and it tries to minimize the cost $J$ and the regularization term added together. The term $\lambda$ is $L^{2}$ regularization factor and it controls the amount of penalty that is added. For example, when $\lambda = 0$ there is no any constraint added and $\tilde{J} = J$. The larger the $\lambda$, the more penalty we add, and therefore the flexibility of the weights to fit to the training data is limited more. $\lambda$ is another hyperparamter that needs to be tuned. In this study, most commonly used values (0.1, 0.01, 0.001 etc.) were tested and $\lambda = 0.0001$ was found to work well in terms of improving the generalizability of the model to the validation set.
+In the Equation \@ref(eq:l2gen) $\tilde{J}$ is called regularized cost function and it tries to minimize the cost $J$ and the regularization term added together. The term $\lambda$ is $L^{2}$ regularization factor and it controls the amount of penalty that is added. For example, when $\lambda = 0$ there is no any constraint added and $\tilde{J} = J$. The larger the $\lambda$, the more penalty we add, and therefore the flexibility of the weights to fit to the training data is more limited. The $L^{2}$ regularization does not affect bias term $b$ and only regularizes weight term $w$. $\lambda$ is another hyperparamter that needs to be tuned. In this study, most commonly used values (0.1, 0.01, 0.001 etc.) were tested and $\lambda = 0.0001$ was found to work well in terms of improving the generalizability of the model to the validation set.
 
 The cost function in this study was updated from the Equation \@ref(eq:mse) to the Equation \@ref(eq:msereg):
 
 \begin{equation}
-\tilde{MSE}\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left(y_i\ -\ \left(f\left(x_i;\ \theta\right)\right)\right)^2 +\ 0.0001 w^Tw
+\tilde{MSE}\ =\ \frac{1}{N}\sum_{i\ =\ 1}^n\left(y_i\ -\ f\left(x_i;\ \theta\right)\right)^2 +\ 0.0001 w^Tw
 (\#eq:msereg)
 \end{equation}
 
 Here, $\tilde{MSE}$ is the regularized cost function that our model tries to minimize.
+
+### Early stopping
+
+Early stopping is a simple technique that monitors the loss and it halts the training when the model starts to overfit to the training data or when it does not improve its accuracy on the validation set over iterations. In this study, validation loss was monitored during the training after each iteration. The parameter *patience* controls when to stop the training and it was set to 50 in this research. This means that if there is no improvement on the validation loss during the last 50 iterations of the training, the training process must stop. This helps with the overfitting problem as well as it halts the unnecessary training steps (if there is no any improvement after each iteration).
+
+### Activation function
+
+In neural networks, the units of the layers are activated by using activation functions. In this study, rectified linear unit activation (ReLU) function was utilized. The units in the hidden layers receive a vector $x$ from the previous layer, and transforms it using a weight term $W$ and a bias term $b$ as follows:
+
+\begin{equation}
+z\ =\ W^Tx\ +\ b
+(\#eq:z)
+\end{equation}
+
+And then, we can use a non-linear activation function ReLU to activate $z$:
+
+\begin{equation}
+g\left(z\right)\ =\ \max\left\{0,\ z\right\}
+(\#eq:relu)
+\end{equation}
+
+As we can see, ReLU gives a value of 0 when $z$ is smaller than 0, and it returns $z$ otherwise. ReLU is undefined at $z = 0$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
