@@ -253,11 +253,11 @@ source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annprisma.R"); a
 
 In the Figure \@ref(fig:annprisma), $B_{n}$ refers to the simulated $n$th PRISMA image band and $a_{n}^{l}$ refers to the $n$th unit in the $l$th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded more significant results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
 
+All of the Neural Network building, testing and training processes were implemented using keras [@keras] in tensorflow API [@tensorflow].
 
+## Final prediction and map retrieval
 
-
-
-
+Finally, the best performing NN model was used to retrieve $C_{ab}$, $C_{w}$, $C_{m}$ and $LAI_{s}$ maps for the National Park Hunsrück-Hochwald. Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4 dimensional raster file (e.g. ENVI and Tiff formats) and can be visualized and analysed further.
 
 
 
