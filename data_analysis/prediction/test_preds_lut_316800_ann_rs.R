@@ -1,18 +1,13 @@
 # load libraries
 library(keras)
 library(tidyverse)
-library(raster)
 library(tidymodels)
+library(latex2exp)
 
 # load prisma wl bands
 wl_path = ".\\data_analysis\\sensor_metadata\\wl_prisma.txt"
 wl = readr::read_csv(wl_path, col_names = F)[[1]]
 nms = c(wl, "Cab", "Cw", "Cm", "LAI", "cd", "d")
-
-# load prisma data
-prisma_path = ".\\data_analysis\\satellite_data\\PRISMA\\2020_09_11_masked\\prisma_cropped_masked_study_area.envi"
-prisma = raster::brick(prisma_path)
-prisma_df = raster::as.data.frame(prisma, na.rm = T) %>% as_tibble() %>% setNames(wl)
 
 # load the lut data
 lut_path = ".\\data_analysis\\inform_prisma\\lut_database"
@@ -64,25 +59,6 @@ training = training %>%
         scale(center = mn,
               scale = std)
 
-# store the scaling factors of training labels
-mns_training_label = attributes(training_label_scaled)[[3]]
-stds_training_label = attributes(training_label_scaled)[[4]]
-
-center_cab = mns_training_label[[1]]
-std_cab = stds_training_label[[1]]
-
-# scaling factors for cw
-center_cw = mns_training_label[[2]]
-std_cw = stds_training_label[[2]]
-
-# scaling factors for cm
-center_cm = mns_training_label[[3]]
-std_cm = stds_training_label[[3]]
-
-# scaling factors for lai
-center_lai = mns_training_label[[4]]
-std_lai = stds_training_label[[4]]
-
 # testing set
 testing_label = testing[, 1:4]
 testing_label_scaled = testing_label %>% scale()
@@ -90,13 +66,7 @@ testing = testing[, -c(1:6)]%>%
         scale(center = mn,
               scale = std)
 
-# prisma set
-prisma_df = prisma_df %>% 
-        as.matrix() %>% 
-        scale(center = mn,
-              scale = std)
-
-# store the scaling factors of training labels
+# store the scaling factors of testing labels
 mns_testing_label = attributes(testing_label_scaled)[[3]]
 stds_testing_label = attributes(testing_label_scaled)[[4]]
 
@@ -115,20 +85,69 @@ std_cm_testing = stds_testing_label[[3]]
 center_lai_testing = mns_testing_label[[4]]
 std_lai_testing = stds_testing_label[[4]]
 
-# prisma set
-prisma_df = prisma_df %>% as.matrix()
-
 # load the trained model
 model = load_model_tf(filepath = "./data_analysis/models/ann_RS_lut316800_3h")
 
+# evaluate the model
+model %>% evaluate(testing, testing_label_scaled)
 
+# predicstions on test set
+preds_test = model %>% predict(testing)
 
+# unscale the predictions
+preds_cab_testing = (preds_test[, 1] * std_cab_testing) + center_cab_testing
+preds_cw_testing = (preds_test[, 2] * std_cw_testing) + center_cw_testing
+preds_cm_testing = (preds_test[, 3] * std_cm_testing) + center_cm_testing
+preds_lai_testing = (preds_test[, 4] * std_lai_testing) + center_lai_testing
 
+# calculate rsquared values for each variables
+source(".\\data_analysis\\my_functions\\rsq.R") # load the function rsq i created
+rsq_cab = rsq(preds = preds_cab_testing, actual = testing_label[, 1])
+rsq_cw = rsq(preds = preds_cw_testing, actual = testing_label[, 2])
+rsq_cm = rsq(preds = preds_cm_testing, actual = testing_label[, 3])
+rsq_lai = rsq(preds = preds_lai_testing, testing_label[, 4])
 
+# compare predictions and testing labels
+set.seed(1)
+samples = sample(x = nrow(testing_label_scaled),
+                 size = 1500)
+g_cab_annrs = ggplot(data.frame(x = testing_label[samples, 1],
+                                 y = preds_cab_testing[samples]),
+                      aes(x, y)) + geom_point(alpha = .5, col = "#D55E00", position = "jitter") +
+        geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
+        labs(x = TeX("C_{ab} ($\\frac{\\mu g}{cm^2}$) modelled (RTM)"), 
+             y = TeX("C_{ab} ($\\frac{\\mu g}{cm^2}$) predicted (ANN)"), 
+             title = TeX("ANN with simulated PRISMA bands")) +
+        theme_bw()
 
+g_cw_annrs = ggplot(data.frame(x = testing_label[samples, 2],
+                                y = preds_cw_testing[samples]),
+                     aes(x, y)) + 
+        geom_point(alpha = .5, col = "#D55E00", position = "jitter") +
+        geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
+        labs(x = TeX("C_{w} ($\\frac{g}{cm^2}) modelled (RTM)"), 
+             y = TeX("C_{w} ($\\frac{g}{cm^2}) predicted (ANN)")) +
+        theme_bw()
 
+g_cm_annrs = ggplot(data.frame(x = testing_label[samples, 3],
+                                y = preds_cm_testing[samples]),
+                     aes(x, y)) +
+        geom_point(alpha = .5, col = "#D55E00", position = "jitter") +
+        geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
+        labs(x = TeX("C_{m} ($\\frac{g}{cm^2}) modelled (RTM)"), 
+             y = TeX("C_{m} ($\\frac{g}{cm^2}) predicted (ANN)")) +
+        theme_bw()
 
+g_lai_annrs = ggplot(data.frame(x = testing_label[samples, 4],
+                                 y = preds_lai_testing[samples]),
+                      aes(x, y)) + 
+        geom_point(alpha = .5, col = "#D55E00", position = "jitter") +
+        geom_abline(slope = 1, intercept = 0, size = 1.2, col = "blue") +
+        labs(x = TeX("LAI_{s} ($\\frac{m^2}{m^2}$) modelled (RTM)"), 
+             y = TeX("LAI_{s} ($\\frac{m^2}{m^2}$) predicted (ANN)")) +
+        theme_bw()
 
+g_cab_annpca + g_cab_annrs
 
 
 

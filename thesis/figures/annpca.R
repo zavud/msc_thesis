@@ -62,7 +62,7 @@ annpca = DiagrammeR::grViz("digraph G {
         rank=same;
         O1->O2->O3->O4;
     }
-    a02->a03;  // prevent tilting
+    a02->a03->a04;  // prevent tilting
     l0 [shape=plaintext, label='Input layer'];
     l0->x1;
     {rank=same; l0;x1};
@@ -81,6 +81,6 @@ annpca = DiagrammeR::grViz("digraph G {
     edge[style=solid, tailport=e, headport=w];
     {x1; x2; x3; x4; x5} -> {a12;a22;a32;E1;a2562};
     {a02;a12;a22;a32;E1;a2562} -> {a13;a23;a33;E2;a2563};
-    {a03;a13;a23;a33;E2;a2563} -> {a04;a14;a24;a34;E3;a2564};
+    {a03;a13;a23;a33;E2;a2563} -> {a14;a24;a34;E3;a2564};
     {a04;a14;a24;a34;E3;a2564} -> {O1,O2,O3,O4};
 }", height="100%", width="100%")
