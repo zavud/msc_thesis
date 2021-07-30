@@ -231,6 +231,10 @@ Y_{scaled}\ =\ \frac{Y\ -\ \mu_{Y}}{\sigma_{Y}}
 
 Here, $Y$ is the output variable, $\mu_{Y}$ is the mean and $\sigma_{Y}$ is the standard deviation of the output variable $Y$.
 
+### Number of epochs
+
+Number of epochs is another hyperparameter and needs to be specified by the user. In this study, number of epochs was set to a relatively large number, 5000. However, as the early stopping technique was also used, setting the number of epochs to a value does not guarantee that the training phase will continue for 5000 epochs. Setting number of epochs to a high number ensures that the model can learn properly as long as the validation loss decreases. If the validation loss does not decrease for the last 50 epochs, the training will stop at any number of epoch.
+
 ### Neural Network Architecture design
 
 Designing NN architecture is an important step of building neural network models. Here, number of hidden layers and number of units in each layers are hyperparameters and they need to be tuned. In this research, several neural network architectures were tested. We started with the simplest architecture (1 input layer, 1 hidden layer with 1 hidden unit and output layer) and gradually increased the depth (1, 2, 3) and width ($2^{1}$, $2^{2}$, $2^{3}$, $2^{4}$ etc.) of the NN to assess the impact of the design on the performance. In general, it was observed that the more complicated the neural network architecture is, the better it performs. Increasing the number of hidden layers significantly increased the generalizability of the model to the testing data when the number of hidden units were kept constant at each layer. Optimal NN architecture was chosen based on the time it took for the model to converge, training, validation and testing accuracy.
