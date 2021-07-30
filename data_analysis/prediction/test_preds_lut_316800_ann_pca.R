@@ -15,6 +15,12 @@ training_label = training[, 1:4]
 training_label_scaled = training_label %>% scale()
 training = training[, -c(1:6)]
 
+# validation set
+validation = data_sets[4] %>% read_csv() %>% as.matrix()
+validation_label = validation[, 1:4]
+validation_label_scaled = validation_label %>% scale()
+validation = validation[, -c(1:6)]
+
 # testing set
 testing = data_sets[2] %>% read_csv() %>% as.matrix()
 testing_label = testing[, 1:4]
@@ -43,8 +49,10 @@ std_lai_testing = stds_testing_label[[4]]
 # load the trained model
 model = load_model_tf(filepath = "./data_analysis/models/ann_pca_lut316800_3h")
 
-# evaluate the model on the testing set
-model %>% evaluate(testing, testing_label_scaled)
+# evaluate the model on the training, validationa and testing set
+eval_training = model %>% evaluate(training, training_label_scaled)
+eval_validation = model %>% evaluate(validation, validation_label_scaled)
+eval_testing = model %>% evaluate(testing, testing_label_scaled)
 
 # predict on test set
 preds_test = model %>% predict(testing)

@@ -82,12 +82,49 @@ The Figure \@ref(fig:noise).a shows a simulated spectra that seems perfectly smo
 
 The result of PCA show that most of the variation in the simulated data can be explained by much fewer variables (PCs):
 
-```{r pca, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Principal Component Analysis: a) Screeplot, b) Cumulative variance explained by the first 5 PCs", cache=FALSE}
+```{r pca, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Principal Component Analysis: a) Screeplot, b) Cumulative variance explained by the first 5 PCs", cache=TRUE}
 knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/pca.pdf")
 ```
 
 The Figure \@ref(fig:pca).a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99% of the variation that is present in the original data (Figure \@ref(fig:pca).b). This, once again shows the multicollinearity problem with hyperspectral data.
 
+\newpage
+
+## Artificial Neural Networks (ANN)
+
+### Training
+
+The Figure \@ref(fig:histannpca) shows the loss, MSE as a function of epochs for the first NN model. 
+
+```{r histannpca, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Training history of ANN with PCs", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/hist_annpca.pdf")
+```
+
+It took the NN (when PCs were used as input) more than 2000 epochs to converge to the potential global optima. The loss appears to decrease relatively rapidly during the first 500 epochs. After the epoch number 500 the loss decreases slowly. This may indicate that some of the non-linear relationships between the simulated spectral features and the chosen plant parameters are relatively easy to learn, but the NN needs more training to learn more complicated relationships. The final MSE and MAE this NN achieved when it was evaluated on the testing set was 0.1071568 and 0.1739102 respectively (Table \@ref(tab:losstable)). These values are a joint loss of all the target parameters (INFORM parameters).
+
+The Figure \@ref(fig:histannrs) shows the training history of the NN where simulated 231 PRISMA bands were used as an input layer.
+
+```{r histannrs, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Training history of ANN with simulated PRISMA bands", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/hist_annrs.pdf")
+```
+
+In this model, less than 1200 epochs of training was enough for the NN to converge. Also, the training, validation and most importantly, testing losses were lower (compared to the first NN) when the simulated PRISMA bands were used as predictors (Table \@ref(tab:losstable)). 
+
+The lines that show training and validation loss over epochs (Figures \@ref(fig:histannpca) and \@ref(fig:histannrs)) are close to each other and show more or less similar pattern of decrease. This is a sign that there is no a serious overfitting problem during the training. Before adding regularization term to the cost function, however, there was sign of overfitting during the training. 
+
+\newpage
+
+The Table \@ref(tab:losstable) summarizes the final results of the ANNs.
+
+```{r losstable, echo=FALSE, message=FALSE, warning=FALSE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\ann_results.R")
+knitr::kable(ann_results, caption = "Final results of the trained NNs",
+             escape = FALSE, booktabs = TRUE) |>
+        kableExtra::kable_styling(latex_options = "HOLD_position") #|>
+        #kableExtra::column_spec(1, width = "8cm")
+```
+
+This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently. Most of the previous studies concluded that 
 
 
 

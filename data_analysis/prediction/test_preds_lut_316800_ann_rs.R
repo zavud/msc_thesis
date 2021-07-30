@@ -59,6 +59,13 @@ training = training %>%
         scale(center = mn,
               scale = std)
 
+# validation set
+validation_label = validation[, 1:4]
+validation_label_scaled = validation_label %>% scale()
+validation = validation[, -c(1:6)] %>% 
+        scale(center = mn,
+              scale = std)
+
 # testing set
 testing_label = testing[, 1:4]
 testing_label_scaled = testing_label %>% scale()
@@ -89,7 +96,9 @@ std_lai_testing = stds_testing_label[[4]]
 model = load_model_tf(filepath = "./data_analysis/models/ann_RS_lut316800_3h")
 
 # evaluate the model
-model %>% evaluate(testing, testing_label_scaled)
+eval_train = model %>% evaluate(training, training_label_scaled)
+eval_val = model %>% evaluate(validation, validation_label_scaled)
+eval_test = model %>% evaluate(testing, testing_label_scaled)
 
 # predicstions on test set
 preds_test = model %>% predict(testing)
