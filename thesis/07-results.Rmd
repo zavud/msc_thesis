@@ -128,7 +128,7 @@ This result indicates that, when designing the NN architecture properly and givi
 
 ### Evaluation of the NN models on the testing set
 
-The Figure \@ref(fig:predstest) shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column and the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the "jitter" technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier [@wickham2016r; @ggplot2]. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
+The Figure \@ref(fig:predstest) shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column or the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the "jitter" technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier [@wickham2016r; @ggplot2]. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
 
 \newpage
 

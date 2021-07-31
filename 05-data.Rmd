@@ -1,0 +1,3 @@
+# Satellite Data
+
+In this study, the satellite data Hyperspectral Precursor of the Application Mission (PRISMA) was utilized. 
