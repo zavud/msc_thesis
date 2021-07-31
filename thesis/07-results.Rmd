@@ -116,7 +116,7 @@ The lines that show training and validation loss over epochs (Figures \@ref(fig:
 
 The Table \@ref(tab:losstable) summarizes the final results of the ANNs.
 
-```{r losstable, echo=FALSE, message=FALSE, warning=FALSE}
+```{r losstable, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\ann_results.R")
 knitr::kable(ann_results, caption = "Final results of the trained NNs",
              escape = FALSE, booktabs = TRUE) |>
@@ -124,7 +124,45 @@ knitr::kable(ann_results, caption = "Final results of the trained NNs",
         #kableExtra::column_spec(1, width = "8cm")
 ```
 
-This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently. Most of the previous studies concluded that 
+This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently.
+
+### Evaluation on the testing set
+
+The Figure \@ref(fig:predstest) shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column and the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the "jitter" technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier [@wickham2016r; @ggplot2]. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
+
+\newpage
+
+```{r predstest, warning=FALSE, message=FALSE, echo=FALSE, out.width="100%", fig.cap="Predicted versus modelled RTM parameters for the PCA based NN (1st column) and NN with simulated PRISMA bands (2nd column)", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/preds_test.pdf")
+```
+
+In general, both of the NN models appears to perform well on the testing set that it was not trained on. The effect of adding random Gaussian noise can clearly be seen. The points that are relatively far from the diagonal line are results of adding 3% Gaussian noise. This was not the case on the NN model that was trained with simulated data that did not receive any amount of noise. The parameter $C_{ab}$ appears to be impacted by the noise more significantly compared to other paramters. This is potentially due to the fact that $C_{ab}$ has a very specialized impact on the simulated reflectance, almost exclusively on the visible spectra (Figure \@ref(fig:fsens).a). Unlike $C_{ab}$, the other parameters had impact on more bands (Figure \@ref(fig:fsens)) and this might have helped the NN learn the relationship more easily for these parameters despite the existence of noise.
+
+Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter $LAI_{s}$ (Figure \@ref(fig:predstest).h).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

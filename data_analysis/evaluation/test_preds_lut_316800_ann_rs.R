@@ -156,7 +156,8 @@ g_lai_annrs = ggplot(data.frame(x = testing_label[samples, 4],
              y = TeX("LAI_{s} ($\\frac{m^2}{m^2}$) predicted (ANN)")) +
         theme_bw()
 
-g_cab_annpca + g_cab_annrs
+(g_cab_annpca + g_cab_annrs) / (g_cw_annpca + g_cw_annrs) / (g_cm_annpca + g_cm_annrs) / (g_lai_annpca + g_lai_annrs) +
+        plot_annotation(tag_levels = "a")
 
 
 

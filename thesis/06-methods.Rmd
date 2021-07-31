@@ -249,8 +249,6 @@ In the Figure \@ref(fig:annpca), $a_{n}^{l}$ refers to the $n$th unit in the $l$
 
 The Figure \@ref(fig:annprisma) shows the chosen NN architecture for the NN model where simulated 231 PRISMA image bands were used as input. 
 
-\newpage
-
 ```{r annprisma, echo=FALSE, fig.cap="Architecture of the Neural Network with simulated PRISMA image bands as inputs", crop=TRUE, cache=TRUE}
 source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annprisma.R"); annprisma
 ```
