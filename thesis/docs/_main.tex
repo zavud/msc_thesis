@@ -635,7 +635,16 @@ All of the Neural Network building, testing and training processes were implemen
 \hypertarget{final-prediction-and-map-retrieval}{%
 \section{Final prediction and map retrieval}\label{final-prediction-and-map-retrieval}}
 
-Finally, the best performing NN model was used to retrieve \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) maps for the National Park Hunsrück-Hochwald. Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4 dimensional raster file (e.g.~ENVI and Tiff formats) and can be visualized and analysed further.
+Finally, the best performing NN model was used to retrieve \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) maps for the National Park Hunsrück-Hochwald. Target variables (INFORM parameters) were normalized and standardized using the same Equation \eqref{eq:normy} before training NN models. This means that when we apply the trained NN model to make a prediction on the PRISMA image we get scaled predictions. Therefore, it is necessary to ``un-scale'' the predictions back. To achieve this we can use the Equation \eqref{eq:normy} and scaling (\(\sigma\)) and centering (\(\mu\)) factors of training output variables as follows:
+
+\begin{equation}
+Y_{unscaled}\ =\ \left(Y_{predicted_{scaled}}\ \cdot\ \sigma_{Y_{train}\ }\right)\ +\ \mu_{Y_{train}}
+\label{eq:unnormy}
+\end{equation}
+
+In the Equation \eqref{eq:unnormy} \(Y_{unscaled}\) the final prediction, \(Y_{predicted_{scaled}}\) is the scaled version of the prediction, \(\sigma_{Y_{train}}\) is the standard deviation and \(\mu_{Y_{train}}\) is the mean of the corresponding target variable in the training set.
+
+Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4-band raster file (e.g.~ENVI and Tiff formats) and can be visualized and analysed further.
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
@@ -797,8 +806,8 @@ Test & MAE & 0.1739102 & 0.13459726\\
 
 This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently.
 
-\hypertarget{evaluation-on-the-testing-set}{%
-\subsection{Evaluation on the testing set}\label{evaluation-on-the-testing-set}}
+\hypertarget{evaluation-of-the-nn-models-on-the-testing-set}{%
+\subsection{Evaluation of the NN models on the testing set}\label{evaluation-of-the-nn-models-on-the-testing-set}}
 
 The Figure \ref{fig:predstest} shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column and the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the ``jitter'' technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier \citep{wickham2016r, ggplot2}. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
 

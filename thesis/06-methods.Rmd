@@ -259,7 +259,16 @@ All of the Neural Network building, testing and training processes were implemen
 
 ## Final prediction and map retrieval
 
-Finally, the best performing NN model was used to retrieve $C_{ab}$, $C_{w}$, $C_{m}$ and $LAI_{s}$ maps for the National Park Hunsrück-Hochwald. Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4 dimensional raster file (e.g. ENVI and Tiff formats) and can be visualized and analysed further.
+Finally, the best performing NN model was used to retrieve $C_{ab}$, $C_{w}$, $C_{m}$ and $LAI_{s}$ maps for the National Park Hunsrück-Hochwald. Target variables (INFORM parameters) were normalized and standardized using the same Equation \@ref(eq:normy) before training NN models. This means that when we apply the trained NN model to make a prediction on the PRISMA image we get scaled predictions. Therefore, it is necessary to "un-scale" the predictions back. To achieve this we can use the Equation \@ref(eq:normy) and scaling ($\sigma$) and centering ($\mu$) factors of training output variables as follows:
+
+\begin{equation}
+Y_{unscaled}\ =\ \left(Y_{predicted_{scaled}}\ \cdot\ \sigma_{Y_{train}\ }\right)\ +\ \mu_{Y_{train}}
+(\#eq:unnormy)
+\end{equation}
+
+In the Equation \@ref(eq:unnormy) $Y_{unscaled}$ is the final predicted value, $Y_{predicted_{scaled}}$ is the scaled version of the prediction, $\sigma_{Y_{train}}$ is the standard deviation and $\mu_{Y_{train}}$ is the mean of the corresponding target variable in the training set.
+
+Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4-band raster file (e.g. ENVI and Tiff formats) and can be visualized and analysed further.
 
 
 
