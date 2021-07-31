@@ -4,6 +4,7 @@ library(tidyverse)
 library(raster)
 library(latex2exp)
 library(patchwork)
+library(yardstick)
 
 # load training/val/test sets
 database_path = ".\\data_analysis\\prisma_training_database"
@@ -63,12 +64,32 @@ preds_cw_testing = (preds_test[, 2] * std_cw_testing) + center_cw_testing
 preds_cm_testing = (preds_test[, 3] * std_cm_testing) + center_cm_testing
 preds_lai_testing = (preds_test[, 4] * std_lai_testing) + center_lai_testing
 
+# calculate r2 for the predicted variables
+(rsq_cab = rsq_vec(truth = testing_label[, 1],
+                   estimate = preds_cab_testing))
+(rsq_cw = rsq_vec(truth = testing_label[, 2],
+                  estimate = preds_cw_testing))
+(rsq_cm = rsq_vec(truth = testing_label[, 3],
+                  estimate = preds_cm_testing))
+(rsq_lai = rsq_vec(truth = testing_label[, 4],
+                   estimate = preds_lai_testing))
+
+# calculate rmse for the predicted variables
+(rmse_cab = rmse_vec(truth = testing_label[, 1],
+                     estimate = preds_cab_testing))
+(rmse_cw = rmse_vec(truth = testing_label[, 2],
+                    estimate = preds_cw_testing))
+(rmse_cm = rmse_vec(truth = testing_label[, 3],
+                    estimate = preds_cm_testing))
+(rmse_lai = rmse_vec(truth = testing_label[, 4],
+                     estimate = preds_lai_testing))
+
 # calculate rsquared values for each variables
-source(".\\data_analysis\\my_functions\\rsq.R") # load the function rsq i created
-rsq_cab = rsq(preds = preds_cab_testing, actual = testing_label[, 1])
-rsq_cw = rsq(preds = preds_cw_testing, actual = testing_label[, 2])
-rsq_cm = rsq(preds = preds_cm_testing, actual = testing_label[, 3])
-rsq_lai = rsq(preds = preds_lai_testing, testing_label[, 4])
+#source(".\\data_analysis\\my_functions\\rsq.R") # load the function rsq i created
+#rsq_cab = rsq(preds = preds_cab_testing, actual = testing_label[, 1])
+#rsq_cw = rsq(preds = preds_cw_testing, actual = testing_label[, 2])
+#rsq_cm = rsq(preds = preds_cm_testing, actual = testing_label[, 3])
+#rsq_lai = rsq(preds = preds_lai_testing, testing_label[, 4])
 
 # compare predictions and testing labels
 set.seed(1)

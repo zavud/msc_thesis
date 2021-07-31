@@ -126,7 +126,7 @@ knitr::kable(ann_results, caption = "Final results of the trained NNs",
 
 This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently.
 
-### Evaluation on the testing set
+### Evaluation of the NN models on the testing set
 
 The Figure \@ref(fig:predstest) shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column and the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the "jitter" technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier [@wickham2016r; @ggplot2]. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
 
@@ -138,10 +138,25 @@ knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/preds_
 
 In general, both of the NN models appears to perform well on the testing set that it was not trained on. The effect of adding random Gaussian noise can clearly be seen. The points that are relatively far from the diagonal line are results of adding 3% Gaussian noise. This was not the case on the NN model that was trained with simulated data that did not receive any amount of noise. The parameter $C_{ab}$ appears to be impacted by the noise more significantly compared to other paramters. This is potentially due to the fact that $C_{ab}$ has a very specialized impact on the simulated reflectance, almost exclusively on the visible spectra (Figure \@ref(fig:fsens).a). Unlike $C_{ab}$, the other parameters had impact on more bands (Figure \@ref(fig:fsens)) and this might have helped the NN learn the relationship more easily for these parameters despite the existence of noise.
 
-Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter $LAI_{s}$ (Figure \@ref(fig:predstest).h).
+Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter $LAI_{s}$ (Figure \@ref(fig:predstest).h). The Table \@ref(tab:modelacc) shows the differences between the results of the two models on the testing set parameters.
+
+```{r modelacc, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\model_acc.R")
+knitr::kable(model_acc, caption = "Differences between the performances of the trained 2 NN models on the testing set parameters",
+             escape = FALSE, booktabs = TRUE,
+             col.names = c("Parameter",
+                           paste0("$R^{2}$ (PCs)", kableExtra::footnote_marker_symbol(1, "latex")),
+                           paste0("RMSE (PCs)", kableExtra::footnote_marker_symbol(1, "latex")),
+                           paste0("$R^{2}$ (Bands)", kableExtra::footnote_marker_symbol(2, "latex")),
+                           paste0("RMSE (Bands)", kableExtra::footnote_marker_symbol(2, "latex")))) |>
+        kableExtra::kable_styling(latex_options = "HOLD_position") |>
+        kableExtra::footnote(symbol = c("PCs - refers to the result of NN with Principal Components",
+                                       "Bands - refers the result of NN with simulated PRISMA bands")) #|>
+        #kableExtra::column_spec(1, width = "8cm")
+```
 
 
-
+The NN trained with simulated 231 PRISMA bands predicts INFORM parameters $C_{ab}$, $C_{w}$ and $C_{m}$ with slightly better $R^{2}$ and $RMSE$. This NN model predicts $LAI_{s}$ with much better accuracy. This could potentially be due to the fact that $LAI_{s}$ has an important effect within the full spectra (see sensitivity subplot Figure \@ref(fig:fsens).d) and the 5 PCs do not properly represent the full relationship between the plant parameter $LAI_{s}$ and spectra.
 
 
 

@@ -628,7 +628,7 @@ The Figure \ref{fig:annprisma} shows the chosen NN architecture for the NN model
 \caption{\label{fig:annprisma}Architecture of the Neural Network with simulated PRISMA image bands as inputs}
 \end{figure}
 
-In the Figure \ref{fig:annprisma}, \(B_{n}\) refers to the simulated \(n\)th PRISMA image band and \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded more significant results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
+In the Figure \ref{fig:annprisma}, \(B_{n}\) refers to the simulated \(n\)th PRISMA image band and \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded better results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
 
 All of the Neural Network building, testing and training processes were implemented using keras \citep{keras} in tensorflow API \citep{tensorflow}.
 
@@ -810,7 +810,27 @@ The Figure \ref{fig:predstest} shows the scatterplots of the predicted parameter
 
 In general, both of the NN models appears to perform well on the testing set that it was not trained on. The effect of adding random Gaussian noise can clearly be seen. The points that are relatively far from the diagonal line are results of adding 3\% Gaussian noise. This was not the case on the NN model that was trained with simulated data that did not receive any amount of noise. The parameter \(C_{ab}\) appears to be impacted by the noise more significantly compared to other paramters. This is potentially due to the fact that \(C_{ab}\) has a very specialized impact on the simulated reflectance, almost exclusively on the visible spectra (Figure \ref{fig:fsens}.a). Unlike \(C_{ab}\), the other parameters had impact on more bands (Figure \ref{fig:fsens}) and this might have helped the NN learn the relationship more easily for these parameters despite the existence of noise.
 
-Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter \(LAI_{s}\) (Figure \ref{fig:predstest}.h).
+Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter \(LAI_{s}\) (Figure \ref{fig:predstest}.h). The Table \ref{tab:modelacc} shows the differences between the results of the two models on the testing set parameters.
+
+\begin{table}[H]
+
+\caption{\label{tab:modelacc}Differences between the performances of the trained 2 NN models on the testing set parameters}
+\centering
+\begin{tabular}[t]{lllll}
+\toprule
+Parameter & $R^{2}$ (PCs)\textsuperscript{*} & RMSE (PCs)\textsuperscript{*} & $R^{2}$ (Bands)\textsuperscript{\dag} & RMSE (Bands)\textsuperscript{\dag}\\
+\midrule
+$C_{ab}$ & 0.8733358 & 4.37369 ($\frac{\mu g}{cm^2}$) & 0.8911385 & 4.064 ($\frac{\mu g}{cm^2}$)\\
+$C_{cw}$ & 0.9246098 & 0.002765111 ($\frac{g}{cm^2}$) & 0.9396872 & 0.00252202 ($\frac{g}{cm^2}$)\\
+$C_{cm}$ & 0.9341707 & 0.001798028 ($\frac{g}{cm^2}$) & 0.9428488 & 0.001702862 ($\frac{g}{cm^2}$)\\
+$LAI_{s}$ & 0.896475 & 0.641572 ($\frac{m^2}{m^2}$) & 0.9513208 & 0.443341 ($\frac{m^2}{m^2}$)\\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{*} PCs - refers to the result of NN with Principal Components}\\
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{\dag} Bands - refers the result of NN with simulated PRISMA bands}\\
+\end{tabular}
+\end{table}
+
+The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\). This NN model predicts \(LAI_{s}\) with much better accuracy. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs do not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
 
 
 %%%%% REFERENCES
