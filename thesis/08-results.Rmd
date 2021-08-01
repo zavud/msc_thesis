@@ -158,20 +158,53 @@ knitr::kable(model_acc, caption = "Differences between the performances of the t
 
 The NN trained with simulated 231 PRISMA bands predicts INFORM parameters $C_{ab}$, $C_{w}$ and $C_{m}$ with slightly better $R^{2}$ and $RMSE$. This NN model predicts $LAI_{s}$ with much better accuracy. This could potentially be due to the fact that $LAI_{s}$ has an important effect within the full spectra (see sensitivity subplot Figure \@ref(fig:fsens).d) and the 5 PCs do not properly represent the full relationship between the plant parameter $LAI_{s}$ and spectra.
 
+## Final prediction and map retrieval
 
+The NN that was trained with 231 simulated PRISMA bands was used for map retrieval as the final optimal model. Four different maps for the parameters $C_{ab}$, $C_{w}$, $C_{m}$ and $LAI_{s}$ were produced as raster images. Each pixel in the retrieved maps is the predicted value of the corresponding INFORM parameter.
 
+### Retrieval of $C_{ab}$ map
 
+The Figure \@ref(fig:mapcab) shows the predicted map of the parameter $C_{ab}$. 
 
+```{r mapcab, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{ab}$", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_map.pdf")
+```
 
+Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher $C_{ab}$ values than the values that were used for simulation. This is further supported by the Figure \@ref(fig:histcab).
 
+```{r histcab, warning=FALSE, message=FALSE, echo=FALSE, out.width="80%", fig.cap="Distribution of the predicted values for the parameter $C_{ab}$", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_hist.pdf")
+```
 
+The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter $C_{ab}$ only have a significant impact on the visible spectra (see Figure \@ref(fig:fsens).a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \@ref(fig:meancomparison)). Specifically, the sensitivity analysis showed that the higher the $C_{ab}$ value, the lower the reflectance in the visible spectra will be (Figure \@ref(fig:fsens).a). This means that it is expected to get higher predicted $C_{ab}$ values for the PRISMA image. 
 
+### Retrieval of $C_{w}$ map
 
+The Figure \@ref(fig:mapcw) shows the predicted map of the parameter $C_{w}$. 
 
+```{r mapcw, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{w}$", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_map.pdf")
+```
 
+Majority of the pixels show predicted values that are within the same range of the values used during the simulation. The parameter $C_{w}$ has a large effect on the NIR spectrum (Figure \@ref(fig:fsens).b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \@ref(fig:meancomparison)). This could explain why the range of the predicted $C_{w}$ values is similar to the $C_{w}$ range within the LUT. However, there is also a large impact of $C_{w}$ on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
 
+The Figure \@ref(fig:histcw) shows the distribution of the predicted $C_{w}$ values in more detail.
 
+```{r histcw, warning=FALSE, message=FALSE, echo=FALSE, out.width="80%", fig.cap="Distribution of the predicted values for the parameter $C_{w}$", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_hist.pdf")
+```
 
+\newpage
+
+### Retrieval of $C_{m}$ map
+
+The Figure \@ref(fig:mapcm) shows the predicted map of the parameter $C_{m}$. 
+
+```{r mapcm, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{m}$", cache=TRUE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cm_map.pdf")
+```
+
+The predicted $C_{m}$ map shows that some of the pixels in the predicted map is smaller than 0. The sensitivity analysis showed that increased $C_{m}$ values decreases the reflectance over NIR and SWIR (Figure \@ref(fig:fsens).c). In average, the PRISMA image pixels have lower reflectance within the SWIR region of the spectra and this is the reason why the trained NN predicts low values $C_{m}$ for some of the pixels.
 
 
 

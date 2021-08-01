@@ -286,6 +286,11 @@ Retrieval of plant biophysical and biochemical variables from remote sensing dat
 \flushbottom
 
 % all your chapters and appendices will appear here
+\hypertarget{satellite-data}{%
+\chapter{Satellite Data}\label{satellite-data}}
+
+In this study, the hyperspectral satellite data PRISMA (PRecursore IperSpettrale della Missione Applicativa) was utilized. The PRISMA sensor has Field of View (FOV) of \(2.45^{\circ}\) and swath of 30 km. The sensor takes images within the spectral range of 400-2500nm. The PRISMA image has 66 bands in the visible and near infrared (VNIR) region (400-1010nm) and 173 bands within the short-wave infrared (SWIR) region (920-2505nm) of the spectrum. The spectral resolution of the data is somewhere between 6nm and 12nm. The hyperspectral data has a ground sampling distance (GSD) of 30 m \citep{candela2016prisma, giardino2020first, verrelst2021mapping}. The scientific fields that are expected to largely benefit from the PRISMA data are mainly environmental, climate change and forest research areas, among others \citep{giardino2020first}.
+
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}
 
@@ -642,7 +647,7 @@ Y_{unscaled}\ =\ \left(Y_{predicted_{scaled}}\ \cdot\ \sigma_{Y_{train}\ }\right
 \label{eq:unnormy}
 \end{equation}
 
-In the Equation \eqref{eq:unnormy} \(Y_{unscaled}\) the final prediction, \(Y_{predicted_{scaled}}\) is the scaled version of the prediction, \(\sigma_{Y_{train}}\) is the standard deviation and \(\mu_{Y_{train}}\) is the mean of the corresponding target variable in the training set.
+In the Equation \eqref{eq:unnormy} \(Y_{unscaled}\) is the final predicted value, \(Y_{predicted_{scaled}}\) is the scaled version of the prediction, \(\sigma_{Y_{train}}\) is the standard deviation and \(\mu_{Y_{train}}\) is the mean of the corresponding target variable in the training set.
 
 Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4-band raster file (e.g.~ENVI and Tiff formats) and can be visualized and analysed further.
 
@@ -809,7 +814,7 @@ This result indicates that, when designing the NN architecture properly and givi
 \hypertarget{evaluation-of-the-nn-models-on-the-testing-set}{%
 \subsection{Evaluation of the NN models on the testing set}\label{evaluation-of-the-nn-models-on-the-testing-set}}
 
-The Figure \ref{fig:predstest} shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column and the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the ``jitter'' technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier \citep{wickham2016r, ggplot2}. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
+The Figure \ref{fig:predstest} shows the scatterplots of the predicted parameters versus modelled parameters for the PCA based NN (first column or the plots on the left side) and NN with simulated PRISMA bands (the second column or the plots on the right). For easier visualization of the scatter plots only 1500 data points were randomly sampled from the testing data set (full testing data could be too large to visualize). Also, there was an overplotting problem in the original scatter plots due to many similar points laying on top of each other. Therefore, the ``jitter'' technique was used, which adds a very small random noise to each point (location wise) that makes visualization easier \citep{wickham2016r, ggplot2}. The blue diagonal line shows the 1:1 line that has an intercept 0 and slope 1.
 
 \newpage
 
@@ -840,6 +845,58 @@ $LAI_{s}$ & 0.896475 & 0.641572 ($\frac{m^2}{m^2}$) & 0.9513208 & 0.443341 ($\fr
 \end{table}
 
 The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\). This NN model predicts \(LAI_{s}\) with much better accuracy. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs do not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
+
+\hypertarget{final-prediction-and-map-retrieval-1}{%
+\section{Final prediction and map retrieval}\label{final-prediction-and-map-retrieval-1}}
+
+The NN that was trained with 231 simulated PRISMA bands was used for map retrieval as the final optimal model. Four different maps for the parameters \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) were produced as raster images. Each pixel in the retrieved maps is the predicted value of the corresponding INFORM parameter.
+
+\hypertarget{retrieval-of-c_ab-map}{%
+\subsection{\texorpdfstring{Retrieval of \(C_{ab}\) map}{Retrieval of C\_\{ab\} map}}\label{retrieval-of-c_ab-map}}
+
+The Figure \ref{fig:mapcab} shows the predicted map of the parameter \(C_{ab}\).
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_map} \caption{Predicted map of the parameter $C_{ab}$}\label{fig:mapcab}
+\end{figure}
+
+Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher \(C_{ab}\) values than the values that were used for simulation. This is further supported by the Figure \ref{fig:histcab}.
+
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_hist} \caption{Distribution of the predicted values for the parameter $C_{ab}$}\label{fig:histcab}
+\end{figure}
+
+The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter \(C_{ab}\) only have a significant impact on the visible spectra (see Figure \ref{fig:fsens}.a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \ref{fig:meancomparison}). Specifically, the sensitivity analysis showed that the higher the \(C_{ab}\) value, the lower the reflectance in the visible spectra will be (Figure \ref{fig:fsens}.a). This means that it is expected to get higher predicted \(C_{ab}\) values for the PRISMA image.
+
+\hypertarget{retrieval-of-c_w-map}{%
+\subsection{\texorpdfstring{Retrieval of \(C_{w}\) map}{Retrieval of C\_\{w\} map}}\label{retrieval-of-c_w-map}}
+
+The Figure \ref{fig:mapcw} shows the predicted map of the parameter \(C_{w}\).
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_map} \caption{Predicted map of the parameter $C_{w}$}\label{fig:mapcw}
+\end{figure}
+
+Majority of the pixels show predicted values that are within the same range of the values used during the simulation. The parameter \(C_{w}\) has a large effect on the NIR spectrum (Figure \ref{fig:fsens}.b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \ref{fig:meancomparison}). This could explain why the range of the predicted \(C_{w}\) values is similar to the \(C_{w}\) range within the LUT. However, there is also a large impact of \(C_{w}\) on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
+
+The Figure \ref{fig:histcw} shows the distribution of the predicted \(C_{w}\) values in more detail.
+
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_hist} \caption{Distribution of the predicted values for the parameter $C_{w}$}\label{fig:histcw}
+\end{figure}
+
+\newpage
+
+\hypertarget{retrieval-of-c_m-map}{%
+\subsection{\texorpdfstring{Retrieval of \(C_{m}\) map}{Retrieval of C\_\{m\} map}}\label{retrieval-of-c_m-map}}
+
+The Figure \ref{fig:mapcm} shows the predicted map of the parameter \(C_{m}\).
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cm_map} \caption{Predicted map of the parameter $C_{m}$}\label{fig:mapcm}
+\end{figure}
+
+The predicted \(C_{m}\) map shows that some of the pixels in the predicted map is smaller than 0. The sensitivity analysis showed that increased \(C_{m}\) values decreases the reflectance over NIR and SWIR (Figure \ref{fig:fsens}.c).
 
 
 %%%%% REFERENCES

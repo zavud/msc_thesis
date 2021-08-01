@@ -3,6 +3,8 @@ library(keras)
 library(tidyverse)
 library(raster)
 library(tidymodels)
+library(ggspatial)
+library(latex2exp)
 
 # load prisma wl bands
 wl_path = ".\\data_analysis\\sensor_metadata\\wl_prisma.txt"
@@ -111,110 +113,130 @@ biomap_img = rasterFromXYZ(prisma_biomap_df, res = res(prisma[[55]]), crs = crs(
 plot(biomap_img)
 
 # plot prisma Cab image
-prisma_biomap_df %>% 
+map_cab = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(x, y, cab) %>% 
-        mutate(pixel_class = ifelse(cab > 20 & cab < 80, "normal", "abnormal")) %>% 
-        ggplot(aes(x, y, fill = pixel_class)) +
+        ggplot(aes(x, y, fill = cab)) +
         geom_raster() +
-        labs(y = "Lat", x = "Long", title = "Retrieved Cab map", fill = "Cab") +
+        scale_fill_viridis_c() +
+        annotation_scale(plot_unit = "m", height = unit(.1, "cm")) +
+        annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering) +
+        labs(y = "Lat", 
+             x = "Long", 
+             title = TeX("Predicted C_{ab} map"), 
+             fill = TeX("C_{ab} ($\\frac{\\mu g}{cm^2}$)")) +
         theme_bw() +
         theme(legend.position = c(.8, .1),
-              legend.direction = "horizontal")
+              legend.direction = "horizontal",
+              plot.title = element_text(hjust = .5),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
 
-g_cab_hist = prisma_biomap_df %>% 
+hist_cab = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(cab) %>% 
         ggplot(aes(x = cab)) +
         geom_histogram(bins = 50, fill = "darkgreen") +
-        labs(x = "Cab", y = "Frequency", title = "Distribution of retrieved Cab values",
-             subtitle = "Range in the simulation : 20 - 60") +
-        theme_bw()
-g_cab_map + g_cab_hist        
-
-prisma_biomap_df %>% 
-        as_tibble() %>% 
-        dplyr::select(cab) %>% 
-        dplyr::filter(cab > 0, cab < 100) %>%
-        count()
+        labs(x = TeX("C_{ab} ($\\frac{\\mu g}{cm^2}$)"), 
+             y = "Frequency", 
+             title = TeX("Distribution of predicted C_{ab} values")) +
+        theme_bw() +
+        theme(plot.title = element_text(hjust = .5))
 
 # cw
-g_cw_map = prisma_biomap_df %>% 
+map_cw = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(x, y, cw) %>% 
-        mutate(pixel_class = case_when(cw > 0.00035 & cw < 0.04 ~ "normal",
-                                       cw < 0.00035 ~ "small",
-                                       cw > 0.04 ~ "large")) %>% 
-        #filter(cw > 0) %>% 
-        ggplot(aes(x, y, fill = pixel_class)) +
+        ggplot(aes(x, y, fill = cw)) +
+        scale_fill_viridis_c() +
         geom_raster() +
-        labs(y = "Lat", x = "Long", title = "Retrieved Cw map", fill = "Cw") +
+        annotation_scale(plot_unit = "m", height = unit(.1, "cm")) +
+        annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering) +
+        labs(y = "Lat", 
+             x = "Long", 
+             title = TeX("Predicted C_{w} map"),
+             fill = TeX("C_{w} ($\\frac{g}{cm^2})")) +
         theme_bw() +
-        theme(legend.position = c(.8, .1),
-              legend.direction = "vertical")
+        theme(legend.position = c(.8, .15),
+              legend.direction = "vertical",
+              plot.title = element_text(hjust = .5),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
 
 
-g_cw_hist = prisma_biomap_df %>% 
+hist_cw = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(cw) %>% 
         ggplot(aes(x = cw)) +
         geom_histogram(bins = 50, fill = "darkgreen") +
-        labs(x = "Cw", y = "Frequency", title = "Distribution of retrieved Cw values",
-             subtitle = "Range in the simulation : 0.0035 - 0.035") +
-        theme_bw()
-g_cw_map + g_cw_hist
+        labs(x = TeX("C_{w} ($\\frac{g}{cm^2})"), 
+             y = "Frequency",
+             title = TeX("Distribution of predicted C_{w} values")) +
+        theme_bw() +
+        theme(plot.title = element_text(hjust = 0.5))
 
 # cm
-g_cm_map = prisma_biomap_df %>% 
+map_cm = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(x, y, cm) %>% 
-        mutate(pixel_class = case_when(cm > 0.0008 & cm < 0.04 ~ "normal",
-                                       cm < 0.0008 ~ "small",
-                                       cm > 0.04 ~ "large")) %>% 
-        ggplot(aes(x, y, fill = pixel_class)) +
+        ggplot(aes(x, y, fill = cm)) +
         geom_raster() +
-        labs(y = "Lat", x = "Long", title = "Retrieved Cm map", fill = "Cm") +
+        annotation_scale(plot_unit = "m", height = unit(.1, "cm")) +
+        annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering) +
+        scale_fill_viridis_c() +
+        labs(y = "Lat",
+             x = "Long", 
+             title = TeX("Retrieved C_{m} map"),
+             fill = TeX("C_{m} ($\\frac{g}{cm^2})")) +
         theme_bw() +
         theme(legend.position = c(.8, .1),
-              legend.direction = "horizontal")
+              legend.direction = "horizontal",
+              plot.title = element_text(hjust = .5),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
 
 
-g_cm_hist = prisma_biomap_df %>% 
+hist_cm = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(cm) %>% 
         ggplot(aes(x = cm)) +
         geom_histogram(bins = 50, fill = "darkgreen") +
-        labs(x = "Cm", y = "Frequency", title = "Distribution of retrieved Cm values",
-             subtitle = "Range in the simulation : 0.008 - 0.03") +
-        theme_bw()
-
-g_cm_map + g_cm_hist
+        labs(x = "Cm", y = "Frequency", title = "Distribution of retrieved Cm values") +
+        theme_bw() +
+        theme(plot.title = element_text(hjust = .5))
 
 # lai
-g_lai_map = prisma_biomap_df %>% 
+map_lai = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(x, y, lai) %>% 
-        #filter(lai > 0) %>% 
-        mutate(pixel_class = case_when(lai > 0 & lai < 15 ~ "normal",
-                                       lai < 0 ~ "small",
-                                       lai > 15 ~ "big")) %>% 
-        ggplot(aes(x, y, fill = pixel_class)) +
+        ggplot(aes(x, y, fill = lai)) +
         geom_raster() +
-        labs(y = "Lat", x = "Long", title = "Retrieved LAI map", fill = "LAI") +
+        scale_fill_viridis_c() +
+        annotation_scale(plot_unit = "m", height = unit(.1, "cm")) +
+        annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering) +
+        labs(title = TeX("Retrieved LAI_{s} map"), 
+             fill = TeX("LAI_{s}")) +
         theme_bw() +
         theme(legend.position = c(.8, .1),
-              legend.direction = "horizontal")
+              legend.direction = "horizontal",
+              plot.title = element_text(hjust = .5),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
 
-
-g_lai_hist = prisma_biomap_df %>% 
+prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(lai) %>% 
         ggplot(aes(x = lai)) +
         geom_histogram(bins = 50, fill = "darkgreen") +
-        labs(x = "LAI", y = "Frequency", title = "Distribution of retrieved LAI values",
-             subtitle = "Range in the simulation : 3 - 9") +
-        theme_bw()
-g_lai_map + g_lai_hist
+        labs(x = TeX("LAI_{s}"),
+             y = "Frequency", 
+             title = TeX("Distribution of retrieved LAI_{s} values")) +
+        theme_bw() +
+        theme(plot.title = element_text(hjust = .5))
 
 
 
