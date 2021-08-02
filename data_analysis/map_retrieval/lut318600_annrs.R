@@ -227,14 +227,14 @@ map_lai = prisma_biomap_df %>%
               axis.text = element_blank(),
               axis.title = element_blank())
 
-prisma_biomap_df %>% 
+hist_lai = prisma_biomap_df %>% 
         as_tibble() %>% 
         dplyr::select(lai) %>% 
         ggplot(aes(x = lai)) +
         geom_histogram(bins = 50, fill = "darkgreen") +
         labs(x = TeX("LAI_{s}"),
              y = "Frequency", 
-             title = TeX("Distribution of retrieved LAI_{s} values")) +
+             title = TeX("Distribution of predicted LAI_{s} values")) +
         theme_bw() +
         theme(plot.title = element_text(hjust = .5))
 

@@ -206,11 +206,15 @@ knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cm_map
 
 The predicted $C_{m}$ map shows that some of the pixels in the predicted map is smaller than 0. The sensitivity analysis showed that increased $C_{m}$ values decreases the reflectance over NIR and SWIR (Figure \@ref(fig:fsens).c). In average, the PRISMA image pixels have lower reflectance within the SWIR region of the spectra and this is the reason why the trained NN predicts low values $C_{m}$ for some of the pixels.
 
+### Retrieval of $LAI_{s}$ map
 
+The Figure \@ref(fig:maplai) shows the predicted map of the parameter $LAI_{s}$. 
 
+```{r maplai, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $LAI_{s}$", cache=FALSE}
+knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/lais_map.pdf")
+```
 
-
-
+We can see that most of the pixels in the predicted $LAI_{s}$ map show the value range of 10-15.
 
 
 
