@@ -164,8 +164,7 @@
 
 %%%%% THESIS / TITLE PAGE INFORMATION
 % Everybody needs to complete the following:
-\title{\texttt{Research\ Project}:\\
-Retrieval of plant biophysical and biochemical variables from remote sensing data using a hybrid machine learning method}
+\title{Retrieval of plant biophysical and biochemical variables from remote sensing data using a hybrid machine learning method}
 \author{Zavud Baghirov}
 \college{Environmental Sciences}
 
@@ -528,6 +527,13 @@ There have been large number of studies utilizing hybrid machine learning method
 \chapter{Satellite Data}\label{satellite-data}}
 
 In this study, the hyperspectral satellite data PRISMA (PRecursore IperSpettrale della Missione Applicativa) was utilized. The PRISMA sensor has Field of View (FOV) of \(2.45^{\circ}\) and swath of 30 km. The sensor takes images within the spectral range of 400-2500nm. The PRISMA image has 66 bands in the visible and near infrared (VNIR) region (400-1010nm) and 173 bands within the short-wave infrared (SWIR) region (920-2505nm) of the spectrum. The spectral resolution of the data is somewhere between 6nm and 12nm. The hyperspectral data has a ground sampling distance (GSD) of 30 m \citep{candela2016prisma, giardino2020first, verrelst2021mapping}. The scientific fields that are expected to largely benefit from the PRISMA data are mainly environmental, climate change and forest research areas, among others \citep{giardino2020first}.
+
+In this study, L2 product of PRISMA data was retrieved and processed. First, the image was cropped to only the study area using a polygon data showing a boundary layer of the study area. Only 231 bands of the PRISMA image were available and all the available bands were utilized for further analysis. The PRISMA image contained clouds and shadow within the national park area and therefore, pre-processing of the image was necessary. The software package ENVI was used in order to accurately mask out the shadows and clouds available within the study area.
+
+\hypertarget{study-area}{%
+\chapter{Study area}\label{study-area}}
+
+Hunsrück-Hochwald is a German national park that was founded in 2015. The national park covers areas in both Saarland and Rhineland-Palatinate German federal states. The area of the national park is about 10,000 hectare \citep{fischer2016scientific}. There are various forestry activities (selective cutting etc.) occuring in the national park area. The forest is mainly dominated by the plant species Norway spruce (\emph{Picea abies}), oak (\emph{Quercus petraea}) and beech (\emph{Fagus sylvatica}) \citep{buddenbaum2015nationalpark}.
 
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}
@@ -1146,6 +1152,40 @@ The Figure \ref{fig:maplai} shows the predicted map of the parameter \(LAI_{s}\)
 \end{figure}
 
 We can see that most of the pixels in the predicted \(LAI_{s}\) map show the value range of 10-15.
+
+\hypertarget{discussion}{%
+\chapter{Discussion}\label{discussion}}
+
+In this study, first the RTM model INFORM was used to simulate forest canopy reflectance and then, the simulated data was used to train ANN model in order for it to predict the studied plant traits of the hyperspectral remote sensing imagery. This section discusses the results and further improvements.
+
+\hypertarget{artificial-neural-networks-for-predicting-plant-traits}{%
+\section{Artificial Neural Networks for predicting plant traits}\label{artificial-neural-networks-for-predicting-plant-traits}}
+
+This study showed that, given enough hidden layers and neurons, using artificial neural networks can efficiently deal with high multi-collinearity that exist within hyperspectral remote sensing data to predict plant biophysical and biochemical parameters. For all the INFORM parameters the NN that was trained with simulated 231 PRISMA bands had better results compared to the NN that was trained with 5PCs. Training NN with full image bands to predict plant biophysical and biochemical parameters that have effect within the whole spectra (e.g.~LAI) could specifically be beneficial. However, it should also be noted that, depending on the availability of the computational resources and time, using a dimensionality reduction technique such as PCA may be preferred. This is because training NN with hundreds of predictors (e.g.~hyperspectral image bands) usually needs more time to run compared to a PCA based NN that is trained with only several predictors (principal components). However, in this study, for the NN that was trained with hyperspectral image bands it took less than 1200 epochs to converge, while the PCA based NN needed to run more than 2000 epochs. This could potentially indicate that for the NN it may be easier to learn the relationships between the plant traits and simulated spectra when all the bands are available. The design of the NN had a significant effect on the results and predictions. Neural networks with simpler architecture led to poor performance, while relatively deeper NN architecture had good prediction accuracies for the plant parameters.
+
+\hypertarget{further-improvements}{%
+\section{Further improvements}\label{further-improvements}}
+
+This model, that was built with the help of RTM and machine learning, can be used to predict the plant traits \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) in the hyperspectral remote sensing data PRISMA. These plant traits could be very beneficial to study forest disturbances especially for Spruce trees.
+
+Potential follow up study could be to use this model in order to retrieve forest biochemical and biophysical maps from the hyperspectral data PRISMA for multiple dates. Then, scientific techniques like change detection could be applied to assess the change of these variables between multiple years.
+
+It is also important to mention that this model could still be improved further. For example, using destructive and non-destructive in-situ data for RTM simulations could potentially lead to better results. In this study, these types of data were not available and the referenced literature was used to choose the range of values for RTM simulation. This data could also help assess the performance of the models (RTM and ANN) in more detail.
+
+In this study, only ANN model was used. Other machine learning models could also be trained for predicting plant traits. ANN mainly focuses on predicting the plant variables as closely as possible. However, it would also be very useful to assess the uncertainty within the predictions of the machine learning model. For example, the Gaussian process regression method would be used to retrieve plant traits and also produce data that shows the amount of uncertainties that is available within the predicted maps. However this method is computationally very expensive and may not efficiently work on large amount of training data.
+
+Another technique that could potentially be utilized is active learning (AL). AL techniques can be specifically useful for ML algorithms that demand siginificant amount of computational power to be trained on large amount of training data. AL can help choose the most important training samples that are available in the simulated training data \citep{verrelst2016active}. For example, AL methods can be combined with kerbel based ML algorithms, such as Gaussian process regression.
+
+\hypertarget{conclusion}{%
+\chapter{Conclusion}\label{conclusion}}
+
+In this research, radiative transfer models PROSPECT5, 4SAIL and FLIM models were coupled to simulate forest canopy reflectance for the National Park Hunsruck-Hochwald. The simulated data was used to train ANN and the trained final ANN was used to predict forest biophysical and biochemical parameters on the PRISMA image of the study area.
+
+Two ANN models were trained, one with a dimensionality reduction technique PCA and one without reducing the dimension of the hyperspectral data. In general, both of the trained NN models were found to perform well. However, the ANN that utilized all the available bands were found to be superior in terms of minimized cost function and prediction errors for each plant parameter. Specifically, prediction of the parameter \(LAI_{s}\) resulted in noticeably higher accuracy when DR technique was not applied.
+
+The NN model that was trained with the 231 simulated PRISMA bands, was chosen as the optimal model and used for the final predictions. This model achieved MSE of 0.07670474 and MAE of 0.13 on the testing data set. The plant parameter \(C_{ab}\) was predicted with an \(R^2\) of 0.89 and RMSE of 4.064 (\(\\frac{\\mu g}{cm^2}\)). \(C_{cw}\) was predicted with an \(R^2\) of 0.94 and RMSE of 0.003 (\(\frac{g}{cm^2}\)). \(R^2\) and RMSE values for \(C_{cm}\) were 0.95 and 0.002 (\(\frac{g}{cm^2}\)) respectively. Finally, \(R^2\) and RMSE values for \(LAI_{s}\) were 0.95 and 0.44 (\(\frac{m^2}{m^2}\)), respectively.
+
+Reliability of the model on the real data could be checked with the help of destructive and non-destructive in-situ data for specifically spruce trees. At the time of this study, there was no data that specifically shows spruce trees while masking the other species, the model was applied to the whole image that does not only contain spruce trees. These types of data would help assess how well the model is working on the real imagery that contain spectral information of spruce trees in the National Park Hunsruck-Hochwald.
 
 
 %%%%% REFERENCES

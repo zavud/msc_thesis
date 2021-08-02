@@ -16,9 +16,7 @@ knit: (function(input, ...) {
 #####################
 ## thesis metadata ##
 #####################
-title: |
-  `Research Project`: \
-  Retrieval of plant biophysical and biochemical variables from remote sensing data using a hybrid machine learning method
+title: Retrieval of plant biophysical and biochemical variables from remote sensing data using a hybrid machine learning method
 author: Zavud Baghirov
 college: Environmental Sciences
 university: University of Trier

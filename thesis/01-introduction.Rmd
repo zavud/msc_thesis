@@ -12,6 +12,13 @@ Another interesting opportunity that remote sensing data provide is to estimate 
 
 There are mainly three inversion methods to estimate plant traits from remote sensing data. These methods are numerical optimization, look-up-table and hybrid techniques. Numerical optimization is considered to be a classical method. However, the major drawbacks of this method are its computational inefficiency and high risk of poor convergence [@zhang2021analyzing]. LUT method refers to a technique where databases to store simulated data is created by RTMs. And then, plant biophysical variables of the simulated reflectance that represents the measured data most closely are chosen as retrievals. Although the LUT method is more efficient than the classic numerical optimization, it is still a computationally inefficient process given that inversion needs to be done for each pixel in the remote sensing product [@danner2021efficient]. The hybrid method can be used to overcome the challenges of these less efficient techniques. In a typical hybrid method a regression model is combined with RTMs [@zhang2021analyzing].
 
-Invertable Forest Reflectance Model (INFORM) is a combination of three RTMs (leaf and canopy) that can be used to simulate forest canopy reflectance in terms of canopy biophysical and biochemical parameters [@atzberger2000development; @schlerf2006inversion]. INFORM and machine learning models can be combined using a hybrid method to retrieve plant traits. The objective of this study is to review the hybrid methods that are used for retrieval of plant biophysical and biochemical variables. This study specifically focuses on a hybrid combination of INFORM and widely used machine learning regression algorithms.
+Invertable Forest Reflectance Model (INFORM) is a combination of three RTMs (leaf and canopy) that can be used to simulate forest canopy reflectance in terms of canopy biophysical and biochemical parameters [@atzberger2000development; @schlerf2006inversion]. INFORM and machine learning models can be combined using a hybrid method to retrieve plant traits. The objective of this study is to review the hybrid methods that are used for retrieval of plant biophysical and biochemical variables. This study specifically focuses on a hybrid combination of INFORM and a machine learning model.
+
+The main objectives of this study are to:
+
+1. use the INFORM RTM to simulate canopy reflectance within the national park Hunsrück-Hochwald based on PRISMA data bands
+2. train ANN using the simulated data in order to assess whether the relationship between plant traits and spectral data can be efficiently learned
+2. assess whether ANN can deal with collinearity available in the hyperspectral data PRISMA
+4. retrieve forest biophysical and biochemical maps for the study area Hunsrück-Hochwald
 
 
