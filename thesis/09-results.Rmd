@@ -7,7 +7,7 @@ Figure \@ref(fig:fsens) shows the result of sensitivity analysis. Chlorophyll co
 \newpage
 
 ```{r fsens, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, out.height="80%", fig.align='center', fig.cap="Effects of varying the chosen parameters on the simulated spectra"}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/sensitivity_results.pdf")
+knitr::include_graphics("./figures/sensitivity_results.pdf")
 ```
 
 \newpage
@@ -53,7 +53,7 @@ In this matrix, $Band1_{n}$, $\dots$, $Band231_{n}$ correspond to the simulated 
 The Figure \@ref(fig:statplots) shows statistical information (mean and mean $\pm$ standard deviation) calculated from the LUT and PRISMA image:
 
 ```{r statplots, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Mean and mean $\\pm$ standard deviation in the a) LUT and b) PRISMA image", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/stats.pdf")
+knitr::include_graphics("./figures/stats.pdf")
 ```
 
 Mean and standard deviation within the LUT are much smoother compared to mean and standard deviation within the PRISMA image spectra. This is due to the fact that INFORM model does not add noise during the simulation which can commonly exist in remote sensing images. There is a noticeable amount of noise in the PRISMA image spectra. Some of the noise in the image spectra could potentially be due to the fact that the PRISMA image contained cloud and shadow within the study area and although most of the cloud and shadow pixels were masked, the nearby pixels could still be affected.
@@ -61,7 +61,7 @@ Mean and standard deviation within the LUT are much smoother compared to mean an
 The Figure \@ref(fig:meancomparison) shows the difference between averaged reflectance within the simulated database (LUT) and PRISMA image. 
 
 ```{r meancomparison, warning=FALSE, message=FALSE, echo=FALSE, out.width="80%", fig.align='center', fig.cap="Difference between averaged LUT and PRISMA image reflectance", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/meancomparison_lut_vs_prisma.pdf")
+knitr::include_graphics("./figures/meancomparison_lut_vs_prisma.pdf")
 ```
 
 The LUT appears to have higher average reflectance within the visible spectra compared to the PRISMA image spectra. Differences within the water absorbtion bands can also be clearly seen. There is relatively good agreement within the NIR spectrum.
@@ -73,7 +73,7 @@ The LUT appears to have higher average reflectance within the visible spectra co
 The Figure \@ref(fig:noise) shows the effect of adding 3% Gaussian noise to the simulated data.
 
 ```{r noise, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Effect of adding $3\\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise found typically in the image", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/noise.pdf")
+knitr::include_graphics("./figures/noise.pdf")
 ```
 
 The Figure \@ref(fig:noise).a shows a simulated spectra that seems perfectly smooth. However, after adding 3% Gaussian noise, the simulated spectra is not as smooth anymore and contains random noise all over the whole spectra (Figure \@ref(fig:noise).b). This also makes the simulated spectra more similar to the pixel extracted from the PRISMA image.
@@ -83,7 +83,7 @@ The Figure \@ref(fig:noise).a shows a simulated spectra that seems perfectly smo
 The result of PCA show that most of the variation in the simulated data can be explained by much fewer variables (PCs):
 
 ```{r pca, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Principal Component Analysis: a) Screeplot, b) Cumulative variance explained by the first 5 PCs", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/pca.pdf")
+knitr::include_graphics("./figures/pca.pdf")
 ```
 
 The Figure \@ref(fig:pca).a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99% of the variation that is present in the original data (Figure \@ref(fig:pca).b). This, once again shows the multicollinearity problem with hyperspectral data.
@@ -97,7 +97,7 @@ The Figure \@ref(fig:pca).a shows the screeplot of the PCA result. The first PC 
 The Figure \@ref(fig:histannpca) shows the loss, MSE as a function of epochs for the first NN model. 
 
 ```{r histannpca, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Training history of ANN with PCs", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/hist_annpca.pdf")
+knitr::include_graphics("./figures/hist_annpca.pdf")
 ```
 
 It took the NN (when PCs were used as input) more than 2000 epochs to converge to the potential global optima. The loss appears to decrease relatively rapidly during the first 500 epochs. After the epoch number 500 the loss decreases slowly. This may indicate that some of the non-linear relationships between the simulated spectral features and the chosen plant parameters are relatively easy to learn, but the NN needs more training to learn more complicated relationships. The final MSE and MAE this NN achieved when it was evaluated on the testing set was 0.1071568 and 0.1739102 respectively (Table \@ref(tab:losstable)). These values are a joint loss of all the target parameters (INFORM parameters).
@@ -105,7 +105,7 @@ It took the NN (when PCs were used as input) more than 2000 epochs to converge t
 The Figure \@ref(fig:histannrs) shows the training history of the NN where simulated 231 PRISMA bands were used as an input layer.
 
 ```{r histannrs, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Training history of ANN with simulated PRISMA bands", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/hist_annrs.pdf")
+knitr::include_graphics("./figures/hist_annrs.pdf")
 ```
 
 In this model, less than 1200 epochs of training was enough for the NN to converge. Also, the training, validation and most importantly, testing losses were lower (compared to the first NN) when the simulated PRISMA bands were used as predictors (Table \@ref(tab:losstable)). 
@@ -117,7 +117,7 @@ The lines that show training and validation loss over epochs (Figures \@ref(fig:
 The Table \@ref(tab:losstable) summarizes the final results of the ANNs.
 
 ```{r losstable, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\ann_results.R")
+source(".\\tables\\ann_results.R")
 knitr::kable(ann_results, caption = "Final results of the trained NNs",
              escape = FALSE, booktabs = TRUE) |>
         kableExtra::kable_styling(latex_options = "HOLD_position") #|>
@@ -133,7 +133,7 @@ The Figure \@ref(fig:predstest) shows the scatterplots of the predicted paramete
 \newpage
 
 ```{r predstest, warning=FALSE, message=FALSE, echo=FALSE, out.width="100%", fig.cap="Predicted versus modelled RTM parameters for the PCA based NN (1st column) and NN with simulated PRISMA bands (2nd column)", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/preds_test.pdf")
+knitr::include_graphics("./figures/preds_test.pdf")
 ```
 
 In general, both of the NN models appears to perform well on the testing set that it was not trained on. The effect of adding random Gaussian noise can clearly be seen. The points that are relatively far from the diagonal line are results of adding 3% Gaussian noise. This was not the case on the NN model that was trained with simulated data that did not receive any amount of noise. The parameter $C_{ab}$ appears to be impacted by the noise more significantly compared to other paramters. This is potentially due to the fact that $C_{ab}$ has a very specialized impact on the simulated reflectance, almost exclusively on the visible spectra (Figure \@ref(fig:fsens).a). Unlike $C_{ab}$, the other parameters had impact on more bands (Figure \@ref(fig:fsens)) and this might have helped the NN learn the relationship more easily for these parameters despite the existence of noise.
@@ -141,7 +141,7 @@ In general, both of the NN models appears to perform well on the testing set tha
 Although overall pattern seems very similar, accuracy of the NN model that was trained with simulated image bands is slightly better for all the parameters. Superiority of this NN model is more noticeable for the parameter $LAI_{s}$ (Figure \@ref(fig:predstest).h). The Table \@ref(tab:modelacc) shows the differences between the results of the two models on the testing set parameters.
 
 ```{r modelacc, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\model_acc.R")
+source(".\\tables\\model_acc.R")
 knitr::kable(model_acc, caption = "Differences between the performances of the trained 2 NN models on the testing set parameters",
              escape = FALSE, booktabs = TRUE,
              col.names = c("Parameter",
@@ -167,13 +167,13 @@ The NN that was trained with 231 simulated PRISMA bands was used for map retriev
 The Figure \@ref(fig:mapcab) shows the predicted map of the parameter $C_{ab}$. 
 
 ```{r mapcab, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{ab}$", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_map.pdf")
+knitr::include_graphics("./figures/cab_map.pdf")
 ```
 
 Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher $C_{ab}$ values than the values that were used for simulation. This is further supported by the Figure \@ref(fig:histcab).
 
 ```{r histcab, warning=FALSE, message=FALSE, echo=FALSE, out.width="80%", fig.cap="Distribution of the predicted values for the parameter $C_{ab}$", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cab_hist.pdf")
+knitr::include_graphics("./figures/cab_hist.pdf")
 ```
 
 The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter $C_{ab}$ only have a significant impact on the visible spectra (see Figure \@ref(fig:fsens).a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \@ref(fig:meancomparison)). Specifically, the sensitivity analysis showed that the higher the $C_{ab}$ value, the lower the reflectance in the visible spectra will be (Figure \@ref(fig:fsens).a). This means that it is expected to get higher predicted $C_{ab}$ values for the PRISMA image. 
@@ -183,7 +183,7 @@ The reason why the trained NN predicts higher values for the PRISMA image compar
 The Figure \@ref(fig:mapcw) shows the predicted map of the parameter $C_{w}$. 
 
 ```{r mapcw, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{w}$", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_map.pdf")
+knitr::include_graphics("./figures/cw_map.pdf")
 ```
 
 Majority of the pixels show predicted values that are within the same range of the values used during the simulation. The parameter $C_{w}$ has a large effect on the NIR spectrum (Figure \@ref(fig:fsens).b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \@ref(fig:meancomparison)). This could explain why the range of the predicted $C_{w}$ values is similar to the $C_{w}$ range within the LUT. However, there is also a large impact of $C_{w}$ on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
@@ -191,7 +191,7 @@ Majority of the pixels show predicted values that are within the same range of t
 The Figure \@ref(fig:histcw) shows the distribution of the predicted $C_{w}$ values in more detail.
 
 ```{r histcw, warning=FALSE, message=FALSE, echo=FALSE, out.width="80%", fig.cap="Distribution of the predicted values for the parameter $C_{w}$", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_hist.pdf")
+knitr::include_graphics("./figures/cw_hist.pdf")
 ```
 
 \newpage
@@ -201,7 +201,7 @@ knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cw_his
 The Figure \@ref(fig:mapcm) shows the predicted map of the parameter $C_{m}$. 
 
 ```{r mapcm, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $C_{m}$", cache=TRUE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/cm_map.pdf")
+knitr::include_graphics("./figures/cm_map.pdf")
 ```
 
 The predicted $C_{m}$ map shows that some of the pixels in the predicted map is smaller than 0. The sensitivity analysis showed that increased $C_{m}$ values decreases the reflectance over NIR and SWIR (Figure \@ref(fig:fsens).c). In average, the PRISMA image pixels have lower reflectance within the SWIR region of the spectra and this is the reason why the trained NN predicts low values $C_{m}$ for some of the pixels.
@@ -211,7 +211,7 @@ The predicted $C_{m}$ map shows that some of the pixels in the predicted map is 
 The Figure \@ref(fig:maplai) shows the predicted map of the parameter $LAI_{s}$. 
 
 ```{r maplai, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $LAI_{s}$", cache=FALSE}
-knitr::include_graphics("C:/Users/zavud/Desktop/msc_thesis/thesis/figures/lais_map.pdf")
+knitr::include_graphics("./figures/lais_map.pdf")
 ```
 
 We can see that most of the pixels in the predicted $LAI_{s}$ map show the value range of 10-15.

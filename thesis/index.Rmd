@@ -16,14 +16,22 @@ knit: (function(input, ...) {
 #####################
 ## thesis metadata ##
 #####################
-title: Retrieval of plant biophysical and biochemical variables from remote sensing data using a hybrid machine learning method
-author: Zavud Baghirov
-college: Environmental Sciences
-university: University of Trier
+title: Using a Coupled Radiative Transfer Model and Artifical Neural Networks to Retrieve Forest Biochemical and Biophysical Maps from Remote Sensing Data
+author: |
+        | Author:
+        | Zavud Baghirov (1399020)
+        |
+        | Supervisors:
+        | Prof. Dr. Thomas Udelhoven
+        | Dr. Martin Schlerf
+university: |
+            | Department of Environmental Remote Sensing and Geoinformatics
+            |
+            | University of Trier
 university-logo: templates/uni-logo.png
-#submitted-text: A thesis submitted for the degree of
-#degree: Doctor of Philosophy
-degreedate: Summer Semester 2021
+submitted-text: Submitted in partial fulfillment of the requirements for the degree of Master of Science in
+degree: Environmental Science
+degreedate: Winter Semester 2021
 abstract: |
   `r paste(readLines("front-and-back-matter/_abstract.Rmd"), collapse = '\n  ')`
 #dedication: For Yihui Xie

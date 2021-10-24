@@ -9,7 +9,7 @@ Local sensitivity analysis was performed to assess the effect of each of the mai
 Table \@ref(tab:tsvaried) shows the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
 
 ```{r tsvaried, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\varied_params_INFORM.R")
+source(".\\tables\\varied_params_INFORM.R")
 knitr::kable(var_df, caption = "INFORM Parameters varied in local sensitivity analysis (each parameter were varied 15 times)",
              escape = FALSE, booktabs = TRUE) |>
         kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
@@ -21,7 +21,7 @@ knitr::kable(var_df, caption = "INFORM Parameters varied in local sensitivity an
 Table \@ref(tab:tsfixed) shows the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table \@ref(tab:tsvaried)).
 
 ```{r tsfixed, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\fixed_params_INFORM.R")
+source(".\\tables\\fixed_params_INFORM.R")
 knitr::kable(fixed_df, caption = "INFORM Parameters that were kept constant while one parameter was varied at a time",
              escape = FALSE, booktabs = TRUE) |>
         kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
@@ -45,7 +45,7 @@ Table \@ref(tab:tinformfull) shows the variables that were used to simulate fore
 \newpage
 
 ```{r tinformfull, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\tables\\full_params_inform.R")
+source(".\\tables\\full_params_inform.R")
 knitr::kable(inform_full, caption = "Range of full input parameters that were used to create a LUT size of 316800",
              escape = FALSE, booktabs = TRUE) |>
         kableExtra::kable_styling(latex_options = "HOLD_position", full_width = T) |>
@@ -242,7 +242,7 @@ Designing NN architecture is an important step of building neural network models
 The Figure \@ref(fig:annpca) shows the chosen neural network arthitecture for the first model (where PCs were used as inputs):
 
 ```{r annpca, echo=FALSE, fig.cap="Architecture of the Neural Network with Principal Components as inputs", crop=TRUE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annpca.R"); annpca
+source(".\\figures\\annpca.R"); annpca
 ```
 
 In the Figure \@ref(fig:annpca), $a_{n}^{l}$ refers to the $n$th unit in the $l$th hidden layer. Among all the tested neural network architectures when PCs as an input layer were used, this architecture yielded the best results in terms of the time it took the model to converge, the minimized loss, performance on training, validation and testing sets. However, it is important to note that a different neural network architecture that was not tested in this study could yield better results. Also, slightly simpler architecture could have yielded a similar result if it was trained much longer. But, in this study, simpler architectures (e.g. NN with 1 or 2 hidden layers) did not perform as well as the chosen architecture (Figure \@ref(fig:annpca)) when trained for the same number of epochs. It should also be noted that, NN with deeper than 3 hidden layers were not tested in this study.
@@ -250,7 +250,7 @@ In the Figure \@ref(fig:annpca), $a_{n}^{l}$ refers to the $n$th unit in the $l$
 The Figure \@ref(fig:annprisma) shows the chosen NN architecture for the NN model where simulated 231 PRISMA image bands were used as input. 
 
 ```{r annprisma, echo=FALSE, fig.cap="Architecture of the Neural Network with simulated PRISMA image bands as inputs", crop=TRUE, cache=TRUE}
-source("C:\\Users\\zavud\\Desktop\\msc_thesis\\thesis\\figures\\annprisma.R"); annprisma
+source(".\\figures\\annprisma.R"); annprisma
 ```
 
 In the Figure \@ref(fig:annprisma), $B_{n}$ refers to the simulated $n$th PRISMA image band and $a_{n}^{l}$ refers to the $n$th unit in the $l$th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded better results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
