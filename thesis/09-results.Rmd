@@ -210,7 +210,7 @@ The predicted $C_{m}$ map shows that some of the pixels in the predicted map is 
 
 The Figure \@ref(fig:maplai) shows the predicted map of the parameter $LAI_{s}$. 
 
-```{r maplai, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $LAI_{s}$", cache=FALSE}
+```{r maplai, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Predicted map of the parameter $LAI_{s}$", cache=TRUE}
 knitr::include_graphics("./figures/lais_map.pdf")
 ```
 
