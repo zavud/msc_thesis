@@ -576,13 +576,13 @@ This section explains the methods used in this research.
 \hypertarget{local-sensitivity-analysis}{%
 \section{Local sensitivity analysis}\label{local-sensitivity-analysis}}
 
-Local sensitivity analysis was performed to assess the effect of each of the main 6 plant biochemical and biophysical variables on the PRISMA image bands. In the local sensitivity analysis simulation is performed by keeping all the variables constant at their determined fixed or default values except the parameter of interest. This way the effect of a specific parameter on the simulated spectra can be assessed. In this research the plant parameters \(C_{ab}\), \(C_{w}\), \(C_{m}\), \(LAI_{s}\), \(CD\) and \(SD\) were varied each 15 times (Table (\ref{tab:tsvaried})), while keeping the rest of the variables at their default values (Table (\ref{tab:tsfixed})). The default and varied values were chosen based on the literature (e.g. \citet{darvishzadeh2019mapping}; \citet{laurent2011inversion}; \citet{schlerf2012vegetation}) where similar RTM method used to simulate reflectance for Spruce trees.
+Local sensitivity analysis was performed to assess the effect of each of the main 6 plant biochemical and biophysical variables on the PRISMA image bands. In the local sensitivity analysis, simulation is performed by keeping all the variables constant at their determined or default values except the parameter of interest. This way the effect of a specific parameter on the simulated spectra can be assessed. In this research the plant parameters \(C_{ab}\), \(C_{w}\), \(C_{m}\), \(LAI_{s}\), \(CD\) and \(SD\) were varied each 15 times (Table \ref{tab:tsvaried}), while keeping the rest of the variables at their default values (Table \ref{tab:tsfixed}). The default and varied values were chosen based on the available studies in the literature (e.g. \citet{darvishzadeh2019mapping}; \citet{laurent2011inversion}; \citet{schlerf2012vegetation}) where similar RTM method was used to simulate reflectance for Spruce trees.
 
 Table \ref{tab:tsvaried} shows the 6 parameters that were varied, their units, minimum and maximum values. Each parameter was varied 15 times, meaning 15 different spectra were simulated for each variable.
 
 \begin{table}[H]
 
-\caption{\label{tab:tsvaried}INFORM Parameters varied in local sensitivity analysis (each parameter were varied 15 times)}
+\caption{\label{tab:tsvaried}INFORM parameters varied in local sensitivity analysis (each parameter were varied 15 times)}
 \centering
 \begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X}
 \toprule
@@ -639,7 +639,7 @@ Soil reflectance spectrum & $B_{g}$ & $-$ & default\\
 
 \emph{Solar zenith angle} and \emph{Sun-sensor azimuth angle} were calculated based on the PRISMA image acquisition parameters (date, lat/long etc.) using the \emph{solar position calculator} at \url{https://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html}.
 
-RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations. Spectral resampling was performed in order to resample the INFORM output spectra (1nm resolution) into PRISMA image bands. For spectral resampling the \emph{R} package \emph{hsdar} \citep{hsdar} was utilized.
+RTM models PROSPECT5, 4SAIL and FLIM were coupled (INFORM) in order to simulate canopy reflectance. Simulations were carried out using the \emph{ccrtm} package \citep{ccrtm} in \emph{R} \citep{r}. The default soil spectra provided by the the \emph{ccrtm} package \citep{ccrtm} was used for the simulations. Spectral resampling was performed in order to resample the INFORM output spectra (1nm resolution between 400nm and 2500nm) into PRISMA image bands. For spectral resampling the \emph{R} package \emph{hsdar} \citep{hsdar} was utilized.
 
 \hypertarget{rtm-simulation-inform}{%
 \section{RTM simulation (INFORM)}\label{rtm-simulation-inform}}
@@ -698,7 +698,7 @@ The output of INFORM simulations have 1nm spectral resolution within the range o
 \hypertarget{statistics-of-simulated-data-and-prisma-image}{%
 \section{Statistics of simulated data and PRISMA image}\label{statistics-of-simulated-data-and-prisma-image}}
 
-Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. LUT contains 316,800 simulated spectra, the number of pixels within the study area in the PRISMA image is only 95517. Statistical information were extracted using the libraries in the \emph{tidyverse} package \citep{tidyverse} and the plots for visualization were produced using \emph{ggplot2} \citep{ggplot2}.
+Statistical information such as standard deviation and mean were calculated for the simulated (and resampled to PRISMA bands) data and all the pixels of the PRISMA image within the study area. Pixels that are out of the study area boundary were masked out. Then, average spectra in the LUT (synthetic database) and PRISMA image (only study area) were compared to each other. LUT contains 316,800 simulated spectra, the number of pixels within the study area in the PRISMA image is only 95,517. Statistical information were extracted using the libraries in the \emph{tidyverse} package \citep{tidyverse} and the plots for visualization were produced using \emph{ggplot2} \citep{ggplot2}.
 
 \hypertarget{gaussian-noise}{%
 \section{Gaussian noise}\label{gaussian-noise}}
@@ -745,7 +745,7 @@ y\ =\ f\left(x;\ \theta\right)
 \label{eq:feed}
 \end{equation}
 
-These algorithms are called networks due to the fact that they usually consists of multiple functions connected to each other with networks. Neural Networks are typically composed of multiple layers, such as input, hidden and output layers. Input layer is typically the training examples and output layer is the target variable (e.g.~variable to predict). Hidden layers are in between input and output layers and different functions can be applied to different hidden layers \citep{goodfellow2016deep}. For example, the Equation \eqref{eq:dnn} shows a function \(f(x)\) that is formed by three hidden layers:
+These algorithms are called networks due to the fact that they usually consist of multiple functions connected to each other with networks. Neural Networks are typically composed of multiple layers, such as input, hidden and output layers. Input layer is typically the training examples and output layer is the target variable (e.g.~variable to predict). Hidden layers are in between input and output layers and different functions can be applied to different hidden layers \citep{goodfellow2016deep}. For example, the Equation \eqref{eq:dnn} shows a function \(f(x)\) that is formed by three hidden layers:
 
 \begin{equation}
 f\left(x\right)\ =\ f^{\left(3\right)}\left(f^{\left(2\right)}\left(f^{\left(1\right)}\left(x\right)\right)\right)
@@ -754,7 +754,7 @@ f\left(x\right)\ =\ f^{\left(3\right)}\left(f^{\left(2\right)}\left(f^{\left(1\r
 
 In the Equation \eqref{eq:dnn}, \(f^{(1)}\), \(f^{(2)}\) and \(f^{(3)}\) are the first, second and third layers, respectively. During the learning process, the neural network model is shown the output variables \(y\) of corresponding input variables \(x\) and the job of the hidden layers is to figure out how to match the target variable \(y\) as closely as possible \citep{goodfellow2016deep}.
 
-In this research, two neural network models were built. The first model was trained using only 5 PCs as input variables, and the second neural network was trained using simulated 231 PRISMA bands. The aim of building two neural network models is to compare the performance of a neural network using only 5 PCs to a neural network that uses the original 231 simulated PRISMA bands to predict the output variables.
+In this research, two neural network models were built. The first model was trained using only 5 PCs as input variables, and the second neural network was trained using simulated 231 PRISMA bands. The aim of building two neural network models is to compare the performance of a neural network using only 5 PCs to a neural network that uses the original 231 simulated PRISMA bands to predict the output variables. This could help assess whether ANN can deal with the multi-collinearity that is available in hyperspectral remote sensing data.
 
 \hypertarget{cost-function}{%
 \subsection{Cost function}\label{cost-function}}
@@ -842,7 +842,7 @@ Here, \(\tilde{MSE}\) is the regularized cost function that our model tries to m
 \hypertarget{early-stopping}{%
 \subsection{Early stopping}\label{early-stopping}}
 
-Early stopping is a simple technique that monitors the loss and it halts the training when the model starts to overfit to the training data or when it does not improve its accuracy on the validation set over iterations. In this study, validation loss was monitored during the training after each iteration. The parameter \emph{patience} controls when to stop the training and it was set to 50 in this research. This means that if there is no improvement on the validation loss during the last 50 iterations of the training, the training process must stop. This helps with the overfitting problem as well as it halts the unnecessary training steps (if there is no any improvement after each iteration).
+Early stopping is a simple technique that monitors the loss and it halts the training when the model starts to overfit to the training data or when it does not improve its accuracy on the validation set over epochs. In this study, validation loss was monitored during the training after each epoch. The parameter \emph{patience} controls when to stop the training and it was set to 50 in this research. This means that if there is no improvement on the validation loss during the last 50 epochs of the training, the training process must stop. This helps with the overfitting problem as well as it halts the unnecessary training steps (if there is no any improvement after each epoch).
 
 \hypertarget{activation-function}{%
 \subsection{Activation function}\label{activation-function}}
@@ -866,14 +866,14 @@ As we can see, ReLU gives a value of 0 when \(z\) is smaller than 0, and it retu
 \hypertarget{weight-initialization}{%
 \subsection{Weight initialization}\label{weight-initialization}}
 
-Neural network training is an iterative process and initial weights need to be given. \citet{goodfellow2016deep} indicate that, the initial weight values can sometimes have a large impact on the neural network performance and depending on how the initial weights are defined the neural network moedl may not converge at all. In this research the He initialzation \citep{he2015delving} method was applied. This initialization technique was designed to work with NN that make use of the ReLU activation functions. He initialization technique draws initial weights randomly from normal distribution, where the mean \(\mu = 0\), and standard deviation \(\sigma = \sqrt{\frac{2}{n_{l}}}\). Here, \(n_{l}\) refers to the number of nodes in the previous layer \(l - 1\), that is connected to the nodes in the current layer \(l\).
+Neural network training is an iterative process and initial weights need to be given. \citet{goodfellow2016deep} indicate that, the initial weight values can sometimes have a large impact on the neural network performance and depending on how the initial weights are defined the neural network model may not converge at all. In this research the He initialzation \citep{he2015delving} method was applied. This initialization technique was designed to work with NN that make use of the ReLU activation functions. He initialization technique draws initial weights randomly from normal distribution, where the mean \(\mu = 0\), and standard deviation \(\sigma = \sqrt{\frac{2}{n_{l}}}\). Here, \(n_{l}\) refers to the number of nodes in the previous layer \(l - 1\), that is connected to the nodes in the current layer \(l\).
 
 \hypertarget{processing-of-input-and-target-variables}{%
 \subsection{Processing of input and target variables}\label{processing-of-input-and-target-variables}}
 
 In this study, input variables are the 5 PCs for the first neural network model and 231 simulated PRISMA image bands for the second neural network model. Simulated PRISMA image bands were normalized and standardized so that all the bands have the same mean (\(\mu = 0\)) and standard deviation (\(\sigma = 1\)) (see Equation \eqref{eq:norm}).
 
-Our target variables are INFORM parameters we want to predict. These are \(C_{ab}\), \(C_{cw}\), \(C_{cm}\) and \(LAI_{s}\). The ranges of these variables are different. For example, minimum and maximum for \(C_{ab}\) is 20 and 60 and for \(C_{cw}\) these are 0.0035 and 0.035. The cost function with these output variables would be largely driven by variables that have higher magnitudes and interpreting the loss after each iteration would be difficult. Therefore, the output variables were normalized using the Equation \eqref{eq:normy}.
+Our target variables are INFORM parameters we want to predict. These are \(C_{ab}\), \(C_{cw}\), \(C_{cm}\) and \(LAI_{s}\). The ranges of these variables are different. For example, minimum and maximum values for \(C_{ab}\) are 20 and 60 and for \(C_{cw}\) these values are 0.0035 and 0.035. The cost function with these output variables would be largely driven by variables that have higher magnitudes and interpreting the loss after each epoch would be difficult. Therefore, the output variables were normalized using the Equation \eqref{eq:normy}.
 
 \begin{equation}
 Y_{scaled}\ =\ \frac{Y\ -\ \mu_{Y}}{\sigma_{Y}}
@@ -885,12 +885,12 @@ Here, \(Y\) is the output variable, \(\mu_{Y}\) is the mean and \(\sigma_{Y}\) i
 \hypertarget{number-of-epochs}{%
 \subsection{Number of epochs}\label{number-of-epochs}}
 
-Number of epochs is another hyperparameter and needs to be specified by the user. In this study, number of epochs was set to a relatively large number, 5000. However, as the early stopping technique was also used, setting the number of epochs to a value does not guarantee that the training phase will continue for 5000 epochs. Setting number of epochs to a high number ensures that the model can learn properly as long as the validation loss decreases. If the validation loss does not decrease for the last 50 epochs, the training will stop at any number of epoch.
+Number of epochs is another hyperparameter and needs to be specified by the user. In this study, number of epochs was set to a relatively large number, 5000. However, as the early stopping technique was also used, setting the number of epochs to a large value does not guarantee that the training phase will continue for 5,000 epochs. Setting number of epochs to a high number ensures that the model can learn properly as long as the validation loss decreases. If the validation loss does not decrease for the last 50 epochs (specific to this study), the training will stop at any number of epoch.
 
 \hypertarget{neural-network-architecture-design}{%
 \subsection{Neural Network Architecture design}\label{neural-network-architecture-design}}
 
-Designing NN architecture is an important step of building neural network models. Here, number of hidden layers and number of units in each layers are hyperparameters and they need to be tuned. In this research, several neural network architectures were tested. We started with the simplest architecture (1 input layer, 1 hidden layer with 1 hidden unit and output layer) and gradually increased the depth (1, 2, 3) and width (\(2^{1}\), \(2^{2}\), \(2^{3}\), \(2^{4}\) etc.) of the NN to assess the impact of the design on the performance. In general, it was observed that the more complicated the neural network architecture is, the better it performs. Increasing the number of hidden layers significantly increased the generalizability of the model to the testing data when the number of hidden units were kept constant at each layer. Optimal NN architecture was chosen based on the time it took for the model to converge, training, validation and testing accuracy.
+Designing NN architecture is an important step of building neural network models. Here, number of hidden layers and number of units in each layers are hyperparameters and they need to be tuned. In this research, several neural network architectures were tested. We started with the simplest architecture (1 input layer, 1 hidden layer with 1 hidden unit and output layer) and gradually increased the depth (1, 2, 3) and width (\(2^{1}\), \(2^{2}\), \(2^{3}\), \(2^{4}\) etc.) of the NN to assess the impact of the design on the performance of the model. In general, it was observed that the more complicated the neural network architecture is, the better it performs. Increasing the number of hidden layers significantly increased the generalizability of the model to the testing data when the number of hidden units were kept constant at each layer. Optimal NN architecture was chosen based on the time it took for the model to converge, training, validation and testing accuracy.
 
 The Figure \ref{fig:annpca} shows the chosen neural network arthitecture for the first model (where PCs were used as inputs):
 
@@ -900,7 +900,7 @@ The Figure \ref{fig:annpca} shows the chosen neural network arthitecture for the
 \caption{\label{fig:annpca}Architecture of the Neural Network with Principal Components as inputs}
 \end{figure}
 
-In the Figure \ref{fig:annpca}, \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. Among all the tested neural network architectures when PCs as an input layer were used, this architecture yielded the best results in terms of the time it took the model to converge, the minimized loss, performance on training, validation and testing sets. However, it is important to note that a different neural network architecture that was not tested in this study could yield better results. Also, slightly simpler architecture could have yielded a similar result if it was trained much longer. But, in this study, simpler architectures (e.g.~NN with 1 or 2 hidden layers) did not perform as well as the chosen architecture (Figure \ref{fig:annpca}) when trained for the same number of epochs. It should also be noted that, NN with deeper than 3 hidden layers were not tested in this study.
+In the Figure \ref{fig:annpca}, \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. Among all the tested neural network architectures when PCs as an input layer were used, this architecture yielded the best results in terms of the time it took the model to converge, the minimized loss, performance on training, validation and testing sets. However, it is important to note that a different neural network architecture that was not tested in this study could yield better results. Also, slightly simpler architecture could have yielded a similar result if it was trained much longer. But, in this study, simpler architectures (e.g.~NN with 1 or 2 hidden layers) did not perform as well as the chosen architecture (Figure \ref{fig:annpca}) when it was trained for the same number of epochs. It should also be noted that, NN with deeper than 3 hidden layers were not tested in this study.
 
 The Figure \ref{fig:annprisma} shows the chosen NN architecture for the NN model where simulated 231 PRISMA image bands were used as input.
 
@@ -910,7 +910,7 @@ The Figure \ref{fig:annprisma} shows the chosen NN architecture for the NN model
 \caption{\label{fig:annprisma}Architecture of the Neural Network with simulated PRISMA image bands as inputs}
 \end{figure}
 
-In the Figure \ref{fig:annprisma}, \(B_{n}\) refers to the simulated \(n\)th PRISMA image band and \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded better results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
+In the Figure \ref{fig:annprisma}, \(B_{n}\) refers to the simulated canopy reflectance for the \(n\)th PRISMA image band and \(a_{n}^{l}\) refers to the \(n\)th unit in the \(l\)th hidden layer. When simulated PRISMA bands were used as an input layer, varying number of hidden layers and number of units had a much more noticeable change. In general, the more complex architectures yielded better results. And, when the NN model with less hidden layers were run for the same or more number of epochs they yielded significantly poorer results. This may potentially indicate that even the more complicated NN architecture could perform better than the chosen architecture.
 
 All of the Neural Network building, testing and training processes were implemented using keras \citep{keras} in tensorflow API \citep{tensorflow}.
 
