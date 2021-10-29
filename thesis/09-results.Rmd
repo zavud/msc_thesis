@@ -2,7 +2,7 @@
 
 ## Local sensitivity analysis
 
-Figure \@ref(fig:fsens) shows the result of sensitivity analysis. Chlorophyll content ($C_{ab}$) appears to almost exclusively impact the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying $C_{ab}$ on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \@ref(fig:fsens).a). Conversely, equivalent water thickness ($C_{w}$) (Figure \@ref(fig:fsens).b) and leaf dry matter content ($C_{m}$) (Figure \@ref(fig:fsens).c) both have large effects on simulated spectra within the NIR and SWIR but no significant effect within the visible spectra. Leaf Area Index (single) ($LAI_{s}$) (Figure \@ref(fig:fsens).d), Crown diameter ($CD$) (Figure \@ref(fig:fsens).e)) and Stem density (Figure \@ref(fig:fsens).f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra.
+Figure \@ref(fig:fsens) shows the result of sensitivity analysis. Chlorophyll content ($C_{ab}$) appears to almost exclusively impact the visible spectra. In general, lower $C_{ab}$ appears to increase reflectance in the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying $C_{ab}$ on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \@ref(fig:fsens).a). Conversely, equivalent water thickness ($C_{w}$) (Figure \@ref(fig:fsens).b) and leaf dry matter content ($C_{m}$) (Figure \@ref(fig:fsens).c) both have large effects on simulated spectra within the NIR and SWIR but, no significant effect within the visible spectra. Lower $C_{w}$ result in higher and lower $C_{m}$ result in higher simulated canopy reflectance, mainly within the NIR and SWIR. Leaf Area Index (single) ($LAI_{s}$) (Figure \@ref(fig:fsens).d), Crown diameter ($CD$) (Figure \@ref(fig:fsens).e)) and Stem density ($SD$) (Figure \@ref(fig:fsens).f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra. Increased $LAI_{s}$ result in decreased reflectance. The effects of $CD$ and $SD$ on the simulated canopy reflectance is relatively more complex. For example, lower $CD$ values seem to result in higher reflectance within the visible and SWIR spectra. However, higher values of $CD$ can also result in higher reflectance mainly within the red-edge and some part of NIR. Increased $SD$ values appear to result in increased simulated reflectance within the NIR, and decreased reflectance elsewhere.
 
 \newpage
 
@@ -28,7 +28,7 @@ $$
 $$
 \endgroup
 
-In this matrix, $400nm_{n}$, $\dots$, $2500nm_{n}$ refer to the simulated reflectance for the corresponding wavelength in the simulation number $n$. $Cab_{n}$, $Cw_{n}$, $Cm_{n}$, $LAIs_{n}$, $CD_{n}$ and $SD_{n}$ are values of the INFORM parameters that were used in the $n$th simulation.
+In the LUT matrix above, $400nm_{n}$, $\dots$, $2500nm_{n}$ refer to the simulated reflectance for the corresponding wavelength in the simulation number $n$. $Cab_{n}$, $Cw_{n}$, $Cm_{n}$, $LAIs_{n}$, $CD_{n}$ and $SD_{n}$ are values of the INFORM parameters that were used in the $n$th simulation.
 
 ## Spectral resampling
 
@@ -72,7 +72,7 @@ The LUT appears to have higher average reflectance within the visible spectra co
 
 The Figure \@ref(fig:noise) shows the effect of adding 3% Gaussian noise to the simulated data.
 
-```{r noise, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Effect of adding $3\\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise found typically in the image", cache=TRUE}
+```{r noise, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="Effect of adding $3\\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise typically found in the image", cache=TRUE}
 knitr::include_graphics("./figures/noise.pdf")
 ```
 
@@ -86,7 +86,7 @@ The result of PCA show that most of the variation in the simulated data can be e
 knitr::include_graphics("./figures/pca.pdf")
 ```
 
-The Figure \@ref(fig:pca).a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99% of the variation that is present in the original data (Figure \@ref(fig:pca).b). This, once again shows the multicollinearity problem with hyperspectral data.
+The Figure \@ref(fig:pca).a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99% of the variation that is present in the original data (Figure \@ref(fig:pca).b). This, once again shows the multicollinearity problem within the hyperspectral data.
 
 \newpage
 
