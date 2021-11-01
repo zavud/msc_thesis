@@ -1061,7 +1061,7 @@ The Figure \ref{fig:histannrs} shows the training history of the NN where simula
 
 In this model, less than 1200 epochs of training was enough for the NN to converge. Also, the training, validation and most importantly, testing losses were lower (compared to the first NN) when the simulated PRISMA bands were used as predictors (Table \ref{tab:losstable}).
 
-The lines that show training and validation loss over epochs (Figures \ref{fig:histannpca} and \ref{fig:histannrs}) are close to each other and show more or less similar pattern of decrease. This is a sign that there is no a serious overfitting problem during the training. Before adding regularization term to the cost function, however, there was sign of overfitting during the training.
+The lines that show training and validation loss over epochs (Figures \ref{fig:histannpca} and \ref{fig:histannrs}) are close to each other and show more or less similar pattern of decrease. This is a sign that there is no a serious overfitting problem during the training. Before adding regularization term to the cost function, however, there were signs of overfitting during the training.
 
 \newpage
 
@@ -1086,7 +1086,7 @@ Test & MAE & 0.1739102 & 0.13459726\\
 \end{tabular}
 \end{table}
 
-This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently.
+This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can be trained with simulated bands and deal with multicollinearity very efficiently.
 
 \hypertarget{evaluation-of-the-nn-models-on-the-testing-set}{%
 \subsection{Evaluation of the NN models on the testing set}\label{evaluation-of-the-nn-models-on-the-testing-set}}
@@ -1121,7 +1121,7 @@ $LAI_{s}$ & 0.896475 & 0.641572 ($\frac{m^2}{m^2}$) & 0.9513208 & 0.443341 ($\fr
 \end{tabular}
 \end{table}
 
-The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\). This NN model predicts \(LAI_{s}\) with much better accuracy. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs do not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
+The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\), compared to the PCA based NN model. This NN model predicts \(LAI_{s}\) with much better accuracy than the PCA based NN. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs may not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
 
 \hypertarget{final-prediction-and-map-retrieval-1}{%
 \section{Final prediction and map retrieval}\label{final-prediction-and-map-retrieval-1}}
@@ -1137,13 +1137,9 @@ The Figure \ref{fig:mapcab} shows the predicted map of the parameter \(C_{ab}\).
 \includegraphics[width=0.9\linewidth]{./figures/cab_map} \caption{Predicted map of the parameter $C_{ab}$}\label{fig:mapcab}
 \end{figure}
 
-Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher \(C_{ab}\) values than the values that were used for simulation. This is further supported by the Figure \ref{fig:histcab}.
+Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher \(C_{ab}\) values than the values that were used for simulation. The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter \(C_{ab}\) only have a significant impact on the visible spectra (see Figure \ref{fig:fsens}.a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \ref{fig:meancomparison}). Specifically, the sensitivity analysis showed that the higher the \(C_{ab}\) value, the lower the reflectance in the visible spectra will be (Figure \ref{fig:fsens}.a). This means that it is expected to get higher predicted \(C_{ab}\) values for the PRISMA image.
 
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{./figures/cab_hist} \caption{Distribution of the predicted values for the parameter $C_{ab}$}\label{fig:histcab}
-\end{figure}
-
-The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter \(C_{ab}\) only have a significant impact on the visible spectra (see Figure \ref{fig:fsens}.a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \ref{fig:meancomparison}). Specifically, the sensitivity analysis showed that the higher the \(C_{ab}\) value, the lower the reflectance in the visible spectra will be (Figure \ref{fig:fsens}.a). This means that it is expected to get higher predicted \(C_{ab}\) values for the PRISMA image.
+\newpage
 
 \hypertarget{retrieval-of-c_w-map}{%
 \subsection{\texorpdfstring{Retrieval of \(C_{w}\) map}{Retrieval of C\_\{w\} map}}\label{retrieval-of-c_w-map}}
@@ -1154,15 +1150,7 @@ The Figure \ref{fig:mapcw} shows the predicted map of the parameter \(C_{w}\).
 \includegraphics[width=0.9\linewidth]{./figures/cw_map} \caption{Predicted map of the parameter $C_{w}$}\label{fig:mapcw}
 \end{figure}
 
-Majority of the pixels show predicted values that are within the same range of the values used during the simulation. The parameter \(C_{w}\) has a large effect on the NIR spectrum (Figure \ref{fig:fsens}.b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \ref{fig:meancomparison}). This could explain why the range of the predicted \(C_{w}\) values is similar to the \(C_{w}\) range within the LUT. However, there is also a large impact of \(C_{w}\) on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
-
-The Figure \ref{fig:histcw} shows the distribution of the predicted \(C_{w}\) values in more detail.
-
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{./figures/cw_hist} \caption{Distribution of the predicted values for the parameter $C_{w}$}\label{fig:histcw}
-\end{figure}
-
-\newpage
+Majority of the pixels show predicted values that are within the same range of the values that were used during the simulation. The parameter \(C_{w}\) has a large effect on the NIR spectrum (Figure \ref{fig:fsens}.b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \ref{fig:meancomparison}). This could explain why the range of the predicted \(C_{w}\) values is similar to the \(C_{w}\) range within the LUT. However, there is also a large impact of \(C_{w}\) on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
 
 \hypertarget{retrieval-of-c_m-map}{%
 \subsection{\texorpdfstring{Retrieval of \(C_{m}\) map}{Retrieval of C\_\{m\} map}}\label{retrieval-of-c_m-map}}
@@ -1184,7 +1172,7 @@ The Figure \ref{fig:maplai} shows the predicted map of the parameter \(LAI_{s}\)
 \includegraphics[width=0.9\linewidth]{./figures/lais_map} \caption{Predicted map of the parameter $LAI_{s}$}\label{fig:maplai}
 \end{figure}
 
-We can see that most of the pixels in the predicted \(LAI_{s}\) map show the value range of 10-15.
+We can see that most of the pixels in the predicted \(LAI_{s}\) map show the value range of 10-15. We can also detect some pixels that have larger and smaller values that this range.
 
 \hypertarget{discussion}{%
 \chapter{Discussion}\label{discussion}}
