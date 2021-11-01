@@ -222,7 +222,8 @@ Dr.~Martin Schlerf}
 University of Trier}
 \renewcommand{\submittedtext}{Submitted in partial fulfillment of the requirements for the degree of Master of Science in}
 \renewcommand{\thesistitlesize}{\fontsize{18pt}{28pt}\selectfont}
-
+\renewcommand{\gapbeforecrest}{12mm}
+\renewcommand{\gapaftercrest}{12mm}
 
 % Leave this line alone; it gets things started for the real document.
 \setlength{\baselineskip}{\textbaselineskip}
@@ -934,7 +935,7 @@ Each pixel in the retrieved maps shows the predicted value of the corresponding 
 \hypertarget{local-sensitivity-analysis-1}{%
 \section{Local sensitivity analysis}\label{local-sensitivity-analysis-1}}
 
-Figure \ref{fig:fsens} shows the result of sensitivity analysis. Chlorophyll content (\(C_{ab}\)) appears to almost exclusively impact the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying \(C_{ab}\) on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \ref{fig:fsens}.a). Conversely, equivalent water thickness (\(C_{w}\)) (Figure \ref{fig:fsens}.b) and leaf dry matter content (\(C_{m}\)) (Figure \ref{fig:fsens}.c) both have large effects on simulated spectra within the NIR and SWIR but no significant effect within the visible spectra. Leaf Area Index (single) (\(LAI_{s}\)) (Figure \ref{fig:fsens}.d), Crown diameter (\(CD\)) (Figure \ref{fig:fsens}.e)) and Stem density (Figure \ref{fig:fsens}.f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra.
+Figure \ref{fig:fsens} shows the result of sensitivity analysis. Chlorophyll content (\(C_{ab}\)) appears to almost exclusively impact the visible spectra. In general, lower \(C_{ab}\) appears to increase reflectance in the visible spectra. Some effect can also be noticed in the red-edge, but there is not a significant effect of varying \(C_{ab}\) on the simulated spectra within the near-infrared (NIR) and short wave infrared (SWIR) (Figure \ref{fig:fsens}.a). Conversely, equivalent water thickness (\(C_{w}\)) (Figure \ref{fig:fsens}.b) and leaf dry matter content (\(C_{m}\)) (Figure \ref{fig:fsens}.c) both have large effects on simulated spectra within the NIR and SWIR but, no significant effect within the visible spectra. Lower \(C_{w}\) result in higher and lower \(C_{m}\) result in higher simulated canopy reflectance, mainly within the NIR and SWIR. Leaf Area Index (single) (\(LAI_{s}\)) (Figure \ref{fig:fsens}.d), Crown diameter (\(CD\)) (Figure \ref{fig:fsens}.e)) and Stem density (\(SD\)) (Figure \ref{fig:fsens}.f) all have noticeable effect on the simulated canopy reflectance almost all over the spectra. Increased \(LAI_{s}\) result in decreased reflectance. The effects of \(CD\) and \(SD\) on the simulated canopy reflectance is relatively more complex. For example, lower \(CD\) values seem to result in higher reflectance within the visible and SWIR spectra. However, higher values of \(CD\) can also result in higher reflectance mainly within the red-edge and some part of NIR. Increased \(SD\) values appear to result in increased simulated reflectance within the NIR, and decreased reflectance elsewhere.
 
 \newpage
 
@@ -967,7 +968,7 @@ Synthetic canopy reflectance data set were produced and stored in a LUT containi
 \]
 \endgroup
 
-In this matrix, \(400nm_{n}\), \(\dots\), \(2500nm_{n}\) refer to the simulated reflectance for the corresponding wavelength in the simulation number \(n\). \(Cab_{n}\), \(Cw_{n}\), \(Cm_{n}\), \(LAIs_{n}\), \(CD_{n}\) and \(SD_{n}\) are values of the INFORM parameters that were used in the \(n\)th simulation.
+In the LUT matrix above, \(400nm_{n}\), \(\dots\), \(2500nm_{n}\) refer to the simulated reflectance for the corresponding wavelength in the simulation number \(n\). \(Cab_{n}\), \(Cw_{n}\), \(Cm_{n}\), \(LAIs_{n}\), \(CD_{n}\) and \(SD_{n}\) are values of the INFORM parameters that were used in the \(n\)th simulation.
 
 \hypertarget{spectral-resampling-1}{%
 \section{Spectral resampling}\label{spectral-resampling-1}}
@@ -1021,7 +1022,7 @@ The LUT appears to have higher average reflectance within the visible spectra co
 The Figure \ref{fig:noise} shows the effect of adding 3\% Gaussian noise to the simulated data.
 
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{./figures/noise} \caption{Effect of adding $3\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise found typically in the image}\label{fig:noise}
+\includegraphics[width=0.9\linewidth]{./figures/noise} \caption{Effect of adding $3\%$ Gaussian noise to the simulated spectra. The randomly chosen pixel from the PRISMA data was plotted to illustrate the noise typically found in the image}\label{fig:noise}
 \end{figure}
 
 The Figure \ref{fig:noise}.a shows a simulated spectra that seems perfectly smooth. However, after adding 3\% Gaussian noise, the simulated spectra is not as smooth anymore and contains random noise all over the whole spectra (Figure \ref{fig:noise}.b). This also makes the simulated spectra more similar to the pixel extracted from the PRISMA image.
@@ -1035,7 +1036,7 @@ The result of PCA show that most of the variation in the simulated data can be e
 \includegraphics[width=0.9\linewidth]{./figures/pca} \caption{Principal Component Analysis: a) Screeplot, b) Cumulative variance explained by the first 5 PCs}\label{fig:pca}
 \end{figure}
 
-The Figure \ref{fig:pca}.a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99\% of the variation that is present in the original data (Figure \ref{fig:pca}.b). This, once again shows the multicollinearity problem with hyperspectral data.
+The Figure \ref{fig:pca}.a shows the screeplot of the PCA result. The first PC explains the most of the variation and together with the next 4 PCs we can capture more than 99\% of the variation that is present in the original data (Figure \ref{fig:pca}.b). This, once again shows the multicollinearity problem within the hyperspectral data.
 
 \newpage
 
@@ -1061,7 +1062,7 @@ The Figure \ref{fig:histannrs} shows the training history of the NN where simula
 
 In this model, less than 1200 epochs of training was enough for the NN to converge. Also, the training, validation and most importantly, testing losses were lower (compared to the first NN) when the simulated PRISMA bands were used as predictors (Table \ref{tab:losstable}).
 
-The lines that show training and validation loss over epochs (Figures \ref{fig:histannpca} and \ref{fig:histannrs}) are close to each other and show more or less similar pattern of decrease. This is a sign that there is no a serious overfitting problem during the training. Before adding regularization term to the cost function, however, there was sign of overfitting during the training.
+The lines that show training and validation loss over epochs (Figures \ref{fig:histannpca} and \ref{fig:histannrs}) are close to each other and show more or less similar pattern of decrease. This is a sign that there is no a serious overfitting problem during the training. Before adding regularization term to the cost function, however, there were signs of overfitting during the training.
 
 \newpage
 
@@ -1086,7 +1087,7 @@ Test & MAE & 0.1739102 & 0.13459726\\
 \end{tabular}
 \end{table}
 
-This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can deal with multicollinearity very efficiently.
+This result indicates that, when designing the NN architecture properly and giving reasonable amount of hidden layers and units, the NN model can be trained with simulated bands and deal with multicollinearity very efficiently.
 
 \hypertarget{evaluation-of-the-nn-models-on-the-testing-set}{%
 \subsection{Evaluation of the NN models on the testing set}\label{evaluation-of-the-nn-models-on-the-testing-set}}
@@ -1121,7 +1122,7 @@ $LAI_{s}$ & 0.896475 & 0.641572 ($\frac{m^2}{m^2}$) & 0.9513208 & 0.443341 ($\fr
 \end{tabular}
 \end{table}
 
-The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\). This NN model predicts \(LAI_{s}\) with much better accuracy. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs do not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
+The NN trained with simulated 231 PRISMA bands predicts INFORM parameters \(C_{ab}\), \(C_{w}\) and \(C_{m}\) with slightly better \(R^{2}\) and \(RMSE\), compared to the PCA based NN model. This NN model predicts \(LAI_{s}\) with much better accuracy than the PCA based NN. This could potentially be due to the fact that \(LAI_{s}\) has an important effect within the full spectra (see sensitivity subplot Figure \ref{fig:fsens}.d) and the 5 PCs may not properly represent the full relationship between the plant parameter \(LAI_{s}\) and spectra.
 
 \hypertarget{final-prediction-and-map-retrieval-1}{%
 \section{Final prediction and map retrieval}\label{final-prediction-and-map-retrieval-1}}
@@ -1137,13 +1138,9 @@ The Figure \ref{fig:mapcab} shows the predicted map of the parameter \(C_{ab}\).
 \includegraphics[width=0.9\linewidth]{./figures/cab_map} \caption{Predicted map of the parameter $C_{ab}$}\label{fig:mapcab}
 \end{figure}
 
-Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher \(C_{ab}\) values than the values that were used for simulation. This is further supported by the Figure \ref{fig:histcab}.
+Although there are some pixels showing values that are similar to the range that was used during the RTM simulation, some pixels show higher \(C_{ab}\) values than the values that were used for simulation. The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter \(C_{ab}\) only have a significant impact on the visible spectra (see Figure \ref{fig:fsens}.a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \ref{fig:meancomparison}). Specifically, the sensitivity analysis showed that the higher the \(C_{ab}\) value, the lower the reflectance in the visible spectra will be (Figure \ref{fig:fsens}.a). This means that it is expected to get higher predicted \(C_{ab}\) values for the PRISMA image.
 
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{./figures/cab_hist} \caption{Distribution of the predicted values for the parameter $C_{ab}$}\label{fig:histcab}
-\end{figure}
-
-The reason why the trained NN predicts higher values for the PRISMA image compared to the value range that was used in the simulation can be explained by the fact that the parameter \(C_{ab}\) only have a significant impact on the visible spectra (see Figure \ref{fig:fsens}.a) and average reflectance in the visible spectra of the PRISMA image is lower compared to the average reflectance of the visible spectra in the LUT (simulated database) (see Figure \ref{fig:meancomparison}). Specifically, the sensitivity analysis showed that the higher the \(C_{ab}\) value, the lower the reflectance in the visible spectra will be (Figure \ref{fig:fsens}.a). This means that it is expected to get higher predicted \(C_{ab}\) values for the PRISMA image.
+\newpage
 
 \hypertarget{retrieval-of-c_w-map}{%
 \subsection{\texorpdfstring{Retrieval of \(C_{w}\) map}{Retrieval of C\_\{w\} map}}\label{retrieval-of-c_w-map}}
@@ -1154,15 +1151,7 @@ The Figure \ref{fig:mapcw} shows the predicted map of the parameter \(C_{w}\).
 \includegraphics[width=0.9\linewidth]{./figures/cw_map} \caption{Predicted map of the parameter $C_{w}$}\label{fig:mapcw}
 \end{figure}
 
-Majority of the pixels show predicted values that are within the same range of the values used during the simulation. The parameter \(C_{w}\) has a large effect on the NIR spectrum (Figure \ref{fig:fsens}.b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \ref{fig:meancomparison}). This could explain why the range of the predicted \(C_{w}\) values is similar to the \(C_{w}\) range within the LUT. However, there is also a large impact of \(C_{w}\) on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
-
-The Figure \ref{fig:histcw} shows the distribution of the predicted \(C_{w}\) values in more detail.
-
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{./figures/cw_hist} \caption{Distribution of the predicted values for the parameter $C_{w}$}\label{fig:histcw}
-\end{figure}
-
-\newpage
+Majority of the pixels show predicted values that are within the same range of the values that were used during the simulation. The parameter \(C_{w}\) has a large effect on the NIR spectrum (Figure \ref{fig:fsens}.b) and the average reflectance in the NIR region within both LUT and PRISMA image are relatively close to each other (Figure \ref{fig:meancomparison}). This could explain why the range of the predicted \(C_{w}\) values is similar to the \(C_{w}\) range within the LUT. However, there is also a large impact of \(C_{w}\) on the SWIR and this region of the average simulated spectra is higher than the average reflectance of SWIR in the PRISMA image spectra.
 
 \hypertarget{retrieval-of-c_m-map}{%
 \subsection{\texorpdfstring{Retrieval of \(C_{m}\) map}{Retrieval of C\_\{m\} map}}\label{retrieval-of-c_m-map}}
@@ -1184,30 +1173,41 @@ The Figure \ref{fig:maplai} shows the predicted map of the parameter \(LAI_{s}\)
 \includegraphics[width=0.9\linewidth]{./figures/lais_map} \caption{Predicted map of the parameter $LAI_{s}$}\label{fig:maplai}
 \end{figure}
 
-We can see that most of the pixels in the predicted \(LAI_{s}\) map show the value range of 10-15.
+We can see that most of the pixels in the predicted \(LAI_{s}\) map show the value range of 10-15. We can also detect some pixels that have larger and smaller values that this range.
 
 \hypertarget{discussion}{%
 \chapter{Discussion}\label{discussion}}
 
-In this study, first the RTM model INFORM was used to simulate forest canopy reflectance and then, the simulated data was used to train ANN model in order for it to predict the studied plant traits of the hyperspectral remote sensing imagery. This section discusses the results and further improvements.
+This section discusses the results, limitations, improvements and a potential follow-up study.
 
 \hypertarget{artificial-neural-networks-for-predicting-plant-traits}{%
 \section{Artificial Neural Networks for predicting plant traits}\label{artificial-neural-networks-for-predicting-plant-traits}}
 
-This study showed that, given enough hidden layers and neurons, using artificial neural networks can efficiently deal with high multi-collinearity that exist within hyperspectral remote sensing data to predict plant biophysical and biochemical parameters. For all the INFORM parameters the NN that was trained with simulated 231 PRISMA bands had better results compared to the NN that was trained with 5PCs. Training NN with full image bands to predict plant biophysical and biochemical parameters that have effect within the whole spectra (e.g.~LAI) could specifically be beneficial. However, it should also be noted that, depending on the availability of the computational resources and time, using a dimensionality reduction technique such as PCA may be preferred. This is because training NN with hundreds of predictors (e.g.~hyperspectral image bands) usually needs more time to run compared to a PCA based NN that is trained with only several predictors (principal components). However, in this study, for the NN that was trained with hyperspectral image bands it took less than 1200 epochs to converge, while the PCA based NN needed to run more than 2000 epochs. This could potentially indicate that for the NN it may be easier to learn the relationships between the plant traits and simulated spectra when all the bands are available. The design of the NN had a significant effect on the results and predictions. Neural networks with simpler architecture led to poor performance, while relatively deeper NN architecture had good prediction accuracies for the plant parameters.
+This study showed that, given enough hidden layers and neurons, artificial neural networks can efficiently deal with high multi-collinearity that exists in hyperspectral remote sensing data. This study also showed the applicability of deep neural networks to predict plant biophysical and biochemical parameters. For all the INFORM parameters, the NN that was trained with simulated 231 PRISMA bands had better results compared to the NN that was trained with 5 principal components capturing most of the variation in the original data set. Training deep neural networks with full simulated image bands to predict plant biophysical and biochemical parameters that have effect within the whole spectra (e.g.~LAI) could specifically be beneficial. However, it should also be noted that, depending on the availability of the computational resources and time, using a dimensionality reduction technique such as PCA may be preferred. This is because training NN with hundreds of predictors (e.g.~hyperspectral image bands) usually needs more time to run compared to a PCA based NN that is trained with only a few or several predictors (principal components). However, in this study, for the NN that was trained with hyperspectral image bands it took less than 1200 epochs to converge, while the PCA based NN needed to run more than 2000 epochs. This could potentially indicate that for the NN it may be easier to learn the relationships between the plant traits and simulated spectra when all the bands are available. The design of the NN had a significant effect on the results and predictions. Neural networks with simpler architecture led to poor performance, while relatively deeper NN architecture had good prediction accuracies for the plant parameters.
 
-\hypertarget{further-improvements}{%
-\section{Further improvements}\label{further-improvements}}
+\hypertarget{limitations}{%
+\section{Limitations}\label{limitations}}
 
-This model, that was built with the help of RTM and machine learning, can be used to predict the plant traits \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) in the hyperspectral remote sensing data PRISMA. These plant traits could be very beneficial to study forest disturbances especially for Spruce trees.
+It is important to note that, in this research all the data analysis, simulation and machine learning model training were done using a personal computer, which is not designed for time-consuming scientific simulations, machine learning model training and prediction. Having an access to a more advanced and high performance computer that are usually used for scientific research would significantly improve the simulation and training efficiency. This could also help assessing the impacts of different (e.g more complex) neural network architecture designs. Having an access to a better computer would also help try out different machine learning algorithms that require higher computational power such as gaussian process regression. It is highly recommended to use Keras and Tensorflow deep learning frameworks on a GPU as opposed to CPU \citep{allaire2018deep}. However, in this study a computer with the required GPU was not available and the training of the ML model was conducted using CPU. Otherwise, this could have improved the training efficiency further.
 
-Potential follow up study could be to use this model in order to retrieve forest biochemical and biophysical maps from the hyperspectral data PRISMA for multiple dates. Then, scientific techniques like change detection could be applied to assess the change of these variables between multiple years.
+Another important limitation of this study is unavailability of the ground truth data. This means that, the trained model could not be validated against the ground truth data due to unavailable ground truth data during the time this research was conducted.
+
+It is also important to mention that, all the synthetic training data (training set) was produced based on the typical values the spruce trees show for the chose plant variables. However, the trained model was applied to the whole study area which also contains other tree species. This was done due to inaccessible GIS data (e.g.~polygon) that accurately separates European spruce trees from other tree species in the forest.
+
+\hypertarget{future-perspectives}{%
+\section{Future perspectives}\label{future-perspectives}}
+
+The model that was built with the help of the INFORM RTM and ANN can now be used to predict the plant traits \(C_{ab}\), \(C_{w}\), \(C_{m}\) and \(LAI_{s}\) in the hyperspectral remote sensing data PRISMA. These plant traits could be very beneficial to study forest disturbances especially for Spruce trees.
+
+Potential follow up study could be to use this model in order to retrieve forest biochemical and biophysical maps from the hyperspectral data PRISMA for multiple dates. Then, scientific techniques like change detection could be applied to assess the change of these variables between multiple years. For this, many different time-series analysis techniques can be used to better understand the effect of the bark beetle and drought within the study area through time.
+
+The follow-up time-series study based on biophysical and biochemical maps does not have to be limited to the PRISMA data. As all the scripts that were written to develop this model is publicly available on GitHub, few modification can be made to build a new model for any other remote sensing image bands.
 
 It is also important to mention that this model could still be improved further. For example, using destructive and non-destructive in-situ data for RTM simulations could potentially lead to better results. In this study, these types of data were not available and the referenced literature was used to choose the range of values for RTM simulation. This data could also help assess the performance of the models (RTM and ANN) in more detail.
 
-In this study, only ANN model was used. Other machine learning models could also be trained for predicting plant traits. ANN mainly focuses on predicting the plant variables as closely as possible. However, it would also be very useful to assess the uncertainty within the predictions of the machine learning model. For example, the Gaussian process regression method would be used to retrieve plant traits and also produce data that shows the amount of uncertainties that is available within the predicted maps. However this method is computationally very expensive and may not efficiently work on large amount of training data.
+In this study, only ANN ML model was used. Other machine learning models could also be trained for predicting plant traits. ANN mainly focuses on predicting the plant variables as closely as possible. However, it would also be very useful to assess the uncertainty available within the predictions of the machine learning model. For example, the Gaussian process regression method would be used to retrieve plant traits and also produce data that shows the amount of uncertainties that is available within the predicted maps. However this method is computationally very expensive and may not efficiently work on large amount of training data.
 
-Another technique that could potentially be utilized is active learning (AL). AL techniques can be specifically useful for ML algorithms that demand siginificant amount of computational power to be trained on large amount of training data. AL can help choose the most important training samples that are available in the simulated training data \citep{verrelst2016active}. For example, AL methods can be combined with kerbel based ML algorithms, such as Gaussian process regression.
+Another technique that could potentially be utilized is active learning (AL). AL techniques can be specifically useful for ML algorithms that demand siginificant amount of computational power to be trained on large amount of training data. AL can help choose the most important training samples that are available in the simulated training data \citep{verrelst2016active}. For example, AL methods can be combined with kernel based ML algorithms, such as Gaussian process regression.
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
