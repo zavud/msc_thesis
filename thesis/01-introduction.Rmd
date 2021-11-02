@@ -16,7 +16,7 @@ Invertable Forest Reflectance Model (INFORM) is a combination of three RTMs (lea
 
 The main objectives of this study are to:
 
-1. simulate forest canopy reflectance (for the national park Hunsrück-Hochwald) using the more recent submodels of the coupled chain RTM INFORM
+1. simulate forest canopy reflectance (for the national park Hunsrück-Hochwald) using the more recent submodels (PROSPECT5, 4SAIL and FLIM) of the coupled chain RTM INFORM
 2. train Artificial Neural Networks (ANN) using the simulated canopy reflectance data in order to assess whether the relationship between plant traits and spectral data can be efficiently learned
 3. assess whether the trained ANN can deal with collinearity occurring in hyperspectral remote sensing data
 4. retrieve forest biophysical and biochemical maps for the study area Hunsrück-Hochwald
