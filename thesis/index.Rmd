@@ -31,7 +31,7 @@ university: |
 university-logo: templates/uni-logo.png
 submitted-text: Submitted in partial fulfillment of the requirements for the degree of Master of Science in
 degree: Environmental Science
-degreedate: Winter Semester 2021
+degreedate: November 2021
 abstract: |
   `r paste(readLines("front-and-back-matter/_abstract.Rmd"), collapse = '\n  ')`
 #dedication: For Yihui Xie
