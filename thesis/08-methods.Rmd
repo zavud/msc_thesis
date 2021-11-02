@@ -270,7 +270,9 @@ In the Equation \@ref(eq:unnormy) $Y_{unscaled}$ is the final predicted value, $
 
 Each pixel in the retrieved maps shows the predicted value of the corresponding INFORM parameter. The final retrieved maps were saved as a 4-band raster file (e.g. ENVI and Tiff formats) and can be visualized and analysed further.
 
+## GitHub repository of the study
 
+All the scripts that were written in this study for data handling, model simulation and machine learning training are available in the public repository of the author at https://github.com/zavud/msc_thesis.
 
 
 
