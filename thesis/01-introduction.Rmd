@@ -96,8 +96,6 @@ The PROSPECT and SAIL models can be combined together to simulate canopy reflect
 
 The PROSAIL model (Figure \@ref(fig:prosail)) can be used in a forward mode to get the simulated canopy reflectance based on the input parameters of PROSPECT (Table \@ref(tab:prospect5)) and SAIL (Table \@ref(tab:4sail)) [@berger2018evaluation].
 
-\newpage
-
 ```{r, prosail, echo=FALSE, fig.cap="Diagram of PROSAIL as a combination of PROSPECT5 and 4SAIL in the forward mode", crop=TRUE, cache=TRUE}
 source(".\\figures\\prosail.R"); prosail
 ```

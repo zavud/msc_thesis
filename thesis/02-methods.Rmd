@@ -16,6 +16,8 @@ knitr::include_graphics("./figures/map_germany.pdf")
 
 The area of the national park is about 10,000 hectare [@fischer2016scientific]. There are various forestry activities (selective cutting etc.) occuring in the national park area. The forest is mainly dominated by the plant species Norway spruce (*Picea abies*), oak (*Quercus petraea*) and beech (*Fagus sylvatica*) [@buddenbaum2015nationalpark].
 
+\newpage
+
 ```{r npmap, warning=FALSE, message=FALSE, echo=FALSE, out.width="90%", fig.cap="The study area.", cache=TRUE}
 knitr::include_graphics("./figures/map_np.pdf")
 ```
@@ -34,9 +36,9 @@ knitr::kable(var_df, caption = "INFORM parameters varied in local sensitivity an
         kableExtra::column_spec(1, width = "8cm")
 ```
 
-\newpage
-
 Table \@ref(tab:tsfixed) shows the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table \@ref(tab:tsvaried)).
+
+\newpage
 
 ```{r tsfixed, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 source(".\\tables\\fixed_params_INFORM.R")

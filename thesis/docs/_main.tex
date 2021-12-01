@@ -167,7 +167,7 @@
 \title{Using a Coupled Radiative Transfer Model and Artifical Neural Networks to Retrieve Forest Biochemical and Biophysical Maps from Remote Sensing Data}
 \author{Author:\\
 Zavud Baghirov (1399020)\\
-~\\
+\strut \\
 Supervisors:\\
 Prof.~Dr.~Thomas Udelhoven\\
 Dr.~Martin Schlerf}
@@ -218,7 +218,7 @@ Dr.~Martin Schlerf}
 %
 \def\crest{{\includegraphics[scale=0.6]{templates/uni-logo.png}}}
 \renewcommand{\university}{Department of Environmental Remote Sensing and Geoinformatics\\
-~\\
+\strut \\
 University of Trier}
 \renewcommand{\submittedtext}{Submitted in partial fulfillment of the requirements for the degree of Master of Science in}
 \renewcommand{\thesistitlesize}{\fontsize{18pt}{28pt}\selectfont}
@@ -259,7 +259,7 @@ University of Trier}
 
 %%%%% ABSTRACT -- Nothing to do here except comment out if you don't want it.
 \begin{abstract}
-	Over the last decades, forest ecosystems have been increasingly disturbed by a variety of disturbances. One of the major disturbances to the forests have been reported to be insect infestations and drought. As a result, retrieving forest biophysical and biochemical maps from remote sensing data could aid in the study of forest disturbances. In this study, the radiative transfer models PROSPECT5, 4SAIL and FLIM were coupled in order to simulate forest canopy reflectance for the National Park Hunsruck-Hochwald. The simulated data was used to train Artificial Neural Networks (ANN), and the final trained model was used to predict forest biophysical and biochemical parameters using the PRISMA hyperspectral remote sensing image of the study area. Two ANN models were trained, one with the dimensionality reduction technique, PCA and one with simulated reflectance for PRISMA data bands. In general, both trained ANN models performed well. However, it was determined that the ANN that utilized all the available bands was superior in terms of loss and prediction errors for each plant parameter. Specifically, when the dimensionality reduction technique was not used, prediction of the parameter \(LAI_{s}\) resulted in noticeably higher accuracy. The optimal neural network model was chosen and used for the final predictions after being trained with the 231 simulated PRISMA bands. On the testing data set, this model had an MSE of 0.077 and an MAE of 0.13. The plant parameter \(C_{ab}\) was predicted with an \(R^2\) of 0.89 and a root mean square error (RMSE) of 4.064 (\(\frac{\mu g}{cm^2}\)). \(C_{w}\) was predicted with an \(R^2\) of 0.94 and an RMSE of 0.003 (\(\frac{g}{cm^2}\)). \(R^2\) and RMSE values for \(C_{m}\) were 0.95 and 0.002 (\(\frac{g}{cm^2}\)) respectively. Finally, \(R^2\) and RMSE values for \(LAI_{s}\) were 0.95 and 0.44 (\(\frac{m^2}{m^2}\)), respectively.
+	Over the last decades, forest ecosystems have been increasingly disturbed by a variety of disturbances. One of the major disturbances to the forests have been reported to be insect infestations and drought. As a result, retrieving forest biophysical and biochemical maps from remote sensing data could aid in the study of forest disturbances. In this study, the radiative transfer models PROSPECT5, 4SAIL and FLIM were coupled in order to form an updated version of INFORM and simulate forest canopy reflectance for the National Park Hunsruck-Hochwald. The simulated data was used to train Artificial Neural Networks (ANN), and the final trained model was used to predict forest biophysical and biochemical parameters using the PRISMA hyperspectral remote sensing image of the study area. Two ANN models were trained, one with the dimensionality reduction technique, PCA and one with simulated reflectance for PRISMA data bands. In general, both trained ANN models performed well. However, it was determined that the ANN that utilized all the available bands was superior in terms of loss and prediction errors for each plant parameter. Specifically, when the dimensionality reduction technique was not used, prediction of the parameter \(LAI_{s}\) resulted in noticeably higher accuracy. The optimal neural network model was chosen and used for the final predictions after being trained with the 231 simulated PRISMA bands. The ground truth data was not available in this study and therefore, evaluation of the model was done on the simulated data. On the testing data set (simulated), this model had an MSE of 0.077 and an MAE of 0.13. The plant parameter \(C_{ab}\) was predicted with an \(R^2\) of 0.89 and a root mean square error (RMSE) of 4.064 (\(\frac{\mu g}{cm^2}\)). \(C_{w}\) was predicted with an \(R^2\) of 0.94 and an RMSE of 0.003 (\(\frac{g}{cm^2}\)). \(R^2\) and RMSE values for \(C_{m}\) were 0.95 and 0.002 (\(\frac{g}{cm^2}\)) respectively. Finally, \(R^2\) and RMSE values for \(LAI_{s}\) were 0.95 and 0.44 (\(\frac{m^2}{m^2}\)), respectively.
 \end{abstract}
 
 %%%%% MINI TABLES
@@ -327,7 +327,7 @@ The main objectives of this study are to:
 \end{enumerate}
 
 \hypertarget{forest-disturbances-by-bark-beetle}{%
-\chapter{Forest Disturbances by Bark Beetle}\label{forest-disturbances-by-bark-beetle}}
+\section{Forest Disturbances by Bark Beetle}\label{forest-disturbances-by-bark-beetle}}
 
 Insect disturbance is just one of the numerous natural disturbances that forests face. Insect outbreaks can have a significant impact on the functioning of an ecosystem \citep{raffa2009literal}. However, there have been concerns regarding these forest disturbances as severity and frequency of these disturbances have increased \citep{millar2015temperate}.
 
@@ -346,7 +346,7 @@ Effective forest management and early intervention is essential in order to deal
 There have only been limited studies assessing the effect of the bark beetle green attack stage on plant biophysical and biochemical properties. A study by \citet{abdullah2018european} showed that there is a significant difference in leaf chlorophyll and nitrogen content between healthy and infested trees during the green attack stage. This study also concluded that spectral responses (using in-situ data) between healthy and infested trees were significantly different. Work by \citet{abdullah2019sentinel} concluded that the leaf chlorophyll and water content of healthy plants were significantly higher than infested trees at the green attack stage. They found dry matter content to be significantly higher for infested trees than healthy trees. A recent study by \citet{ali2021canopy} for the first time demonstrated the use of canopy chlorophyll content time series data retrieved from multispectral remote sensing data using the INFORM RTM for bark beetle infestation detection.
 
 \hypertarget{rtm}{%
-\chapter{Radiative Transfer Models (RTM)}\label{rtm}}
+\section{Radiative Transfer Models (RTM)}\label{rtm}}
 
 Radiative transfer models take advantage of physical laws that determine ``causal and effect'' relationships. There have been various radiative transfer models developed (leaf, canopy etc.) during the last decades \citep{verrelst2019quantifying}.
 
@@ -362,7 +362,7 @@ The error term \(\varepsilon\) in the Equation \eqref{eq:rtm} refers to the unce
 Radiative transfer models can be used to retrieve forest canopy biophysical and biochemical variables from remote sensing satellite data. This chapter mainly focuses on a coupled-chain radiative transfer model called the Invertable Forest Reflectance Model (INFORM) and its sub-models. INFORM combines leaf and canopy radiative transfer models \citep{atzberger2000development}, namely PROSPECT, SAIL (Scattering by Arbitrary Inclined Leaves) and FLIM (Forest Light Interaction Model) models \citep{schlerf2006inversion}. There are different versions of some of these sub-models (PROSPECT4, PROSPECT5 etc.). This chapter specifically reviews the PROSPECT5, 4SAIL and FLIM models.
 
 \hypertarget{prospect}{%
-\section{Leaf Radiative Transfer Model - PROSPECT}\label{prospect}}
+\subsection{Leaf Radiative Transfer Model - PROSPECT}\label{prospect}}
 
 In essence, PROSPECT is a leaf Radiative Transfer Model (RTM) that takes as an input leaf plant variables and outputs leaf reflectance and transmittance for the wavelength range of 400nm-2500nm \citep{jacquemoud1990prospect}. According to \citet{yang2021improving}, several versions of this leaf model have been developed during recent years. For example, the PROSPECT4 and PROSPECT5 models are two of the recent and improved versions of the previously proposed models. The main advantage of PROSPECT5 over PROSPECT4 is that the PROSPECT5 version takes cartenoid content of the leaf into account apart from chlorophyll (a+b) content separately \citep{yang2021improving}.
 
@@ -392,7 +392,7 @@ These leaf parameters (Table \ref{tab:prospect5}) can give very important insigh
 Some of these parameters can be analyzed in laboratories. For instance, the chlorophyll content of leaves can be analyzed in a laboratory, and laboratory techniques typically provide the most accurate results. However, these in-situ techniques are very expensive and invasive (e.g.~destruction of the leaves is necessary). Here, remote sensing data are very advantageous as they offer a much more efficient methodology for retrieving these variables. Additionally, remote sensing data can cover a large spatial area, making it much more efficient to retrieve plant leaf parameters (Table \ref{tab:prospect5}) for this specific area \citep{darvishzadeh2019mapping}.
 
 \hypertarget{sail}{%
-\section{Scattering by Arbitrary Inclined Leaves (SAIL)}\label{sail}}
+\subsection{Scattering by Arbitrary Inclined Leaves (SAIL)}\label{sail}}
 
 SAIL is a canopy radiative transfer model that is used in order to simulate bi-directional canopy reflectance \citep{verhoef1984light}. This model \citep{verhoef1984light} was extended from the study by \citet{suits1971calculation}. Furthermore, the 4SAIL model was proposed in the study by \citet{verhoef2007unified}, which is numerically much more optimized and computationally more efficient than the previously proposed versions.
 
@@ -427,8 +427,6 @@ The PROSPECT and SAIL models can be combined together to simulate canopy reflect
 
 The PROSAIL model (Figure \ref{fig:prosail}) can be used in a forward mode to get the simulated canopy reflectance based on the input parameters of PROSPECT (Table \ref{tab:prospect5}) and SAIL (Table \ref{tab:4sail}) \citep{berger2018evaluation}.
 
-\newpage
-
 \begin{figure}
 \centering
 \includegraphics{_main_files/figure-latex/prosail-1.pdf}
@@ -436,7 +434,7 @@ The PROSAIL model (Figure \ref{fig:prosail}) can be used in a forward mode to ge
 \end{figure}
 
 \hypertarget{flim}{%
-\section{Forest Light Interaction Model (FLIM)}\label{flim}}
+\subsection{Forest Light Interaction Model (FLIM)}\label{flim}}
 
 The FLIM model was first developed by \citet{rosema1992new}, and it has stochastic properties. The FLIM model assumes that forests consist of discontinues mixture of gaps and crowns. In this model, canopy reflectance is considered to be a probability of seeing a gap (ground) or crown \citep{rosema1992new}. Table \ref{tab:flim} shows the input parameters of the FLIM model.
 
@@ -466,7 +464,7 @@ Sun-sensor azimuth angle & psi & $^{\circ}$\\
 The FLIM model assumes that the background reflectance (\(R_{g}\)) is known \citep{rosema1992new} and it is the reflectance coming from the forest floor \citep{atzberger2000development}. Transmission in viewing (\(T_{o}\)) and sun (\(T_{s}\)) direction parameters (Table \ref{tab:flim}) can be estimated using the SAIL model \citep{atzberger2000development, schlerf2006inversion}.
 
 \hypertarget{inform}{%
-\section{Invertable Forest Reflectance Model (INFORM)}\label{inform}}
+\subsection{Invertable Forest Reflectance Model (INFORM)}\label{inform}}
 
 The INFORM model was first developed by \citet{atzberger2000development}, and it consists of three sub-models. INFORM innovatively combines the three RTMs PROSPECT, SAIL and FLIM \citep{atzberger2000development, schlerf2006inversion}. The INFORM model can be used to efficiently simulate forest canopy bi-directional reflectance within the wavelength range of 400nm-2500nm \citep{schlerf2006inversion} and, compared to other 3D radiative transfer models, INFORM requires fewer input variables \citep{atzberger2000development, ali2020machine}.
 
@@ -483,21 +481,21 @@ As the INFORM model is a combination of the three sub-models, its input paramete
 Successful applications of the INFORM model to retrieve forest biophysical parameters from hyperspectral remote sensing satellite data have been confirmed by various studies. For example, in the studies by \citet{ali2016retrieval} and \citet{wang2017canopy}, the INFORM model was successfully used to retrieve forest biophysical maps from the hyperspectral airborne remote sensing data HySpex. INFORM's suitability to be applied for multispectral remote sensing data was also proved in different studies. For example, \citet{darvishzadeh2019mapping} used the INFORM RTM in order to retrieve forest leaf chlorophyll content content maps from the multispectral remote sensing satellite data Sentinel-2 and RapidEye. \citet{ali2020machine} also utilized the INFORM model to retrieve forest canopy plant traits from Sentinel-2 multispectral remote sensing data.
 
 \hypertarget{chrtm}{%
-\section{Challenges of RTMs}\label{chrtm}}
+\subsection{Challenges of RTMs}\label{chrtm}}
 
 One of the main challenges of the RTMs is the so-called ill-posed problem \citep{combal2003retrieval, zhu2019estimation}. RTMs are mainly used for inversion problems. And inversion problems are usually ill-posed problems as opposed to well-posed problems. The ill-posed problem refers to a problem where multiple solutions can lead to similar or the same output. It makes the radiative transfer modelling process a very challenging process as multiple sets of solutions (e.g.~leaf/canopy variables) can yield very similar simulated reflectance to the measured reflectance \citep{combal2003retrieval, darvishzadeh2008estimation, zhu2019estimation}.
 
 Fortunately, the problem of ill-posedness can be efficiently addressed using prior information \citep{combal2003retrieval, darvishzadeh2008estimation, zhu2019estimation}. \citet{combal2003retrieval} divides this prior information into three groups. The first category of prior information is to use data coming from the same spatial area but collected using another sensor (e.g.~radar). The second type of prior information is the knowledge about the architecture of the canopy that is being studied. This knowledge could help decide what type of RTM to select (turbid medium, geometric etc.). Finally, the last type of prior information to be considered is the knowledge of the usual distribution range of biophysical and biochemical variables of canopies. This information can be gained with the help of either specialist/expert knowledge or by combining experimental data \citep{combal2003retrieval}.
 
 \hypertarget{mlra}{%
-\chapter{Machine Learning Regression Algorithms (MLRA)}\label{mlra}}
+\section{Machine Learning Regression Algorithms (MLRA)}\label{mlra}}
 
 Machine Learning Regression Algorithms (MLRA) are non-linear and non-parametric techniques that can be used to retrieve forest biophysical and biochemical parameters. Apart from non-parametric methods, there are also parametric techniques that can be used for the same purpose. However, the main advantage of the non-parametric methods over the parametric ones is the fact that they often do not assume any underlying relationships between the response (e.g.~plant traits) and predictor (e.g.~canopy reflectance) variables. These models do not rely on any linearity, which makes them very compelling techniques that can be applied in various research fields \citep{sinha2020estimation, rivera2015emulator, verrelst2019quantifying}.
 
 According to the extensive review study by \citet{verrelst2019quantifying}, Decision Trees (DT), Kernel-Based Machine Learning Regression Methods (KBMLRM) and Artificial Neural Networks (ANN) are the three most widely used Machine Learning (ML) families for retrieval of plant biophysical and biochemical variables in remote sensing. This chapter focuses on the most commonly used ML techniques and briefly reviews them.
 
 \hypertarget{dt}{%
-\section{Decision Trees (DT)}\label{dt}}
+\subsection{Decision Trees (DT)}\label{dt}}
 
 Decision Tree (DT) methods rely on trees and branches to illustrate the outcome of each decision \citep{verrelst2019quantifying}. The Random Forest (RF) is a non-parametric learning model and it is also considered to be an ensemble model \citep{breiman2001random}. Essentially, the Random Forest Regression (RFR) algorithm builds multiple small regression trees where each tree has a vote on the prediction. Based on the votes of each tree, a final prediction is made \citep{breiman2001random, powell2010quantification}. The major advantage of the Random Forest model is that it is not sensitive to overfitting \citep{breiman2001random, powell2010quantification, verrelst2019quantifying}, which is a well-known phenomenon challenging many ML algorithms' performance. Apart from that, the RF algorithm can successfully deal with large amounts of training data as well as outliers and noise in the training data. These properties are the reason why the RF model is an attractive method for plant trait mapping applications in remote sensing \citep{verrelst2019quantifying}.
 
@@ -506,7 +504,7 @@ Essentially, there are two main parameters of the RF algorithm. These are the nu
 The applicability of the RFR algorithm for retrieval of plant traits has been demonstrated in many studies. For example, \citet{ali2020machine} indicates that, when compared to the traditional Look Up Table (LUT) method with merit function, the RFR's retrieval accuracy was higher. In the studies by \citet{han2016hyperspectral} and \citet{pullanagari2016mapping}, RFR was compared to the other widely used ML algorithms (e.g.~SVM). In these studies, no method was found to be significantly superior to one another, indicating that all the widely used ML methods are highly competitive \citep{verrelst2019quantifying}.
 
 \hypertarget{kernel}{%
-\section{Kernel-Based Machine Learning Regression Methods (KBMLRM)}\label{kernel}}
+\subsection{Kernel-Based Machine Learning Regression Methods (KBMLRM)}\label{kernel}}
 
 Kernel-based learning algorithms rely on turning the current dimension of the data into a higher dimension and solving non-linear problems using a kernel function. Kernel methods offer very flexible implementation and they can be efficiently utilized as long as the linear problem can be solved in terms of dot products (linear algebra) \citep{verrelst2019quantifying}. According to the review study by \citet{gomez2011review}, kernel-based methods play a very important role in the remote sensing field. Kernel-based models can efficiently deal with small number of training samples (training data), very high-dimensional and noisy data sets. Unlike kernel-based algorithms, other machine learning methods, such as neural networks (NN), are known to be sensitive to the noise and high dimensions of the data, and importantly, they tend to perform very poorly when large training data sets are not available. All of these properties make kernel-based algorithms very attractive alternatives for remote sensing researchers as the mentioned issues that kernel-based algorithms handle are well-known for remote sensing data \citep{gomez2011review}.
 
@@ -515,7 +513,7 @@ Support Vector Regression (SVR) \citep{drucker1997support} is one of the most wi
 Another widely used kernel-based ML method is Gaussian Process Regression (GPR). GPR is a Bayesian, non-parametric, and probabilistic ML method that provides important insights for retrieval of plant traits from remote sensing data \citep{camps2016survey, camps2019perspective}. The major advantage of GPR over the other widely used ML algorithms is that GP models provide confidence intervals for the estimations \citep{berger2020retrieval}. In other words, besides providing very good results, GPR can also give information about how much uncertainty (e.g.~error bars) exists in the predictions or estimations of the retrieved parameters. GPR can easily deal with different types of data and it can be implemented in a way that efficiently handles noise in the data. These issues commonly occur in remote sensing data, which makes the GPR algorithm very interesting for the remote sensing community \citep{camps2016survey, camps2019perspective}. Successful applications of GPR to retrieve plant biophysical and biochemical variables have been demonstrated in the literature. A relatively recent study by \citet{berger2020retrieval} used two versions of GPR (homoscedastic and heteroscedastic) for retrieval of plant nitrogen content. This study showed that the both versions of GPR performed well for the retrieval of plant nitrogen content. \citet{upreti2019comparison} used different ML methods to retrieve plant traits from the multispectral remote sensing satellite data Seninel-2. They found GPR to be the best performing algorithm within the cross-validation stage, but not in general \citep{upreti2019comparison}. A study by \citet{caicedo2014toward} compared different ML models in terms of accuracy and concluded that GPR yielded the most accurate results. However, it is important to note that GPR does not come without drawbacks. For example, one of the main challenges of GPR is that it is computationally costly despite advances \citep{camps2019perspective}.
 
 \hypertarget{ann}{%
-\section{Artificial Neural Networks (ANN)}\label{ann}}
+\subsection{Artificial Neural Networks (ANN)}\label{ann}}
 
 Artificial Neural Networks (ANN) is a powerful ML method that consists of neurons and layers \citep{simon1999neural}. Usually, the ANN has three main components: an input layer, (a) hidden layer(s) and an output layer \citep{jensen1999predictive, quan2017radiative}. A typical mechanism for training an ANN is that first a training data set is given to the model as an input layer and then, the model trains and predicts output. Once the predicted output is available, the current predicted output is compared to the true output so that the weight parameters can be adjusted in a way that the predicted and true output are closely similar \citep{ingram2005mapping, quan2017radiative}. This learning process can be repeated multiple times until similarity between the predicted and true outputs is at a certain threshold (e.g.~convergence). This threshold can be defined by the user depending on their preferences \citep{jensen1999predictive, quan2017radiative}.
 
@@ -526,7 +524,7 @@ ANNs have been utilized in the remote sensing domain, especially for plant prope
 Despite being a powerful ML method, ANN comes with drawbacks. There are many descriptors in a typical ANN that may be correlated to each other. Because of that, there is a risk of the model being stuck in the local minima. Another well-known challenge of ANN is that it is susceptible to overfitting. Fortunately, there have been many methods developed to deal with these problems (e.g.~regularization) \citep{ghasemi2018neural}. A study by \citet{schlerf2006inversion} points out another potential drawback, which is the fact that the ANN model may behave unpredictably when the model does not represent the spectral properties of the target variable well.
 
 \hypertarget{chml}{%
-\section{Challenges of Machine Learning Regression Algorithms (MLRA)}\label{chml}}
+\subsection{Challenges of Machine Learning Regression Algorithms (MLRA)}\label{chml}}
 
 There are common issues that almost all MLRAs are challenged with. Hyperspectral remote sensing data come with many bands that may be highly correlated and noisy. This problem is a well-known problem and it is also called the ``Hughes phenomenon'' \citep{hughes1968mean} or the ``curse of dimensionality'' \citep{danner2021efficient}. One of the main problems is that MLRAs' computational cost becomes higher with an increased amount of training data. Most MLRAs require high computational power for very costly training phases. Apart from that, many highly correlated bands may indicate highly redundant data which cause difficulties for statistical and ML methods \citep{rivera2017hyperspectral}.
 
@@ -539,7 +537,7 @@ After reducing the dimension of the original data, new and low-dimensional data 
 In general, most ML algorithms need a large amount of training data to learn from the training data and generalize well to the data that were not used in the training phase (e.g.~test data). This leads to another challenging property of ML for retrieval of plant biophysical traits. This is because of the fact that it is extremely difficult to collect enough training data for plant traits in the field for a ML method to perform well. It requires various \emph{in-situ} field techniques and these techniques need to be used in a limited time-frame. It is still not guaranteed that training data collected in the field can generalize well to other fields \citep{danner2021efficient}. One way to overcome this problem is to use the so-called hybrid-machine learning method.
 
 \hypertarget{hml}{%
-\chapter{Hybrid Machine Learning Method}\label{hml}}
+\section{Hybrid Machine Learning Method}\label{hml}}
 
 The hybrid machine learning method is a combination of physically based RTMs and MLRAs. The main idea behind this technique is to make use of the advantages of the two different methods at the same time. RTMs can provide simulated data based on well-known and approved physical laws. Therefore, the data provided by RTMs can be applicable universally. Machine learning methods provide opportunities to efficiently deal with non-linear data (without making assumptions) in a reasonable time frame \citep{abdelbaki2021comparison, de2020quantifying, berger2021survey, ke2016estimating}. The study by \citet{fernandez2021hybrid} mentions three main advantages of using the hybrid method over other techniques: better generalization of the model, better estimation of the biophysical parameters, and finally, more efficient computation.
 
@@ -547,15 +545,18 @@ A typical procedure for using hybrid machine learning methods to retrieve plant 
 
 There have been a large number of studies utilizing hybrid machine learning methods for retrieval of plant traits. For example, a recent study by \citet{cesar2021exploring} combines PROSAIL and widely used MLRAs with the hybrid approach in order to retrieve plant parameters from Sentinel-2 satellite data. In this study, the performance of each MLRA combined with PROSAIL was assessed when noise was added. In the study by \citet{wei2017estimation}, plant LAI was successfully estimated using random forest regression and PROSAIL in a hybrid work flow. \citet{verrelst2016active} used hybrid RTM and kernel-based machine learning techniques to estimate plant leaf area index and chlorophyll content. This study included the active learning (AL) technique for an efficient retrieval strategy.
 
+\hypertarget{methods}{%
+\chapter{Methods}\label{methods}}
+
 \hypertarget{satellite-data}{%
-\chapter{Satellite Data}\label{satellite-data}}
+\section{Satellite Data}\label{satellite-data}}
 
 In this study, the hyperspectral satellite data PRISMA (PRecursore IperSpettrale della Missione Applicativa) was utilized. The PRISMA sensor has Field of View (FOV) of \(2.45^{\circ}\) and swath of 30 km. The sensor takes images within the spectral range of 400-2500nm. The PRISMA image has 66 bands in the visible and near infrared (VNIR) region (400-1010nm) and 173 bands within the short-wave infrared (SWIR) region (920-2505nm) of the spectrum. The spectral resolution of the data is somewhere between 6nm and 12nm. The hyperspectral data has a ground sampling distance (GSD) of 30 m \citep{candela2016prisma, giardino2020first, verrelst2021mapping}. The scientific fields that are expected to largely benefit from the PRISMA data are mainly environmental, climate change and forest research areas, among others \citep{giardino2020first}.
 
 In this study, L2 product of PRISMA data was retrieved and processed. First, the image was cropped to the study area using a polygon shape file covering the study area. Only 231 bands of the PRISMA image were available and all the available bands were utilized for further analysis. The PRISMA image contained clouds and shadow within the national park area and therefore, pre-processing of the image was necessary. The software package ENVI was used in order to accurately mask out the shadows and clouds available within the study area.
 
 \hypertarget{study-area}{%
-\chapter{Study area}\label{study-area}}
+\section{Study area}\label{study-area}}
 
 Hunsrück-Hochwald is a German national park that was founded in 2015. The national park covers areas in both Saarland and Rhineland-Palatinate German federal states (Figure \ref{fig:germanmap}).
 
@@ -565,14 +566,11 @@ Hunsrück-Hochwald is a German national park that was founded in 2015. The natio
 
 The area of the national park is about 10,000 hectare \citep{fischer2016scientific}. There are various forestry activities (selective cutting etc.) occuring in the national park area. The forest is mainly dominated by the plant species Norway spruce (\emph{Picea abies}), oak (\emph{Quercus petraea}) and beech (\emph{Fagus sylvatica}) \citep{buddenbaum2015nationalpark}.
 
+\newpage
+
 \begin{figure}
 \includegraphics[width=0.9\linewidth]{./figures/map_np} \caption{The study area.}\label{fig:npmap}
 \end{figure}
-
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
-
-This section explains the methods used in this research.
 
 \hypertarget{local-sensitivity-analysis}{%
 \section{Local sensitivity analysis}\label{local-sensitivity-analysis}}
@@ -600,9 +598,9 @@ Crown diameter & $CD$ & $m$ & 1.5 & 8.5\\
 \end{tabu}
 \end{table}
 
-\newpage
-
 Table \ref{tab:tsfixed} shows the determined default values for each INFORM parameter that were kept during the sensitivity simulation while one of the parameter was varied (Table \ref{tab:tsvaried}).
+
+\newpage
 
 \begin{table}[H]
 
