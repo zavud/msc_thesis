@@ -1,6 +1,6 @@
 Parameter = c("Leaf structure parameter", 
               "Chlorophyll content", 
-              "Leaf cartenoid content",
+              "Leaf carotenoid content",
               "Brown Pigment Content", 
               "Equivalent water thickness",
               "Leaf dry matter content",
