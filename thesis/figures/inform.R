@@ -25,7 +25,7 @@ canopyp2 [label = 'Canopy \n parameters', shape = folder, fillcolor = Beige]
 geop2 [label = 'Geometric \n parameters', shape = folder, fillcolor = Beige]
 bg2 [label = 'Backround \n reflectance', shape = folder, fillcolor = Beige]
 flim [label = 'FLIM', fillcolor = Pink]
-simref [label = 'Canopy \n reflectance', shape = cylinder]
+simref [label = 'Forest \n canopy \n reflectance', shape = cylinder]
 
 # inform
 leafp -> p5 -> {leaf_ref leaf_tr} -> foursail -> {to ts} -> flim -> simref
