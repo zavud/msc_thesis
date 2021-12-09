@@ -20,7 +20,7 @@ The model that was built with the help of the INFORM RTM and ANN can now be used
 
 Potential follow up study could be to use this model in order to retrieve forest biochemical and biophysical maps from the hyperspectral data PRISMA for multiple dates. Then, scientific techniques like change detection could be applied to assess the change of these variables between multiple years. For this, many different time-series analysis techniques can be used to better understand the effect of the bark beetle and drought within the study area through time.
 
-The follow-up time-series study based on biophysical and biochemical maps does not have to be limited to the PRISMA data. As all the scripts that were written to develop this model is publicly available on GitHub, few modification can be made to build a new model for any other remote sensing image bands.
+The follow-up time-series study based on biophysical and biochemical maps does not have to be limited to the PRISMA data. As all the scripts that were written to develop this model is publicly available on the GitHub repository of the author, few modifications can be made to build a new model for any other remote sensing image bands.
 
 It is also important to mention that this model could still be improved further. For example, using destructive and non-destructive in-situ data for RTM simulations could potentially lead to better results. In this study, these types of data were not available and the referenced literature was used to choose the range of values for RTM simulation. This data could also help assess the performance of the models (RTM and ANN) in more detail.
 
